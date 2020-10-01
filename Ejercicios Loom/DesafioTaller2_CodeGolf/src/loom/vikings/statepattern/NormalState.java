@@ -1,15 +1,16 @@
-package unlam.taller.vikingos;
+package loom.vikings.statepattern;
 
 public class NormalState implements VikingState {
 
 	@Override
 	public void receiveAttack(Viking v) {
+		v.setHealth(v.getHealth() - Viking.DEFAULT_CAUSED_DAMAGE);
 		v.setState(new CholericState());
 	}
 
 	@Override
 	public int attack(Viking v) {
-		return v.getAttackDamage();
+		return Viking.DEFAULT_CAUSED_DAMAGE;
 		
 	}
 
@@ -19,8 +20,8 @@ public class NormalState implements VikingState {
 	}
 
 	@Override
-	public void printStatus() {
-		System.out.println("Current status: Normal");
+	public String getStatus() {
+		return "NORMAL";
 	}
 
 }

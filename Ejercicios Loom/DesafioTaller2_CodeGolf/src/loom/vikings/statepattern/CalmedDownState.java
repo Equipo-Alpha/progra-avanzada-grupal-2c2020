@@ -1,4 +1,4 @@
-package unlam.taller.vikingos;
+package loom.vikings.statepattern;
 
 public class CalmedDownState implements VikingState {
 
@@ -18,8 +18,8 @@ public class CalmedDownState implements VikingState {
 	}
 
 	@Override
-	public void printStatus() {
-		System.out.println("Current status: Calmed Down");
+	public String getStatus() {
+		return "CALMED DOWN";
 	}
 
 

@@ -1,4 +1,4 @@
-package unlam.taller.vikingos;
+package loom.vikings.statepattern;
 
 public interface VikingState {
 
@@ -8,5 +8,5 @@ public interface VikingState {
 	
 	void meditate(Viking v);
 	
-    void printStatus();
+    String getStatus();
 }

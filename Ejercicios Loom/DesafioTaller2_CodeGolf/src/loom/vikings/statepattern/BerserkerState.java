@@ -1,15 +1,15 @@
-package unlam.taller.vikingos;
+package loom.vikings.statepattern;
 
 public class BerserkerState implements VikingState {
 
 	@Override
 	public void receiveAttack(Viking v) {
-		//Check what to do when it receives an attack because there aren't other states after this
+		v.setHealth((int)(v.getHealth() - ((double)Viking.DEFAULT_CAUSED_DAMAGE / 2)));
 	}
 
 	@Override
 	public int attack(Viking v) {
-		return v.getAttackDamage() * 3;		
+		return Viking.DEFAULT_CAUSED_DAMAGE * 3;	
 	}
 
 	@Override
@@ -18,8 +18,8 @@ public class BerserkerState implements VikingState {
 	}
 
 	@Override
-	public void printStatus() {
-		System.out.println("Current status: Berseker");
+	public String getStatus() {
+		return "BERSERKER";
 	}
 
 
