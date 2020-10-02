@@ -89,6 +89,8 @@ public class Viking {
 			changeState();
 			this.state = Estado.CHOLERIC;
 			break;
+		default:
+			break;
 		}
 	}
 
@@ -99,6 +101,8 @@ public class Viking {
 			break;
 		case NORMAL:
 			this.state = Estado.CHOLERIC;
+			break;
+		default:
 			break;
 		}
 	}
