@@ -13,7 +13,7 @@ public class VikingTest {
 	public void vikingShouldStartInNormalState() {
 		Viking v = new Viking(100);
 
-		assertEquals("NORMAL", v.getStatus());
+		assertEquals(Estado.NORMAL, v.getStatus());
 	}
 
 	@Test
@@ -38,7 +38,7 @@ public class VikingTest {
 
 		v.meditate();
 
-		assertEquals("CALMED DOWN", v.getStatus());
+		assertEquals(Estado.CALMEDDOWN, v.getStatus());
 	}
 
 	/*
@@ -51,7 +51,7 @@ public class VikingTest {
 
 		v.meditate();
 
-		assertEquals("CALMED DOWN", v.getStatus());
+		assertEquals(Estado.CALMEDDOWN, v.getStatus());
 
 		enem.attack(v);
 
@@ -59,7 +59,7 @@ public class VikingTest {
 		
 		v.attack();
 
-		assertEquals("NORMAL", v.getStatus());
+		assertEquals(Estado.NORMAL, v.getStatus());
 	}
 
 	/*
@@ -71,7 +71,7 @@ public class VikingTest {
 
 		v.receiveAttack();
 
-		assertEquals("CHOLERIC", v.getStatus());
+		assertEquals(Estado.CHOLERIC, v.getStatus());
 	}
 
 	@Test
@@ -100,7 +100,7 @@ public class VikingTest {
 		v.receiveAttack();
 		v.meditate();
 
-		assertEquals("NORMAL", v.getStatus());
+		assertEquals(Estado.NORMAL, v.getStatus());
 	}
 
 	/*
@@ -113,7 +113,7 @@ public class VikingTest {
 		v.receiveAttack();
 		v.receiveAttack();
 
-		assertEquals("BERSERKER", v.getStatus());
+		assertEquals(Estado.BERSERKER, v.getStatus());
 	}
 
 	@Test
@@ -145,6 +145,6 @@ public class VikingTest {
 		v.receiveAttack();
 		v.meditate();
 
-		assertEquals("NORMAL", v.getStatus());
+		assertEquals(Estado.NORMAL, v.getStatus());
 	}
 }
