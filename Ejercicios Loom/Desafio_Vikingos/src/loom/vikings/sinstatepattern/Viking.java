@@ -63,7 +63,7 @@ public class Viking {
 	}
 
 	public void meditate() {
-		if (this.state != Estado.NORMAL) {
+		if (this.state != Estado.NORMAL && this.state != Estado.CALMEDDOWN) {
 			this.state = Estado.NORMAL;
 		} else {
 			this.state = Estado.CALMEDDOWN;
