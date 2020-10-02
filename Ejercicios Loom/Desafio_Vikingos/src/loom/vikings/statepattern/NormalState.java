@@ -11,7 +11,6 @@ public class NormalState implements VikingState {
 	@Override
 	public int attack(Viking v) {
 		return Viking.DEFAULT_CAUSED_DAMAGE;
-		
 	}
 
 	@Override

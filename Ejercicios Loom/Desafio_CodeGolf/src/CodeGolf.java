@@ -1,5 +1,4 @@
-
-public class Codegolf {
+public class CodeGolf {
 
 	public static void main(String[] args) {
 //		int[][] m = { { 1, 8, 2 }, { 0, 3, 4 }, { 7, 6, 5 } };
