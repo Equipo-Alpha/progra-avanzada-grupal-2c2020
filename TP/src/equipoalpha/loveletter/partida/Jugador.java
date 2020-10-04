@@ -1,5 +1,7 @@
 package equipoalpha.loveletter.partida;
 
+import java.util.Scanner;
+
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 
@@ -23,6 +25,11 @@ public class Jugador {
 	public Partida partidaJugando;
 
 	/**
+	 * La ronda en la que actualmente esta jugando
+	 */
+	public Ronda rondaJugando;
+
+	/**
 	 * Determina si el jugador esta o no protegido por haber descartado una mucama
 	 */
 	public boolean estaProtegido;
@@ -43,31 +50,37 @@ public class Jugador {
 		return new Partida(this);
 	}
 
-	protected Carta descartarCarta1() {
-		Carta cartaElegida = this.carta1;
+	public void onComienzoTurno() {
+		System.out.println("Elegir una carta a descartar: 1 para la carta1, 2 para la carta2");
+		System.out.println("Elige cualquier otro valor para abandonar la partida");
+		System.out.println("Carta1: " + carta1 + ". Carta2: " + carta2);
+
+		Scanner scanner = new Scanner(System.in);
+		int cartaElegida = scanner.nextInt();
+		scanner.close();
+		if (cartaElegida == 1)
+			descartarCarta1();
+		else if (cartaElegida == 2)
+			descartarCarta2();
+		else
+			abandonarPartida();
+	}
+
+	private void descartarCarta1() {
 		carta1.descartar(this);
 		carta1 = carta2;
 		carta2 = null;
-		partidaJugando.onTurnoTerminado();
-		return cartaElegida;
 	}
 
-	protected Carta descartarCarta2() {
-		Carta cartaElegida = this.carta2;
+	private void descartarCarta2() {
 		carta2.descartar(this);
 		carta2 = null;
-		partidaJugando.onTurnoTerminado();
-		return cartaElegida;
 	}
 
 	/**
 	 * Roba una carta del mazo al principio del turno
 	 */
 	public void robarCarta(Carta cartaRobada) {
-		if (!partidaJugando.jugadorTurno.equals(this)) {
-			System.out.println("El jugador " + nombre + " no puede robar una carta. No es su turno!\n");
-			return;
-		}
 		carta2 = cartaRobada;
 
 		// TODO: mover esta logica?
@@ -84,9 +97,17 @@ public class Jugador {
 		return carta1.equals(carta);
 	}
 
+	public int getFuerzaCarta() {
+		return carta1.getTipo().fuerza;
+	}
+
 	private void abandonarPartida() {
 		if (partidaJugando == null)
 			return;
+		if (rondaJugando != null) {
+			this.rondaJugando.jugadoresEnLaRonda.remove(this);
+			this.rondaJugando = null;
+		}
 		this.partidaJugando.jugadores.remove(this);
 		this.partidaJugando = null;
 	}

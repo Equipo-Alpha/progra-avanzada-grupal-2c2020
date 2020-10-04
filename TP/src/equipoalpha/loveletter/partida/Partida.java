@@ -1,19 +1,8 @@
 package equipoalpha.loveletter.partida;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.ListIterator;
-
-import equipoalpha.loveletter.carta.Carta;
-import equipoalpha.loveletter.carta.CartaTipo;
 
 public class Partida {
-
-	/**
-	 * Conjunto de 16 cartas al empezar, termina la ronda si se vacia
-	 */
-	private LinkedList<Carta> mazo;
 
 	/**
 	 * El jugador que creo la partida
@@ -25,11 +14,6 @@ public class Partida {
 	 * de la partida se agrega por defecto.
 	 */
 	public ArrayList<Jugador> jugadores;
-
-	/**
-	 * Jugadores que estan jugando en la ronda actual y no han sido eliminados.
-	 */
-	public ArrayList<Jugador> jugadoresEnLaRonda;
 
 	/**
 	 * Cantidad de rondas que tiene la partida
@@ -47,35 +31,23 @@ public class Partida {
 	 * por el creador. Para las demas rondas se elige al ganador de la ronda
 	 * anterior. En el caso de terminarse la partida este jugador seria el ganador.
 	 */
-	private Jugador jugadorMano;
-
-	/**
-	 * Jugador que actualmente tiene el turno
-	 */
-	protected Jugador jugadorTurno;
-
-	/**
-	 * Carta que se elimina al principio de la ronda
-	 */
-	private Carta cartaEliminada;
+	protected Jugador jugadorMano;
 
 	/**
 	 * Indica si la partida esta en curso, en caso de ser true no se pueden unir mas
 	 * jugadores
 	 */
 	public boolean partidaEnCurso = false;
-
-	// TODO Condiciones de la partida?
-	// La partida podrá ser iniciada por el creador de la sala, o cuando todos los
-	// jugadores estén listos, o cualquier otra condición que consideren
-	// TODO Cual es el orden de la ronda?
+	
 	public Partida(Jugador creador) {
 		this.creador = creador;
-		this.mazo = new LinkedList<Carta>();
 		this.jugadores = new ArrayList<Jugador>();
 		jugadores.add(creador);
 	}
-
+	
+	// TODO Condiciones de la partida?
+	// La partida podrá ser iniciada por el creador de la sala, o cuando todos los
+	// jugadores estén listos, o cualquier otra condición que consideren
 	public void initPartida() {
 		if (cantSimbolosAfecto == 0 || jugadorMano == null) {
 			System.out.println("Faltan settear las condiciones de la partida!\n");
@@ -87,70 +59,18 @@ public class Partida {
 			jugador.cantSimbolosAfecto = 0;
 			jugador.estaProtegido = false;
 		}
-	}
 
-	/**
-	 * Inicializa la ronda. Crea el mazo, elimina 1 carta, reparte 1 carta a cada
-	 * jugador. Asigna el turno al jugador seleccionado para empezar en el caso de
-	 * ser la primer ronda sino asigna el turno al jugador que gano la anterior
-	 * ronda.
-	 */
-	public void initRonda() {
-		if (partidaTerminada()) {
-			System.out.println("La partida termino!");
-			System.out.println("Felicidades al ganador... " + jugadorMano + "!!");
-			return;
-		}
-
-		ronda++;
-		System.out.println("Comienza la ronda numero " + ronda);
-
-		// ---------Inicializar Mazo -----------\\
-		mazo.clear();
-		for (CartaTipo tipo : CartaTipo.values()) {
-			for (int i = 0; i < tipo.cantCartas; i++) {
-				mazo.add(new Carta(tipo));
-			}
-		}
-		Collections.shuffle(mazo);
-
-		// ---------Repartir Cartas--------------\\
-		jugadoresEnLaRonda.clear();
-		cartaEliminada = mazo.remove();
-		ListIterator<Jugador> iterador = jugadores.listIterator(jugadores.indexOf(jugadorMano));
-		while (iterador.hasNext()) {
-			Jugador jugadorIterando = iterador.next();
-			jugadorIterando.carta1 = mazo.remove();
-			jugadoresEnLaRonda.add(jugadorIterando);
-		}
-
-		System.out.println("Es el turno de " + jugadorMano);
-		jugadorTurno = jugadorMano;
-
-	}
-
-	/**
-	 * Llamado por un jugador cuando termina su turno. Le asigna el turno al
-	 * siguiente.
-	 */
-	protected void onTurnoTerminado() {
-		if (rondaTerminada()) {
-			if (jugadoresEnLaRonda.size() == 1)
-				for (Jugador jugador : jugadoresEnLaRonda) // Bueno solo hay 1
-					jugadorMano = jugador;
-			else {
-				// TODO determinar ganador
-			}
-			System.out.println("La ronda termino, el ganador es " + jugadorMano);
+		while (!partidaTerminada()) {
+			Ronda rondaActual = new Ronda(this);
+			ronda++;
+			System.out.println("Comienza la ronda numero " + ronda);
+			jugadorMano = rondaActual.initRonda();
+			System.out.println("El ganador de la ronda es " + jugadorMano);
 			jugadorMano.cantSimbolosAfecto++;
-			return;
+			this.cantSimbolosAfecto--;
 		}
-		int index = jugadoresEnLaRonda.indexOf(jugadorMano); // TODO esto puede dar null
-		index++;
-		if (index > jugadores.size())
-			index = 0;
-		jugadorTurno = jugadoresEnLaRonda.get(index);
-		System.out.println("Es el turno de " + jugadorTurno);
+
+		System.out.println("EL GANADOR DE LA PARTIDA ES + " + jugadorMano);
 	}
 
 	/**
@@ -164,17 +84,6 @@ public class Partida {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * condicion de fin de ronda
-	 * @return true cuando el mazo esta vacio o cuando queda 1 solo jugador sin
-	 *         eliminar
-	 */
-	public boolean rondaTerminada() {
-		if (mazo.isEmpty())
-			return true;
-		return jugadoresEnLaRonda.size() == 1;
 	}
 
 	/**
