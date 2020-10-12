@@ -1,9 +1,8 @@
 package equipoalpha.loveletter.partida;
 
-import java.util.Scanner;
-
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
+import equipoalpha.loveletter.partida.estadosjugador.*;
 
 public class Jugador {
 
@@ -29,6 +28,8 @@ public class Jugador {
 	 */
 	public Ronda rondaJugando;
 
+	private final EstadoJugador estado;
+
 	/**
 	 * Determina si el jugador esta o no protegido por haber descartado una mucama
 	 */
@@ -41,6 +42,7 @@ public class Jugador {
 
 	public Jugador(String nombre) {
 		this.nombre = nombre;
+		this.estado = new EstadoJugador(this);
 	}
 
 	/**
@@ -50,31 +52,45 @@ public class Jugador {
 		return new Partida(this);
 	}
 
-	public void onComienzoTurno() {
-		System.out.println("Elegir una carta a descartar: 1 para la carta1, 2 para la carta2");
-		System.out.println("Elige cualquier otro valor para abandonar la partida");
-		System.out.println("Carta1: " + carta1 + ". Carta2: " + carta2);
+	public void onComienzoTurno(Carta cartaRobada) {
+		this.estaProtegido = false;
+		carta2 = cartaRobada;
 
-		Scanner scanner = new Scanner(System.in);
-		int cartaElegida = scanner.nextInt();
-		scanner.close();
-		if (cartaElegida == 1)
-			descartarCarta1();
-		else if (cartaElegida == 2)
-			descartarCarta2();
+		if (carta2.getTipo() == CartaTipo.CONDESA
+				&& (carta1.getTipo() == CartaTipo.REY || carta1.getTipo() == CartaTipo.PRINCIPE)) {
+			this.estado.setEstado(new EstadoDescartandoCondesa());
+		}
 		else
-			abandonarPartida();
+			this.estado.setEstado(new EstadoDescartando());
 	}
 
-	private void descartarCarta1() {
-		carta1.descartar(this);
-		carta1 = carta2;
-		carta2 = null;
+	public boolean descartarCarta1() {
+		if(this.estado.getEstado() instanceof EstadoDescartando) {
+			Carta cartaJugada = carta1;
+			carta1 = carta2;
+			carta2 = null;
+			((EstadoDescartando) this.estado.getEstado()).setCartaElegida(cartaJugada);
+			this.estado.ejecutar();
+			return true;
+		}
+		return false;
 	}
 
-	private void descartarCarta2() {
-		carta2.descartar(this);
-		carta2 = null;
+	public boolean descartarCarta2() {
+		if(this.estado.getEstado() instanceof EstadoDescartando) {
+			Carta cartaJugada = carta2;
+			carta2 = null;
+			((EstadoDescartando) this.estado.getEstado()).setCartaElegida(cartaJugada);
+			this.estado.ejecutar();
+			return true;
+		}
+		if(this.estado.getEstado() instanceof EstadoDescartandoCondesa){
+			Carta cartaJugada = carta2;
+			carta2 = null;
+			cartaJugada.descartar(this);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -82,23 +98,57 @@ public class Jugador {
 	 */
 	public void robarCarta(Carta cartaRobada) {
 		carta2 = cartaRobada;
-
-		// TODO: mover esta logica?
-		if (cartaRobada.getTipo() == CartaTipo.CONDESA
+		
+		if (carta2.getTipo() == CartaTipo.CONDESA
 				&& (carta1.getTipo() == CartaTipo.REY || carta1.getTipo() == CartaTipo.PRINCIPE)) {
-			descartarCarta2();
+			this.estado.setEstado(new EstadoDescartandoCondesa());
 		}
+		else
+			this.estado.setEstado(new EstadoDescartando());
+	}
+
+	/**
+	 * LLamado por el jugador cuando elige a otro para el evento
+	 * @param jugador jugador elegido para el evento
+	 */
+	public void elegirJugador(Jugador jugador){
+		if(this.estado.getEstado() instanceof EstadoEligiendoJugador) {
+			if(!jugador.estaProtegido) {
+				((EstadoEligiendoJugador) this.estado.getEstado()).setJugadorElegido(jugador);
+				this.estado.ejecutar();
+			}
+		}
+	}
+
+	public void elegirCarta(CartaTipo cartaElegida){
+		if(this.estado.getEstado() instanceof EstadoEligiendoCarta) {
+			((EstadoEligiendoCarta) this.estado.getEstado()).setCartaElegida(cartaElegida);
+			this.estado.ejecutar();
+		}
+	}
+	/**
+	 * Llamado por varias cartas al ser descartadas.
+	 * Ve la carta que el jugador pasado por parametro tiene.
+	 * @param jugador jugador al cual this le ve las cartas
+	 */
+	public void verCarta(Jugador jugador){
+		System.out.println(this + " ve la carta de " + jugador + ":" + jugador.carta1);
 	}
 
 	/**
 	 * Generalmente llamado por otro jugador cuando descarta al guardia
 	 */
-	public boolean tieneCarta(Carta carta) {
-		return carta1.equals(carta);
+	public boolean tieneCarta(CartaTipo tipo) {
+		//tecnicamente tiene carta2 solo en tests
+		return (carta1.getTipo() == tipo || carta2.getTipo() == tipo);
 	}
 
 	public int getFuerzaCarta() {
 		return carta1.getTipo().fuerza;
+	}
+
+	public EstadoJugador getEstado() {
+		return estado;
 	}
 
 	private void abandonarPartida() {

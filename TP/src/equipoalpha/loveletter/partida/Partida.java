@@ -41,13 +41,13 @@ public class Partida {
 	
 	public Partida(Jugador creador) {
 		this.creador = creador;
-		this.jugadores = new ArrayList<Jugador>();
+		this.jugadores = new ArrayList<>();
 		jugadores.add(creador);
 	}
 	
 	// TODO Condiciones de la partida?
-	// La partida podrá ser iniciada por el creador de la sala, o cuando todos los
-	// jugadores estén listos, o cualquier otra condición que consideren
+	// La partida podra ser iniciada por el creador de la sala, o cuando todos los
+	// jugadores esten listos, o cualquier otra condicion que consideren
 	public void initPartida() {
 		if (cantSimbolosAfecto == 0 || jugadorMano == null) {
 			System.out.println("Faltan settear las condiciones de la partida!\n");
@@ -60,17 +60,17 @@ public class Partida {
 			jugador.estaProtegido = false;
 		}
 
-		while (!partidaTerminada()) {
-			Ronda rondaActual = new Ronda(this);
-			ronda++;
-			System.out.println("Comienza la ronda numero " + ronda);
-			jugadorMano = rondaActual.initRonda();
-			System.out.println("El ganador de la ronda es " + jugadorMano);
-			jugadorMano.cantSimbolosAfecto++;
-			this.cantSimbolosAfecto--;
-		}
+		//while (!partidaTerminada()) {
+		//	Ronda rondaActual = new Ronda(this);
+		//	ronda++;
+		//	System.out.println("Comienza la ronda numero " + ronda);
+		//	rondaActual.initRonda();
+		//	System.out.println("El ganador de la ronda es " + jugadorMano);
+		//	jugadorMano.cantSimbolosAfecto++;
+		//	this.cantSimbolosAfecto--;
+		//}
 
-		System.out.println("EL GANADOR DE LA PARTIDA ES + " + jugadorMano);
+		//System.out.println("EL GANADOR DE LA PARTIDA ES + " + jugadorMano);
 	}
 
 	/**
