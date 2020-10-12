@@ -9,6 +9,7 @@ import java.util.Map;
 
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
+import equipoalpha.loveletter.partida.estadosjugador.EstadoEsperando;
 
 public class Ronda {
 	/**
@@ -42,23 +43,13 @@ public class Ronda {
 	}
 	
 	// TODO Cual es el orden de la ronda?
-	public Jugador initRonda() {
-		this.mazo = new LinkedList<Carta>();
+	public void initRonda() {
+		initMazo();
 
-		// ---------Inicializar Mazo -----------\\
-		mazo.clear();
-		for (CartaTipo tipo : CartaTipo.values()) {
-			for (int i = 0; i < tipo.cantCartas; i++) {
-				mazo.add(new Carta(tipo));
-			}
-		}
-		Collections.shuffle(mazo);
-
-		this.jugadoresEnLaRonda = new ArrayList<Jugador>();
-		this.mapaCartasEliminadas = new HashMap<Jugador, Integer>();
+		this.jugadoresEnLaRonda = new ArrayList<>();
+		this.mapaCartasEliminadas = new HashMap<>();
 
 		// ---------Repartir Cartas--------------\\
-		jugadoresEnLaRonda.clear();
 		cartaEliminada = mazo.remove();
 		ListIterator<Jugador> iterador = partida.jugadores.listIterator(partida.jugadores.indexOf(partida.jugadorMano));
 		while (iterador.hasNext()) {
@@ -67,18 +58,29 @@ public class Ronda {
 			jugadorIterando.rondaJugando = this;
 			jugadoresEnLaRonda.add(jugadorIterando);
 			mapaCartasEliminadas.put(jugadorIterando, 0);
+			jugadorIterando.getEstado().setEstado(new EstadoEsperando());
 		}
 
 		// Loop de ronda
-		while (!rondaTerminada()) {
-			for (Jugador jugador : jugadoresEnLaRonda) {
-				System.out.println("Es el turno de " + jugador);
-				jugador.robarCarta(mazo.remove());
-				jugador.onComienzoTurno();
+		//while (!rondaTerminada()) {
+		//	for (Jugador jugador : jugadoresEnLaRonda) {
+		//		darCarta(jugador);
+		//		jugador.onComienzoTurno();
+		//	}
+		//}
+
+	}
+	
+	private void initMazo() {
+		this.mazo = new LinkedList<>();
+
+		for (CartaTipo tipo : CartaTipo.values()) {
+			for (int i = 0; i < tipo.cantCartas; i++) {
+				mazo.add(new Carta(tipo));
 			}
 		}
-
-		return onRondaTerminada();
+		
+		Collections.shuffle(mazo);
 	}
 
 	private Jugador onRondaTerminada() {
@@ -87,18 +89,18 @@ public class Ronda {
 		if (jugadoresEnLaRonda.size() == 1)
 			return jugadoresEnLaRonda.get(0);
 
-		// Sino, busca a el jugador que tiene en su mano la carta con valor numérico más
+		// Sino, busca a el jugador que tiene en su mano la carta con valor numerico mas
 		// alto (fuerza)
 		int mayor = 0;
-		for (int i = 0; i < jugadoresEnLaRonda.size(); i++) {
-			if (jugadoresEnLaRonda.get(i).getFuerzaCarta() > mayor)
-				mayor = jugadoresEnLaRonda.get(i).getFuerzaCarta();
+		for (Jugador jugador : jugadoresEnLaRonda) {
+			if (jugador.getFuerzaCarta() > mayor)
+				mayor = jugador.getFuerzaCarta();
 		}
 
-		ArrayList<Jugador> jugadorCartaMasFuerte = new ArrayList<Jugador>();
-		for (int i = 0; i < jugadoresEnLaRonda.size(); i++) {
-			if (jugadoresEnLaRonda.get(i).getFuerzaCarta() == mayor)
-				jugadorCartaMasFuerte.add(jugadoresEnLaRonda.get(i));
+		ArrayList<Jugador> jugadorCartaMasFuerte = new ArrayList<>();
+		for (Jugador jugador : jugadoresEnLaRonda) {
+			if (jugador.getFuerzaCarta() == mayor)
+				jugadorCartaMasFuerte.add(jugador);
 		}
 
 		// Si no hay empate lo devuelve
@@ -108,16 +110,49 @@ public class Ronda {
 		int cantCartas = 0;
 		Jugador jugadorMasCartasDescartadas = null;
 
-		// Si hay empate, gana el jugador que haya jugado/descartado más cartas en la
-		// ronda
-		for (int i = 0; i < jugadorCartaMasFuerte.size(); i++) {
-			if (mapaCartasEliminadas.get(jugadorCartaMasFuerte.get(i)) > cantCartas) {
-				cantCartas = mapaCartasEliminadas.get(jugadorCartaMasFuerte.get(i));
-				jugadorMasCartasDescartadas = jugadorCartaMasFuerte.get(i);
+		// Si hay empate, gana el jugador que haya descartado mas cartas en la ronda
+		for (Jugador jugador : jugadorCartaMasFuerte) {
+			if (mapaCartasEliminadas.get(jugador) > cantCartas) {
+				cantCartas = mapaCartasEliminadas.get(jugador);
+				jugadorMasCartasDescartadas = jugador;
 			}
 		}
 
 		return jugadorMasCartasDescartadas;
+	}
+
+	public Carta darCarta(){
+		return mazo.remove();
+	}
+
+	public void eliminarJugador(Jugador jugador){
+		jugadoresEnLaRonda.remove(jugador);
+		mapaCartasEliminadas.remove(jugador);
+	}
+
+	public void determinarCartaMayor(Jugador jugador1, Jugador jugador2){
+		if(jugador1.carta1.getTipo().fuerza > jugador2.carta1.getTipo().fuerza) {
+			eliminarJugador(jugador2);
+			jugador2.rondaJugando = null;
+		}
+		if(jugador1.carta1.getTipo().fuerza < jugador2.carta1.getTipo().fuerza)
+			eliminarJugador(jugador1);
+	}
+
+	public void onFinalizarDescarte(Jugador jugador){
+		if(jugadoresEnLaRonda.contains(jugador)) {
+			int nuevaCantidad = mapaCartasEliminadas.remove(jugador);
+			nuevaCantidad++;
+			mapaCartasEliminadas.putIfAbsent(jugador, nuevaCantidad);
+		}
+		else {
+			jugador.rondaJugando = null;
+		}
+		jugador.getEstado().setEstado(new EstadoEsperando());
+		
+		if(rondaTerminada()) {
+			onRondaTerminada();
+		}
 	}
 
 	/**
@@ -126,8 +161,6 @@ public class Ronda {
 	 *         eliminar
 	 */
 	public boolean rondaTerminada() {
-		if (mazo.isEmpty())
-			return true;
-		return jugadoresEnLaRonda.size() == 1;
+		return (mazo.isEmpty() || jugadoresEnLaRonda.size() == 1);
 	}
 }
