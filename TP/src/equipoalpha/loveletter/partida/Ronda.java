@@ -64,7 +64,6 @@ public class Ronda {
 		// Loop de ronda
 		//while (!rondaTerminada()) {
 		//	for (Jugador jugador : jugadoresEnLaRonda) {
-		//		System.out.println("Es el turno de " + jugador);
 		//		darCarta(jugador);
 		//		jugador.onComienzoTurno();
 		//	}
@@ -162,8 +161,6 @@ public class Ronda {
 	 *         eliminar
 	 */
 	public boolean rondaTerminada() {
-		if (mazo.isEmpty())
-			return true;
-		return jugadoresEnLaRonda.size() == 1;
+		return (mazo.isEmpty() || jugadoresEnLaRonda.size() == 1);
 	}
 }

@@ -45,9 +45,9 @@ public class CartaTest {
 		jugador2.carta2 = new Carta(CartaTipo.SACERDOTE);
 		
 		jugador1.elegirCarta(CartaTipo.SACERDOTE);
-		
-		Assert.assertEquals(false, rondaTest.jugadoresEnLaRonda.contains(jugador2));
-		Assert.assertEquals(null, jugador2.rondaJugando);
+
+		Assert.assertFalse(rondaTest.jugadoresEnLaRonda.contains(jugador2));
+		Assert.assertNull(jugador2.rondaJugando);
 	}
 	
 	@Test
@@ -64,17 +64,17 @@ public class CartaTest {
 		jugador1.onComienzoTurno(new Carta(CartaTipo.BARON));
 		jugador1.descartarCarta2();
 		jugador1.elegirJugador(jugador2);
-		
-		Assert.assertEquals(false, rondaTest.jugadoresEnLaRonda.contains(jugador2));
-		Assert.assertEquals(null, jugador2.rondaJugando);
+
+		Assert.assertFalse(rondaTest.jugadoresEnLaRonda.contains(jugador2));
+		Assert.assertNull(jugador2.rondaJugando);
 	}
 	
 	@Test
 	public void testMucama() {
 		jugador1.onComienzoTurno(new Carta(CartaTipo.MUCAMA));
 		jugador1.descartarCarta2();
-		
-		Assert.assertEquals(true, jugador1.estaProtegido);
+
+		Assert.assertTrue(jugador1.estaProtegido);
 	}
 	
 	@Test
@@ -108,17 +108,17 @@ public class CartaTest {
 		jugador1.onComienzoTurno(new Carta(CartaTipo.CONDESA));
 		
 		Assert.assertEquals(EstadoDescartandoCondesa.class, jugador1.getEstado().getEstado().getClass());
-		
-		Assert.assertEquals(false, jugador1.descartarCarta1());
+
+		Assert.assertFalse(jugador1.descartarCarta1());
 	}
 	
 	@Test
 	public void testPrincesa() {
 		jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCESA));
 		jugador1.descartarCarta2();
-		
-		Assert.assertEquals(false, rondaTest.jugadoresEnLaRonda.contains(jugador1));
-		Assert.assertEquals(null, jugador1.rondaJugando);
+
+		Assert.assertFalse(rondaTest.jugadoresEnLaRonda.contains(jugador1));
+		Assert.assertNull(jugador1.rondaJugando);
 	}
 
 }

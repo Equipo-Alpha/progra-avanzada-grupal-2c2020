@@ -1,7 +1,6 @@
 package equipoalpha.loveletter.partida.estadosjugador;
 
 import equipoalpha.loveletter.carta.Carta;
-import equipoalpha.loveletter.carta.CartaTipo;
 
 public class EstadoDescartando implements Estado{
     private Carta cartaElegida;

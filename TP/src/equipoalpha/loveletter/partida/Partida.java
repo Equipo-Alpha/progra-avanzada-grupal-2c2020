@@ -63,14 +63,10 @@ public class Partida {
 		//while (!partidaTerminada()) {
 		//	Ronda rondaActual = new Ronda(this);
 		//	ronda++;
-		//	System.out.println("Comienza la ronda numero " + ronda);
 		//	rondaActual.initRonda();
-		//	System.out.println("El ganador de la ronda es " + jugadorMano);
 		//	jugadorMano.cantSimbolosAfecto++;
 		//	this.cantSimbolosAfecto--;
 		//}
-
-		//System.out.println("EL GANADOR DE LA PARTIDA ES + " + jugadorMano);
 	}
 
 	/**

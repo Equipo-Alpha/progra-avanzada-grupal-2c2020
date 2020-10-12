@@ -1,10 +1,10 @@
 package equipoalpha.loveletter.carta;
 
 import equipoalpha.loveletter.partida.Jugador;
-import equipoalpha.loveletter.partida.estadosjugador.EstadoDescartando;
 import equipoalpha.loveletter.partida.estadosjugador.EstadoEligiendoJugador;
 import equipoalpha.loveletter.partida.estadosjugador.EstadoEligiendoCarta;
 
+@SuppressWarnings("incomplete-switch")
 public class Carta implements Comparable<Carta> {
 	private final CartaTipo tipo;
 
@@ -64,12 +64,11 @@ public class Carta implements Comparable<Carta> {
 	}
 	
 	public void onCartaElegida(Jugador jugadorQueDescarto, Jugador jugadorElegido, CartaTipo cartaElegida) {
-		switch(tipo) {
-			case GUARDIA:
-				if(jugadorElegido.tieneCarta(cartaElegida)) {
-					jugadorQueDescarto.rondaJugando.eliminarJugador(jugadorElegido);
-					jugadorElegido.rondaJugando = null;
-				}
+		if (tipo == CartaTipo.GUARDIA) {
+			if (jugadorElegido.tieneCarta(cartaElegida)) {
+				jugadorQueDescarto.rondaJugando.eliminarJugador(jugadorElegido);
+				jugadorElegido.rondaJugando = null;
+			}
 		}
 		
 		jugadorQueDescarto.rondaJugando.onFinalizarDescarte(jugadorQueDescarto);
@@ -93,9 +92,7 @@ public class Carta implements Comparable<Carta> {
 		if (getClass() != otraCarta.getClass())
 			return false;
 		Carta other = (Carta) otraCarta;
-		if (tipo != other.tipo)
-			return false;
-		return true;
+		return tipo == other.tipo;
 	}
 
 	@Override
@@ -105,7 +102,7 @@ public class Carta implements Comparable<Carta> {
 
 	@Override
 	public String toString() {
-		return "Carta [tipo=" + tipo + "]";
+		return tipo.toString();
 	}
 
 }
