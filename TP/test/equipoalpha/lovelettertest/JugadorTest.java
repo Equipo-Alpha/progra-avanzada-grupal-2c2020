@@ -13,7 +13,7 @@ public class JugadorTest {
 	@Test
 	public void test() {
 		Jugador j1 = new Jugador("test1234");
-		j1.robarCarta(new Carta(CartaTipo.));
+		j1.robarCarta(new Carta(CartaTipo.PRINCESA));
 	}
 
 }

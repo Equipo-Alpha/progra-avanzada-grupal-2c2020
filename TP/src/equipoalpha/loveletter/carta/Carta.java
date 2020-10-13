@@ -1,8 +1,7 @@
 package equipoalpha.loveletter.carta;
 
+import equipoalpha.loveletter.partida.EstadosJugador;
 import equipoalpha.loveletter.partida.Jugador;
-import equipoalpha.loveletter.partida.estadosjugador.EstadoEligiendoJugador;
-import equipoalpha.loveletter.partida.estadosjugador.EstadoEligiendoCarta;
 
 @SuppressWarnings("incomplete-switch")
 public class Carta implements Comparable<Carta> {
@@ -26,19 +25,19 @@ public class Carta implements Comparable<Carta> {
 			case PRINCESA:
 				jugador.rondaJugando.eliminarJugador(jugador);
 				break;
-			default: jugador.getEstado().setEstado(new EstadoEligiendoJugador(this)); return;
+			default: jugador.getEstado().setEstado(EstadosJugador.ELIGIENDOJUGADOR); return;
 		}
 
 		if(jugador.rondaJugando != null){
 			jugador.rondaJugando.onFinalizarDescarte(jugador);
-		}
+		} else jugador.getEstado().resetElecciones();
 	}
 
 	public void onElegido(Jugador jugadorQueDescarto, Jugador jugadorElegido){
 
 		switch (tipo){
 			case GUARDIA:
-				jugadorQueDescarto.getEstado().setEstado(new EstadoEligiendoCarta(jugadorElegido, this));
+				jugadorQueDescarto.getEstado().setEstado(EstadosJugador.ADIVINANDOCARTA);
 				return;
 			case SACERDOTE:
 				jugadorQueDescarto.verCarta(jugadorElegido);
@@ -59,7 +58,7 @@ public class Carta implements Comparable<Carta> {
 		}
 		if(jugadorQueDescarto.rondaJugando != null){
 			jugadorQueDescarto.rondaJugando.onFinalizarDescarte(jugadorQueDescarto);
-		}
+		} else jugadorQueDescarto.getEstado().resetElecciones();
 
 	}
 	

@@ -9,7 +9,6 @@ import java.util.Map;
 
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
-import equipoalpha.loveletter.partida.estadosjugador.EstadoEsperando;
 
 public class Ronda {
 	/**
@@ -58,7 +57,7 @@ public class Ronda {
 			jugadorIterando.rondaJugando = this;
 			jugadoresEnLaRonda.add(jugadorIterando);
 			mapaCartasEliminadas.put(jugadorIterando, 0);
-			jugadorIterando.getEstado().setEstado(new EstadoEsperando());
+			jugadorIterando.getEstado().setEstado(EstadosJugador.ESPERANDO);
 		}
 
 		// Loop de ronda
@@ -148,7 +147,8 @@ public class Ronda {
 		else {
 			jugador.rondaJugando = null;
 		}
-		jugador.getEstado().setEstado(new EstadoEsperando());
+		jugador.getEstado().setEstado(EstadosJugador.ESPERANDO);
+		jugador.getEstado().resetElecciones();
 		
 		if(rondaTerminada()) {
 			onRondaTerminada();

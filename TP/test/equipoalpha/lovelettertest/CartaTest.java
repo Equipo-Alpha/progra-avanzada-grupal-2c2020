@@ -1,5 +1,6 @@
 package equipoalpha.lovelettertest;
 
+import equipoalpha.loveletter.partida.EstadosJugador;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,8 +10,6 @@ import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.partida.Jugador;
 import equipoalpha.loveletter.partida.Partida;
 import equipoalpha.loveletter.partida.Ronda;
-import equipoalpha.loveletter.partida.estadosjugador.EstadoDescartando;
-import equipoalpha.loveletter.partida.estadosjugador.EstadoDescartandoCondesa;
 
 public class CartaTest {
 	
@@ -44,7 +43,7 @@ public class CartaTest {
 		//le damos al jugador2 una carta
 		jugador2.carta2 = new Carta(CartaTipo.SACERDOTE);
 		
-		jugador1.elegirCarta(CartaTipo.SACERDOTE); // A esto le pondría "Adivinar carta y le pasaría el jugador 2 y la carta, de manera que retorne true o false para poder descalificarlo
+		jugador1.elegirCarta(CartaTipo.SACERDOTE); // A esto le pondria "Adivinar carta y le pasaria el jugador 2 y la carta, de manera que retorne true o false para poder descalificarlo
 
 		Assert.assertFalse(rondaTest.jugadoresEnLaRonda.contains(jugador2));
 		Assert.assertNull(jugador2.rondaJugando);
@@ -59,7 +58,7 @@ public class CartaTest {
 		//le damos al jugador2 una carta
 		jugador2.carta2 = new Carta(CartaTipo.SACERDOTE);
 		
-		jugador1.elegirCarta(CartaTipo.MUCAMA); // A esto le pondría "Adivinar carta y le pasaría el jugador 2 y la carta, de manera que retorne true o false para poder descalificarlo
+		jugador1.elegirCarta(CartaTipo.MUCAMA); // A esto le pondrï¿½a "Adivinar carta y le pasarï¿½a el jugador 2 y la carta, de manera que retorne true o false para poder descalificarlo
 
 		Assert.assertTrue(rondaTest.jugadoresEnLaRonda.contains(jugador2));
 		Assert.assertNotNull(jugador2.rondaJugando);
@@ -99,7 +98,7 @@ public class CartaTest {
 		
 		jugador1.elegirJugador(jugador2);
 		
-		Assert.assertEquals(EstadoDescartando.class, jugador2.getEstado().getEstado().getClass());
+		Assert.assertEquals(EstadosJugador.DESCARTANDO, jugador2.getEstado().getEstado());
 	}
 	
 	@Test
@@ -122,7 +121,7 @@ public class CartaTest {
 		
 		jugador1.onComienzoTurno(new Carta(CartaTipo.CONDESA));
 		
-		Assert.assertEquals(EstadoDescartandoCondesa.class, jugador1.getEstado().getEstado().getClass());
+		Assert.assertEquals(EstadosJugador.DESCARTANDOCONDESA, jugador1.getEstado().getEstado());
 
 		Assert.assertFalse(jugador1.descartarCarta1());
 	}
@@ -133,7 +132,7 @@ public class CartaTest {
 		
 		jugador1.onComienzoTurno(new Carta(CartaTipo.CONDESA));
 		
-		Assert.assertEquals(EstadoDescartandoCondesa.class, jugador1.getEstado().getEstado().getClass());
+		Assert.assertEquals(EstadosJugador.DESCARTANDOCONDESA, jugador1.getEstado().getEstado());
 
 		Assert.assertFalse(jugador1.descartarCarta1());
 	}

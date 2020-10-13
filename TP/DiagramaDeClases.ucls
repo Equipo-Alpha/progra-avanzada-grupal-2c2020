@@ -46,7 +46,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="equipoalpha.loveletter.partida.estadosjugador.EstadoJugador" project="LoveLetters" 
+  <class id="6" language="java" name="equipoalpha.loveletter.partida.EstadoJugador" project="LoveLetters"
     file="/LoveLetters/src/equipoalpha/loveletter/partida/estadosjugador/EstadoJugador.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="196" width="261" x="-63" y="-133"/>    

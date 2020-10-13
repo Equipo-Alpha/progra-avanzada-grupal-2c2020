@@ -2,7 +2,6 @@ package equipoalpha.loveletter.partida;
 
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
-import equipoalpha.loveletter.partida.estadosjugador.*;
 
 public class Jugador {
 
@@ -58,33 +57,31 @@ public class Jugador {
 
 		if (carta2.getTipo() == CartaTipo.CONDESA
 				&& (carta1.getTipo() == CartaTipo.REY || carta1.getTipo() == CartaTipo.PRINCIPE)) {
-			this.estado.setEstado(new EstadoDescartandoCondesa());
+			this.estado.setEstado(EstadosJugador.DESCARTANDOCONDESA);
 		}
 		else
-			this.estado.setEstado(new EstadoDescartando());
+			this.estado.setEstado(EstadosJugador.DESCARTANDO);
 	}
 
 	public boolean descartarCarta1() {
-		if(this.estado.getEstado() instanceof EstadoDescartando) {
+		if(this.estado.getEstado() == EstadosJugador.DESCARTANDO) {
 			Carta cartaJugada = carta1;
 			carta1 = carta2;
 			carta2 = null;
-			((EstadoDescartando) this.estado.getEstado()).setCartaElegida(cartaJugada);
-			this.estado.ejecutar();
+			this.estado.cartaDescartada(cartaJugada);
 			return true;
 		}
 		return false;
 	}
 
 	public boolean descartarCarta2() {
-		if(this.estado.getEstado() instanceof EstadoDescartando) {
+		if(this.estado.getEstado() == EstadosJugador.DESCARTANDO) {
 			Carta cartaJugada = carta2;
 			carta2 = null;
-			((EstadoDescartando) this.estado.getEstado()).setCartaElegida(cartaJugada);
-			this.estado.ejecutar();
+			this.estado.cartaDescartada(cartaJugada);
 			return true;
 		}
-		if(this.estado.getEstado() instanceof EstadoDescartandoCondesa){
+		if(this.estado.getEstado() == EstadosJugador.DESCARTANDOCONDESA){
 			Carta cartaJugada = carta2;
 			carta2 = null;
 			cartaJugada.descartar(this);
@@ -101,10 +98,10 @@ public class Jugador {
 		
 		if (carta2.getTipo() == CartaTipo.CONDESA
 				&& (carta1.getTipo() == CartaTipo.REY || carta1.getTipo() == CartaTipo.PRINCIPE)) {
-			this.estado.setEstado(new EstadoDescartandoCondesa());
+			this.estado.setEstado(EstadosJugador.DESCARTANDOCONDESA);
 		}
 		else
-			this.estado.setEstado(new EstadoDescartando());
+			this.estado.setEstado(EstadosJugador.DESCARTANDO);
 	}
 
 	/**
@@ -112,18 +109,16 @@ public class Jugador {
 	 * @param jugador jugador elegido para el evento
 	 */
 	public void elegirJugador(Jugador jugador){
-		if(this.estado.getEstado() instanceof EstadoEligiendoJugador) {
+		if(this.estado.getEstado() == EstadosJugador.ELIGIENDOJUGADOR) {
 			if(!jugador.estaProtegido) {
-				((EstadoEligiendoJugador) this.estado.getEstado()).setJugadorElegido(jugador);
-				this.estado.ejecutar();
+				this.estado.jugadorElegido(jugador);
 			}
 		}
 	}
 
-	public void elegirCarta(CartaTipo cartaElegida){
-		if(this.estado.getEstado() instanceof EstadoEligiendoCarta) {
-			((EstadoEligiendoCarta) this.estado.getEstado()).setCartaElegida(cartaElegida);
-			this.estado.ejecutar();
+	public void elegirCarta(CartaTipo cartaAdivinada){
+		if(this.estado.getEstado() == EstadosJugador.ADIVINANDOCARTA) {
+			this.estado.cartaAdivinada(cartaAdivinada);
 		}
 	}
 	/**
