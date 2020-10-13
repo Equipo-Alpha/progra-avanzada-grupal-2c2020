@@ -57,7 +57,7 @@ public class Ronda {
 			jugadorIterando.rondaJugando = this;
 			jugadoresEnLaRonda.add(jugadorIterando);
 			mapaCartasEliminadas.put(jugadorIterando, 0);
-			jugadorIterando.getEstado().setEstado(EstadosJugador.ESPERANDO);
+			jugadorIterando.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
 		}
 
 		// Loop de ronda
@@ -147,7 +147,7 @@ public class Ronda {
 		else {
 			jugador.rondaJugando = null;
 		}
-		jugador.getEstado().setEstado(EstadosJugador.ESPERANDO);
+		jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
 		jugador.getEstado().resetElecciones();
 		
 		if(rondaTerminada()) {

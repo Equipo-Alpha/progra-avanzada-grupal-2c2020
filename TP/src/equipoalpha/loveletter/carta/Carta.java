@@ -25,7 +25,7 @@ public class Carta implements Comparable<Carta> {
 			case PRINCESA:
 				jugador.rondaJugando.eliminarJugador(jugador);
 				break;
-			default: jugador.getEstado().setEstado(EstadosJugador.ELIGIENDOJUGADOR); return;
+			default: jugador.getEstado().setEstadoActual(EstadosJugador.ELIGIENDOJUGADOR); return;
 		}
 
 		if(jugador.rondaJugando != null){
@@ -33,11 +33,11 @@ public class Carta implements Comparable<Carta> {
 		} else jugador.getEstado().resetElecciones();
 	}
 
-	public void onElegido(Jugador jugadorQueDescarto, Jugador jugadorElegido){
+	public void jugadorElegido(Jugador jugadorQueDescarto, Jugador jugadorElegido){
 
 		switch (tipo){
 			case GUARDIA:
-				jugadorQueDescarto.getEstado().setEstado(EstadosJugador.ADIVINANDOCARTA);
+				jugadorQueDescarto.getEstado().setEstadoActual(EstadosJugador.ADIVINANDOCARTA);
 				return;
 			case SACERDOTE:
 				jugadorQueDescarto.verCarta(jugadorElegido);
@@ -62,9 +62,9 @@ public class Carta implements Comparable<Carta> {
 
 	}
 	
-	public void onCartaElegida(Jugador jugadorQueDescarto, Jugador jugadorElegido, CartaTipo cartaElegida) {
+	public void cartaAdivinada(Jugador jugadorQueDescarto, Jugador jugadorElegido, CartaTipo cartaAdivinada) {
 		if (tipo == CartaTipo.GUARDIA) {
-			if (jugadorElegido.tieneCarta(cartaElegida)) {
+			if (jugadorElegido.tieneCarta(cartaAdivinada)) {
 				jugadorQueDescarto.rondaJugando.eliminarJugador(jugadorElegido);
 				jugadorElegido.rondaJugando = null;
 			}

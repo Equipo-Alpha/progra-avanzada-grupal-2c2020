@@ -2,7 +2,7 @@ package equipoalpha.loveletter.partida;
 
 import equipoalpha.loveletter.partida.eventos.EventoObservado;
 import equipoalpha.loveletter.partida.eventos.EventosPartida;
-import equipoalpha.loveletter.partida.eventos.EventosPartidaSwitch;
+import equipoalpha.loveletter.partida.eventos.EventosPartidaManager;
 
 import java.util.ArrayList;
 
@@ -43,14 +43,14 @@ public class Partida {
 	 */
 	public boolean partidaEnCurso = false;
 
-	public final EventosPartidaSwitch eventos;
+	public final EventosPartidaManager eventos;
 	
 	public Partida(Jugador creador) {
 		this.creador = creador;
 		creador.partidaJugando = this;
 		this.jugadores = new ArrayList<>();
 		jugadores.add(creador);
-		this.eventos = new EventosPartidaSwitch();
+		this.eventos = new EventosPartidaManager();
 		EventosPartida evento = new EventosPartida();
 		EventoObservado confirmarInicio = evento::onPedirConfirmacion;
 		eventos.registrar(EventosPartida.Nombre.PEDIRCONFIRMACION, confirmarInicio);
@@ -63,7 +63,7 @@ public class Partida {
 		}
 		partidaEnCurso = true;
 		for (Jugador jugador : jugadores) {
-			jugador.partidaJugando = this;
+			jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
 			jugador.cantSimbolosAfecto = 0;
 			jugador.estaProtegido = false;
 		}
@@ -97,15 +97,6 @@ public class Partida {
 	 */
 	public boolean partidaTerminada() {
 		return (cantSimbolosAfecto == 0 || jugadores.size() < 2);
-	}
-
-	// TODO por el momento printea puntajes, habra que ver que mas se podria
-	// printear o cambiarlo
-	public void getDatosDeLaPartida() {
-		System.out.println("Jugador\t\tPuntaje");
-		for (Jugador jugador : jugadores) {
-			System.out.println(jugador + "\t\t" + jugador.cantSimbolosAfecto);
-		}
 	}
 
 	/**

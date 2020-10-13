@@ -4,7 +4,7 @@ import equipoalpha.loveletter.partida.Jugador;
 
 import java.util.HashMap;
 
-public class EventosJugadorSwitch {
+public class EventosJugadorManager {
     private final HashMap<EventosJugador.Nombre, Evento> mapaEvento = new HashMap<>();
 
     public void registrar(EventosJugador.Nombre nombre, Evento evento){

@@ -98,7 +98,7 @@ public class CartaTest {
 		
 		jugador1.elegirJugador(jugador2);
 		
-		Assert.assertEquals(EstadosJugador.DESCARTANDO, jugador2.getEstado().getEstado());
+		Assert.assertEquals(EstadosJugador.DESCARTANDO, jugador2.getEstado().getEstadoActual());
 	}
 	
 	@Test
@@ -121,7 +121,7 @@ public class CartaTest {
 		
 		jugador1.onComienzoTurno(new Carta(CartaTipo.CONDESA));
 		
-		Assert.assertEquals(EstadosJugador.DESCARTANDOCONDESA, jugador1.getEstado().getEstado());
+		Assert.assertEquals(EstadosJugador.DESCARTANDOCONDESA, jugador1.getEstado().getEstadoActual());
 
 		Assert.assertFalse(jugador1.descartarCarta1());
 	}
@@ -132,7 +132,7 @@ public class CartaTest {
 		
 		jugador1.onComienzoTurno(new Carta(CartaTipo.CONDESA));
 		
-		Assert.assertEquals(EstadosJugador.DESCARTANDOCONDESA, jugador1.getEstado().getEstado());
+		Assert.assertEquals(EstadosJugador.DESCARTANDOCONDESA, jugador1.getEstado().getEstadoActual());
 
 		Assert.assertFalse(jugador1.descartarCarta1());
 	}

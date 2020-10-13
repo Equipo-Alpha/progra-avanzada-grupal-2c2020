@@ -12,9 +12,8 @@ public class EventosPartida {
     }
 
     public void onPedirConfirmacion(List<Jugador> jugadores){
-
         for(Jugador jugador : jugadores){
-            jugador.getEstado().setEstado(EstadosJugador.CONFIRMANDOINICIO);
+            jugador.getEstado().setEstadoActual(EstadosJugador.CONFIRMANDOINICIO);
         }
     }
 

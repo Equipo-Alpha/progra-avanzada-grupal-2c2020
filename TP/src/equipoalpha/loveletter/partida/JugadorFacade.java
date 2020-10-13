@@ -4,9 +4,9 @@ import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.partida.eventos.Evento;
 import equipoalpha.loveletter.partida.eventos.EventosJugador;
-import equipoalpha.loveletter.partida.eventos.EventosJugadorSwitch;
+import equipoalpha.loveletter.partida.eventos.EventosJugadorManager;
 
-public class EstadoJugador {
+public class JugadorFacade {
 
     /**
      * el jugador al que pertenece esta instancia
@@ -15,19 +15,19 @@ public class EstadoJugador {
     /**
      * estado actual del jugador
      */
-    private EstadosJugador estado;
+    private EstadosJugador estadoActual;
 
-    private final EventosJugadorSwitch evento;
+    private final EventosJugadorManager evento;
 
     private Carta cartaDescartada;
     private Jugador jugadorElegido;
     private CartaTipo cartaAdivinada;
 
-    public EstadoJugador(Jugador jugador) {
-        this.estado = null;
+    public JugadorFacade(Jugador jugador) {
+        this.estadoActual = null;
         this.jugador = jugador;
 
-        this.evento = new EventosJugadorSwitch();
+        this.evento = new EventosJugadorManager();
         EventosJugador eventos = new EventosJugador();
 
         Evento cartaDescartada = eventos::onCartaDescartada;
@@ -39,12 +39,12 @@ public class EstadoJugador {
         evento.registrar(EventosJugador.Nombre.CARTAADIVINADA, cartaAdivinada);
     }
 
-    public void setEstado(EstadosJugador estado) {
-        this.estado = estado;
+    public void setEstadoActual(EstadosJugador estadoActual) {
+        this.estadoActual = estadoActual;
     }
 
-    public EstadosJugador getEstado() {
-        return estado;
+    public EstadosJugador getEstadoActual() {
+        return estadoActual;
     }
 
     public void cartaDescartada(Carta cartaDescartada) {

@@ -47,8 +47,8 @@ public class JugadorTest {
 
         jugador.iniciarPartida();
         //la partida puede iniciar ambos se encuentran confirmando que estan listos
-        Assert.assertEquals(EstadosJugador.CONFIRMANDOINICIO, jugador.getEstado().getEstado());
-        Assert.assertEquals(EstadosJugador.CONFIRMANDOINICIO, jugador2.getEstado().getEstado());
+        Assert.assertEquals(EstadosJugador.CONFIRMANDOINICIO, jugador.getEstado().getEstadoActual());
+        Assert.assertEquals(EstadosJugador.CONFIRMANDOINICIO, jugador2.getEstado().getEstadoActual());
     }
 
     @Test
@@ -60,10 +60,10 @@ public class JugadorTest {
         jugador.iniciarPartida();
 
         jugador.confirmarInicio();
-        Assert.assertEquals(EstadosJugador.ESPERANDO, jugador.getEstado().getEstado());
+        Assert.assertEquals(EstadosJugador.ESPERANDO, jugador.getEstado().getEstadoActual());
 
         jugador2.confirmarInicio();
-        Assert.assertEquals(EstadosJugador.ESPERANDO, jugador2.getEstado().getEstado());
+        Assert.assertEquals(EstadosJugador.ESPERANDO, jugador2.getEstado().getEstadoActual());
         //ambos jugadores confirmaron la partida inicio
         Assert.assertTrue(jugador.partidaJugando.partidaEnCurso);
         Assert.assertTrue(jugador2.partidaJugando.partidaEnCurso);

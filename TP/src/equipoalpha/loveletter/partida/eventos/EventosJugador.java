@@ -12,10 +12,10 @@ public class EventosJugador {
     }
 
     public void onJugadorElegido(Jugador jugador){
-        jugador.getEstado().getCartaDescartada().onElegido(jugador, jugador.getEstado().getJugadorElegido());
+        jugador.getEstado().getCartaDescartada().jugadorElegido(jugador, jugador.getEstado().getJugadorElegido());
     }
 
     public void onCartaAdivinada(Jugador jugador){
-        jugador.getEstado().getCartaDescartada().onCartaElegida(jugador, jugador.getEstado().getJugadorElegido(), jugador.getEstado().getCartaAdivinada());
+        jugador.getEstado().getCartaDescartada().cartaAdivinada(jugador, jugador.getEstado().getJugadorElegido(), jugador.getEstado().getCartaAdivinada());
     }
 }
