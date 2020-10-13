@@ -36,7 +36,7 @@ public class CartaTest {
 	}
 
 	@Test
-	public void testGuardia() {
+	public void testGuardiaAdivinaBien() {
 		jugador1.onComienzoTurno(new Carta(CartaTipo.GUARDIA));
 		jugador1.descartarCarta2();
 		jugador1.elegirJugador(jugador2);
@@ -44,10 +44,25 @@ public class CartaTest {
 		//le damos al jugador2 una carta
 		jugador2.carta2 = new Carta(CartaTipo.SACERDOTE);
 		
-		jugador1.elegirCarta(CartaTipo.SACERDOTE);
+		jugador1.elegirCarta(CartaTipo.SACERDOTE); // A esto le pondría "Adivinar carta y le pasaría el jugador 2 y la carta, de manera que retorne true o false para poder descalificarlo
 
 		Assert.assertFalse(rondaTest.jugadoresEnLaRonda.contains(jugador2));
 		Assert.assertNull(jugador2.rondaJugando);
+	}
+	
+	@Test
+	public void testGuardiaAdivinaMal() {
+		jugador1.onComienzoTurno(new Carta(CartaTipo.GUARDIA));
+		jugador1.descartarCarta2();
+		jugador1.elegirJugador(jugador2);
+		
+		//le damos al jugador2 una carta
+		jugador2.carta2 = new Carta(CartaTipo.SACERDOTE);
+		
+		jugador1.elegirCarta(CartaTipo.MUCAMA); // A esto le pondría "Adivinar carta y le pasaría el jugador 2 y la carta, de manera que retorne true o false para poder descalificarlo
+
+		Assert.assertTrue(rondaTest.jugadoresEnLaRonda.contains(jugador2));
+		Assert.assertNotNull(jugador2.rondaJugando);
 	}
 	
 	@Test
@@ -102,8 +117,19 @@ public class CartaTest {
 	}
 	
 	@Test
-	public void testCondesa() {
+	public void testCondesaConRey() {
 		jugador1.carta1 = new Carta(CartaTipo.REY);
+		
+		jugador1.onComienzoTurno(new Carta(CartaTipo.CONDESA));
+		
+		Assert.assertEquals(EstadoDescartandoCondesa.class, jugador1.getEstado().getEstado().getClass());
+
+		Assert.assertFalse(jugador1.descartarCarta1());
+	}
+	
+	@Test
+	public void testCondesaConPrincipe() {
+		jugador1.carta1 = new Carta(CartaTipo.PRINCIPE);
 		
 		jugador1.onComienzoTurno(new Carta(CartaTipo.CONDESA));
 		
