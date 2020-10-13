@@ -2,6 +2,7 @@ package equipoalpha.loveletter.partida;
 
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
+import equipoalpha.loveletter.partida.eventos.EventosPartida;
 
 public class Jugador {
 
@@ -48,7 +49,39 @@ public class Jugador {
 	 * Crea una partida
 	 */
 	public Partida crearPartida() {
+		if(partidaJugando != null) return null;
+
+		estado.setEstado(EstadosJugador.ESPERANDO);
+
 		return new Partida(this);
+	}
+
+	public boolean unirseAPartida(Partida partida){
+		if(partidaJugando != null) return false;
+
+		estado.setEstado(EstadosJugador.ESPERANDO);
+
+		return partida.agregarJugador(this);
+	}
+
+	public void iniciarPartida(){
+		if(partidaJugando == null || !partidaJugando.creador.equals(this)){
+			return;
+		}
+		if (partidaJugando.getCantSimbolosAfecto() == 0 || partidaJugando.getJugadorMano() == null) {
+			return;
+		}
+
+		partidaJugando.eventos.ejecutar(EventosPartida.Nombre.PEDIRCONFIRMACION, partidaJugando.jugadores);
+	}
+
+	public void confirmarInicio(){
+		if(this.estado.getEstado() == EstadosJugador.CONFIRMANDOINICIO){
+			if(partidaJugando.eventos.removerObservador(EventosPartida.Nombre.PEDIRCONFIRMACION, this)){
+				partidaJugando.initPartida();
+			}
+			this.estado.setEstado(EstadosJugador.ESPERANDO);
+		}
 	}
 
 	public void onComienzoTurno(Carta cartaRobada) {

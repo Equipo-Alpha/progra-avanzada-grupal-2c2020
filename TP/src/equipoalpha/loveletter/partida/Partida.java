@@ -1,5 +1,9 @@
 package equipoalpha.loveletter.partida;
 
+import equipoalpha.loveletter.partida.eventos.EventoObservado;
+import equipoalpha.loveletter.partida.eventos.EventosPartida;
+import equipoalpha.loveletter.partida.eventos.EventosPartidaSwitch;
+
 import java.util.ArrayList;
 
 public class Partida {
@@ -38,19 +42,23 @@ public class Partida {
 	 * jugadores
 	 */
 	public boolean partidaEnCurso = false;
+
+	public final EventosPartidaSwitch eventos;
 	
 	public Partida(Jugador creador) {
 		this.creador = creador;
+		creador.partidaJugando = this;
 		this.jugadores = new ArrayList<>();
 		jugadores.add(creador);
+		this.eventos = new EventosPartidaSwitch();
+		EventosPartida evento = new EventosPartida();
+		EventoObservado confirmarInicio = evento::onPedirConfirmacion;
+		eventos.registrar(EventosPartida.Nombre.PEDIRCONFIRMACION, confirmarInicio);
 	}
-	
-	// TODO Condiciones de la partida?
-	// La partida podra ser iniciada por el creador de la sala, o cuando todos los
-	// jugadores esten listos, o cualquier otra condicion que consideren
+
 	public void initPartida() {
+		//TODO borrar este check
 		if (cantSimbolosAfecto == 0 || jugadorMano == null) {
-			System.out.println("Faltan settear las condiciones de la partida!\n");
 			return;
 		}
 		partidaEnCurso = true;
@@ -74,7 +82,7 @@ public class Partida {
 	 * @return false cuando ya hay 4 jugadores en la partida
 	 */
 	public boolean agregarJugador(Jugador jugadorAAgregar) {
-		if (jugadores.size() < 4) {
+		if (jugadores.size() < 4 && !jugadores.contains(jugadorAAgregar)) {
 			jugadores.add(jugadorAAgregar);
 			jugadorAAgregar.partidaJugando = this;
 			return true;
@@ -110,10 +118,17 @@ public class Partida {
 		this.cantSimbolosAfecto = cantSimbolosAfecto;
 	}
 
+	public int getCantSimbolosAfecto() {
+		return cantSimbolosAfecto;
+	}
+
 	public void setJugadorMano(Jugador jugadorMano) {
 		if (partidaEnCurso || !jugadores.contains(jugadorMano))
 			return;
 		this.jugadorMano = jugadorMano;
 	}
 
+	public Jugador getJugadorMano() {
+		return jugadorMano;
+	}
 }
