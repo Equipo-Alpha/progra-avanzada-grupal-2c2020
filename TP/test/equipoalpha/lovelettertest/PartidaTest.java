@@ -53,10 +53,6 @@ public class PartidaTest {
     }
 
     @Test
-    public void getDatosDeLaPartida() {
-    }
-
-    @Test
     public void setCantSimbolosAfecto() {
         partida.setCantSimbolosAfecto(5);
         Assert.assertEquals(0, partida.getCantSimbolosAfecto());

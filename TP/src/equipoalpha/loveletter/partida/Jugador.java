@@ -73,15 +73,18 @@ public class Jugador {
 			return;
 		}
 
-		partidaJugando.eventos.ejecutar(EventosPartida.Nombre.PEDIRCONFIRMACION, partidaJugando.jugadores);
+		partidaJugando.eventos.ejecutar(EventosPartida.PEDIRCONFIRMACION, partidaJugando.jugadores);
 	}
 
 	public void confirmarInicio(){
 		if(this.estado.getEstadoActual() == EstadosJugador.CONFIRMANDOINICIO){
-			if(partidaJugando.eventos.removerObservador(EventosPartida.Nombre.PEDIRCONFIRMACION, this)){
-				partidaJugando.initPartida();
-			}
-			this.estado.setEstadoActual(EstadosJugador.ESPERANDO);
+			partidaJugando.eventos.removerObservador(EventosPartida.PEDIRCONFIRMACION, this);
+		}
+	}
+
+	public void cancelarInicio(){
+		if(this.estado.getEstadoActual() == EstadosJugador.CONFIRMANDOINICIO){
+			partidaJugando.eventos.cancelarEvento(EventosPartida.PEDIRCONFIRMACION);
 		}
 	}
 
@@ -169,7 +172,10 @@ public class Jugador {
 	 */
 	public boolean tieneCarta(CartaTipo tipo) {
 		//tecnicamente tiene carta2 solo en tests
-		return (carta1.getTipo() == tipo || carta2.getTipo() == tipo);
+		if(carta2 != null){
+			return (carta1.getTipo() == tipo || carta2.getTipo() == tipo);
+		} else return carta1.getTipo() == tipo;
+
 	}
 
 	public int getFuerzaCarta() {

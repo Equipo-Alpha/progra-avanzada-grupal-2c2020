@@ -70,6 +70,25 @@ public class JugadorTest {
     }
 
     @Test
+    public void cancelarInicio(){
+        jugador2.unirseAPartida(partida);
+        partida.setJugadorMano(jugador);
+        partida.setCantSimbolosAfecto(20);
+
+        jugador.iniciarPartida();
+        //Los jugadores se encuentran confirmando el inicio
+        Assert.assertEquals(EstadosJugador.CONFIRMANDOINICIO, jugador2.getEstado().getEstadoActual());
+
+        //Un jugador no esta listo para iniciar la partida
+        jugador.cancelarInicio();
+
+        //La partida no inicia
+        Assert.assertEquals(EstadosJugador.ESPERANDO, jugador2.getEstado().getEstadoActual());
+        Assert.assertFalse(jugador.partidaJugando.partidaEnCurso);
+        Assert.assertFalse(jugador2.partidaJugando.partidaEnCurso);
+    }
+
+    @Test
     public void onComienzoTurno() {
     }
 

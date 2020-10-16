@@ -1,5 +1,6 @@
 package equipoalpha.loveletter.partida;
 
+import equipoalpha.loveletter.partida.eventos.ConfirmarInicioEvento;
 import equipoalpha.loveletter.partida.eventos.EventoObservado;
 import equipoalpha.loveletter.partida.eventos.EventosPartida;
 import equipoalpha.loveletter.partida.eventos.EventosPartidaManager;
@@ -51,16 +52,12 @@ public class Partida {
 		this.jugadores = new ArrayList<>();
 		jugadores.add(creador);
 		this.eventos = new EventosPartidaManager();
-		EventosPartida evento = new EventosPartida();
-		EventoObservado confirmarInicio = evento::onPedirConfirmacion;
-		eventos.registrar(EventosPartida.Nombre.PEDIRCONFIRMACION, confirmarInicio);
+		EventoObservado confirmarInicio = new ConfirmarInicioEvento(this);
+		eventos.registrar(EventosPartida.PEDIRCONFIRMACION, confirmarInicio);
 	}
 
 	public void initPartida() {
-		//TODO borrar este check
-		if (cantSimbolosAfecto == 0 || jugadorMano == null) {
-			return;
-		}
+
 		partidaEnCurso = true;
 		for (Jugador jugador : jugadores) {
 			jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
