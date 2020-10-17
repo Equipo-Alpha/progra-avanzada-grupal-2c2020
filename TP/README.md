@@ -6,7 +6,9 @@ Proyecto de java para el taller de calificación profesional de la materia *Prog
 
 [LoveLetter](https://en.wikipedia.org/wiki/Love_Letter_(card_game)) es un juego de cartas para 2-4 personas.
 
-##### [Consignas](https://github.com/programacion-avanzada/2020b)
+#### Consignas:
+ 
+Las consignas se encuentran en el repositorio de la materia [aqui](https://github.com/programacion-avanzada/2020b)
 
 ## Integrantes
 

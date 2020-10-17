@@ -2,6 +2,7 @@ package equipoalpha.loveletter.carta;
 
 import equipoalpha.loveletter.partida.EstadosJugador;
 import equipoalpha.loveletter.partida.Jugador;
+import equipoalpha.loveletter.partida.Ronda;
 
 @SuppressWarnings("incomplete-switch")
 public class Carta implements Comparable<Carta> {
@@ -15,6 +16,7 @@ public class Carta implements Comparable<Carta> {
 	 * @param jugador jugador que la descarto
 	 */
 	public void descartar(Jugador jugador) {
+		Ronda ronda = jugador.partidaJugando.rondaActual;
 
 		switch (tipo) {
 			case MUCAMA:
@@ -28,17 +30,15 @@ public class Carta implements Comparable<Carta> {
 			default: jugador.getEstado().setEstadoActual(EstadosJugador.ELIGIENDOJUGADOR); return;
 		}
 
-		if(jugador.rondaJugando != null){
-			jugador.rondaJugando.onFinalizarDescarte(jugador);
-		} else jugador.getEstado().resetElecciones();
+		ronda.onFinalizarDescarte(jugador);
 	}
 
 	public void jugadorElegido(Jugador jugadorQueDescarto, Jugador jugadorElegido){
+		Ronda ronda = jugadorQueDescarto.partidaJugando.rondaActual;
 
 		switch (tipo){
 			case GUARDIA:
-				jugadorQueDescarto.getEstado().setEstadoActual(EstadosJugador.ADIVINANDOCARTA);
-				return;
+				jugadorQueDescarto.getEstado().setEstadoActual(EstadosJugador.ADIVINANDOCARTA); return;
 			case SACERDOTE:
 				jugadorQueDescarto.verCarta(jugadorElegido);
 				break;
@@ -56,19 +56,14 @@ public class Carta implements Comparable<Carta> {
 				jugadorElegido.carta1 = carta;
 				break;
 		}
-		if(jugadorQueDescarto.rondaJugando != null){
-			jugadorQueDescarto.rondaJugando.onFinalizarDescarte(jugadorQueDescarto);
-		} else jugadorQueDescarto.getEstado().resetElecciones();
+		ronda.onFinalizarDescarte(jugadorQueDescarto);
 
 	}
 	
 	public void cartaAdivinada(Jugador jugadorQueDescarto, Jugador jugadorElegido, CartaTipo cartaAdivinada) {
-		if (tipo == CartaTipo.GUARDIA) {
-			if (jugadorElegido.tieneCarta(cartaAdivinada)) {
+		if (tipo == CartaTipo.GUARDIA)
+			if (jugadorElegido.tieneCarta(cartaAdivinada))
 				jugadorQueDescarto.rondaJugando.eliminarJugador(jugadorElegido);
-				jugadorElegido.rondaJugando = null;
-			}
-		}
 		
 		jugadorQueDescarto.rondaJugando.onFinalizarDescarte(jugadorQueDescarto);
 	}

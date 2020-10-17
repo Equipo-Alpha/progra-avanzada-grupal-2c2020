@@ -30,7 +30,7 @@ public class PartidaTest {
 
         partida.agregarJugador(jugador2);
         partida.agregarJugador(jugador3);
-        partida.setCantSimbolosAfecto(20);
+        partida.setCantSimbolosAfecto(5);
         partida.setJugadorMano(jugador1);
 
         partida.initPartida();
@@ -47,18 +47,18 @@ public class PartidaTest {
     public void partidaTerminada() {
         Assert.assertTrue(partida.partidaTerminada()); // bueno nunca empezo
 
-        partida.setCantSimbolosAfecto(20);
+        partida.setCantSimbolosAfecto(5);
         partida.agregarJugador(jugador2);
         Assert.assertFalse(partida.partidaTerminada());
     }
 
     @Test
     public void setCantSimbolosAfecto() {
-        partida.setCantSimbolosAfecto(5);
+        partida.setCantSimbolosAfecto(1);
         Assert.assertEquals(0, partida.getCantSimbolosAfecto());
 
-        partida.setCantSimbolosAfecto(20);
-        Assert.assertEquals(20, partida.getCantSimbolosAfecto());
+        partida.setCantSimbolosAfecto(5);
+        Assert.assertEquals(5, partida.getCantSimbolosAfecto());
     }
 
     @Test

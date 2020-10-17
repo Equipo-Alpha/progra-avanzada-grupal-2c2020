@@ -56,17 +56,10 @@ public class Ronda {
 			jugadorIterando.carta1 = mazo.remove();
 			jugadorIterando.rondaJugando = this;
 			jugadoresEnLaRonda.add(jugadorIterando);
+			jugadorIterando.getEstado().resetElecciones();
 			mapaCartasEliminadas.put(jugadorIterando, 0);
 			jugadorIterando.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
 		}
-
-		// Loop de ronda
-		//while (!rondaTerminada()) {
-		//	for (Jugador jugador : jugadoresEnLaRonda) {
-		//		darCarta(jugador);
-		//		jugador.onComienzoTurno();
-		//	}
-		//}
 
 	}
 	
@@ -82,7 +75,13 @@ public class Ronda {
 		Collections.shuffle(mazo);
 	}
 
-	private Jugador onRondaTerminada() {
+	private void onRondaTerminada(){
+		Jugador jugadorGanador = determinarGanador();
+		jugadorGanador.cantSimbolosAfecto++;
+		partida.onNuevaRonda(jugadorGanador);
+	}
+
+	private Jugador determinarGanador() {
 
 		// Si solo queda 1 devuelve a ese jugador
 		if (jugadoresEnLaRonda.size() == 1)
@@ -127,6 +126,7 @@ public class Ronda {
 	public void eliminarJugador(Jugador jugador){
 		jugadoresEnLaRonda.remove(jugador);
 		mapaCartasEliminadas.remove(jugador);
+		jugador.rondaJugando = null;
 	}
 
 	public void determinarCartaMayor(Jugador jugador1, Jugador jugador2){

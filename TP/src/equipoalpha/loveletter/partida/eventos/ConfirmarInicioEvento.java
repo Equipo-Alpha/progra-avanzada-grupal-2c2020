@@ -4,6 +4,7 @@ import equipoalpha.loveletter.partida.EstadosJugador;
 import equipoalpha.loveletter.partida.Jugador;
 import equipoalpha.loveletter.partida.Partida;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConfirmarInicioEvento implements EventoObservado{
@@ -16,7 +17,7 @@ public class ConfirmarInicioEvento implements EventoObservado{
 
     @Override
     public void notificar(List<Jugador> observadores) {
-        this.observadores = observadores;
+        this.observadores = new ArrayList<>(observadores);
         for(Jugador jugador : observadores){
             jugador.getEstado().setEstadoActual(EstadosJugador.CONFIRMANDOINICIO);
         }

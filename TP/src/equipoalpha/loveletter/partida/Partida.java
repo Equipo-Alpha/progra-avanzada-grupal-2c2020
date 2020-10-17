@@ -21,6 +21,11 @@ public class Partida {
 	public ArrayList<Jugador> jugadores;
 
 	/**
+	 * Si la partida empezo, es la ronda en la que actualmente se esta jugando
+	 */
+	public Ronda rondaActual = null;
+
+	/**
 	 * Cantidad de rondas que tiene la partida
 	 */
 	public int ronda = 0;
@@ -57,21 +62,41 @@ public class Partida {
 	}
 
 	public void initPartida() {
-
 		partidaEnCurso = true;
+
 		for (Jugador jugador : jugadores) {
 			jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
 			jugador.cantSimbolosAfecto = 0;
 			jugador.estaProtegido = false;
 		}
 
-		//while (!partidaTerminada()) {
-		//	Ronda rondaActual = new Ronda(this);
-		//	ronda++;
-		//	rondaActual.initRonda();
-		//	jugadorMano.cantSimbolosAfecto++;
-		//	this.cantSimbolosAfecto--;
-		//}
+		this.rondaActual = new Ronda(this);
+		onNuevaRonda(jugadorMano);
+	}
+
+	/**
+	 * Evento que empieza al iniciar la partida o cuando la ronda anterior termino.
+	 * Determina una nueva ronda a jugar
+	 * @param ganadorRonda jugador que gano la ronda anterior
+	 */
+	public void onNuevaRonda(Jugador ganadorRonda){
+		if(partidaTerminada()){
+			onFinalizarPartida(ganadorRonda);
+			return;
+		}
+
+		this.jugadorMano = ganadorRonda; // el que gano la anterior ronda es la nueva mano
+		ronda++;
+		rondaActual.initRonda();
+
+	}
+
+	/**
+	 * Evento de fin de partida
+	 * @param ganadorPartida el ganador de la partida
+	 */
+	private void onFinalizarPartida(Jugador ganadorPartida){
+		partidaEnCurso = false;
 	}
 
 	/**
@@ -89,11 +114,17 @@ public class Partida {
 
 	/**
 	 * condicion de fin de partida
-	 * @return true cuando ya no hay mas simbolos de afectos que repartir o cuando
+	 * @return true cuando algun jugador llego a la cantidad de simbolos de afecto seteados o cuando
 	 *         solo queda 1 jugador en la partida
 	 */
 	public boolean partidaTerminada() {
-		return (cantSimbolosAfecto == 0 || jugadores.size() < 2);
+		if(jugadores.size() < 2)
+			return true;
+		for(Jugador jugador : this.jugadores){
+			if (jugador.cantSimbolosAfecto == this.cantSimbolosAfecto)
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -101,7 +132,7 @@ public class Partida {
 	 * se pueden modificar.
 	 */
 	public void setCantSimbolosAfecto(int cantSimbolosAfecto) {
-		if (partidaEnCurso || cantSimbolosAfecto < 15 || cantSimbolosAfecto > 100) // TODO: rango decente
+		if (partidaEnCurso || cantSimbolosAfecto < 2 || cantSimbolosAfecto > 7)
 			return;
 		this.cantSimbolosAfecto = cantSimbolosAfecto;
 	}

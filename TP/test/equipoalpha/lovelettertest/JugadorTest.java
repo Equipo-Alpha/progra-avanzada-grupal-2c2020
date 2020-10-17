@@ -43,7 +43,7 @@ public class JugadorTest {
         Assert.assertFalse(partida.partidaEnCurso); // faltan setear condiciones
 
         partida.setJugadorMano(jugador);
-        partida.setCantSimbolosAfecto(20);
+        partida.setCantSimbolosAfecto(5);
 
         jugador.iniciarPartida();
         //la partida puede iniciar ambos se encuentran confirmando que estan listos
@@ -55,7 +55,7 @@ public class JugadorTest {
     public void confirmarInicio() {
         jugador2.unirseAPartida(partida);
         partida.setJugadorMano(jugador);
-        partida.setCantSimbolosAfecto(20);
+        partida.setCantSimbolosAfecto(5);
 
         jugador.iniciarPartida();
 
@@ -73,7 +73,7 @@ public class JugadorTest {
     public void cancelarInicio(){
         jugador2.unirseAPartida(partida);
         partida.setJugadorMano(jugador);
-        partida.setCantSimbolosAfecto(20);
+        partida.setCantSimbolosAfecto(5);
 
         jugador.iniciarPartida();
         //Los jugadores se encuentran confirmando el inicio

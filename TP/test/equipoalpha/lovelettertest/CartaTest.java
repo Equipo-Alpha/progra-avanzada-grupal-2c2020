@@ -9,28 +9,27 @@ import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.partida.Jugador;
 import equipoalpha.loveletter.partida.Partida;
-import equipoalpha.loveletter.partida.Ronda;
 
 public class CartaTest {
 	
 	private Jugador jugador1;
 	private Jugador jugador2;
-	private Ronda rondaTest;
+	private Jugador jugador3;
+	private Partida partida;
 
 	@Before
 	public void setUp() throws Exception {
 		jugador1 = new Jugador("TesterDeJava");
 		jugador2 = new Jugador("TesterDeJS");
+		jugador3 = new Jugador("TesterDeC");
 		
-		Partida partida = jugador1.crearPartida();
+		this.partida = jugador1.crearPartida();
 		partida.agregarJugador(jugador2);
+		partida.agregarJugador(jugador3);
 		
-		partida.setCantSimbolosAfecto(20);
+		partida.setCantSimbolosAfecto(5);
 		partida.setJugadorMano(jugador1);
 		partida.initPartida();
-		
-		this.rondaTest = new Ronda(partida);
-		rondaTest.initRonda();
 		
 	}
 
@@ -45,7 +44,7 @@ public class CartaTest {
 		
 		jugador1.elegirCarta(CartaTipo.SACERDOTE); // A esto le pondria "Adivinar carta y le pasaria el jugador 2 y la carta, de manera que retorne true o false para poder descalificarlo
 
-		Assert.assertFalse(rondaTest.jugadoresEnLaRonda.contains(jugador2));
+		Assert.assertFalse(partida.rondaActual.jugadoresEnLaRonda.contains(jugador2));
 		Assert.assertNull(jugador2.rondaJugando);
 	}
 	
@@ -60,7 +59,7 @@ public class CartaTest {
 		
 		jugador1.elegirCarta(CartaTipo.MUCAMA); // A esto le pondr�a "Adivinar carta y le pasar�a el jugador 2 y la carta, de manera que retorne true o false para poder descalificarlo
 
-		Assert.assertTrue(rondaTest.jugadoresEnLaRonda.contains(jugador2));
+		Assert.assertTrue(partida.rondaActual.jugadoresEnLaRonda.contains(jugador2));
 		Assert.assertNotNull(jugador2.rondaJugando);
 	}
 	
@@ -79,7 +78,7 @@ public class CartaTest {
 		jugador1.descartarCarta2();
 		jugador1.elegirJugador(jugador2);
 
-		Assert.assertFalse(rondaTest.jugadoresEnLaRonda.contains(jugador2));
+		Assert.assertFalse(partida.rondaActual.jugadoresEnLaRonda.contains(jugador2));
 		Assert.assertNull(jugador2.rondaJugando);
 	}
 	
@@ -142,7 +141,7 @@ public class CartaTest {
 		jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCESA));
 		jugador1.descartarCarta2();
 
-		Assert.assertFalse(rondaTest.jugadoresEnLaRonda.contains(jugador1));
+		Assert.assertFalse(partida.rondaActual.jugadoresEnLaRonda.contains(jugador1));
 		Assert.assertNull(jugador1.rondaJugando);
 	}
 
