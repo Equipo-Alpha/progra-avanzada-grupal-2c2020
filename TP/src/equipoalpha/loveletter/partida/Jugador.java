@@ -28,7 +28,7 @@ public class Jugador {
 	 */
 	public Ronda rondaJugando;
 
-	private final JugadorFacade estado;
+	private final JugadorFacade facade;
 
 	/**
 	 * Determina si el jugador esta o no protegido por haber descartado una mucama
@@ -42,7 +42,7 @@ public class Jugador {
 
 	public Jugador(String nombre) {
 		this.nombre = nombre;
-		this.estado = new JugadorFacade(this);
+		this.facade = new JugadorFacade(this);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class Jugador {
 	public Partida crearPartida() {
 		if(partidaJugando != null) return null;
 
-		estado.setEstadoActual(EstadosJugador.CREANDOPARTIDA);
+		facade.setEstadoActual(EstadosJugador.CREANDOPARTIDA);
 
 		return new Partida(this);
 	}
@@ -59,13 +59,13 @@ public class Jugador {
 	public boolean unirseAPartida(Partida partida){
 		if(partidaJugando != null) return false;
 
-		estado.setEstadoActual(EstadosJugador.ESPERANDO);
+		facade.setEstadoActual(EstadosJugador.ESPERANDO);
 
 		return partida.agregarJugador(this);
 	}
 
 	public void iniciarPartida(){
-		if(estado.getEstadoActual() != EstadosJugador.CREANDOPARTIDA){
+		if(facade.getEstadoActual() != EstadosJugador.CREANDOPARTIDA){
 			return;
 		}
 		//TODO estos checks pueden volar cuando tengamos algun boton
@@ -77,68 +77,58 @@ public class Jugador {
 	}
 
 	public void confirmarInicio(){
-		if(this.estado.getEstadoActual() == EstadosJugador.CONFIRMANDOINICIO){
+		if(this.facade.getEstadoActual() == EstadosJugador.CONFIRMANDOINICIO){
 			partidaJugando.eventos.removerObservador(EventosPartida.PEDIRCONFIRMACION, this);
 		}
 	}
 
 	public void cancelarInicio(){
-		if(this.estado.getEstadoActual() == EstadosJugador.CONFIRMANDOINICIO){
+		if(this.facade.getEstadoActual() == EstadosJugador.CONFIRMANDOINICIO){
 			partidaJugando.eventos.cancelarEvento(EventosPartida.PEDIRCONFIRMACION);
 		}
 	}
 
 	public void onComienzoTurno(Carta cartaRobada) {
 		this.estaProtegido = false;
-		carta2 = cartaRobada;
-
-		if (carta2.getTipo() == CartaTipo.CONDESA
-				&& (carta1.getTipo() == CartaTipo.REY || carta1.getTipo() == CartaTipo.PRINCIPE)) {
-			this.estado.setEstadoActual(EstadosJugador.DESCARTANDOCONDESA);
-		}
-		else
-			this.estado.setEstadoActual(EstadosJugador.DESCARTANDO);
+		robarCarta(cartaRobada);
 	}
 
 	public boolean descartarCarta1() {
-		if(this.estado.getEstadoActual() == EstadosJugador.DESCARTANDO) {
+		if(this.facade.getEstadoActual() == EstadosJugador.DESCARTANDO ||
+				(this.facade.getEstadoActual() == EstadosJugador.DESCARTANDOCONDESA
+						&& carta1.getTipo() == CartaTipo.CONDESA)) {
 			Carta cartaJugada = carta1;
 			carta1 = carta2;
 			carta2 = null;
-			this.estado.cartaDescartada(cartaJugada);
+			this.facade.cartaDescartada(cartaJugada);
 			return true;
 		}
 		return false;
 	}
 
 	public boolean descartarCarta2() {
-		if(this.estado.getEstadoActual() == EstadosJugador.DESCARTANDO) {
+		if(this.facade.getEstadoActual() == EstadosJugador.DESCARTANDO ||
+				(this.facade.getEstadoActual() == EstadosJugador.DESCARTANDOCONDESA
+						&& carta2.getTipo() == CartaTipo.CONDESA)) {
 			Carta cartaJugada = carta2;
 			carta2 = null;
-			this.estado.cartaDescartada(cartaJugada);
-			return true;
-		}
-		if(this.estado.getEstadoActual() == EstadosJugador.DESCARTANDOCONDESA){
-			Carta cartaJugada = carta2;
-			carta2 = null;
-			cartaJugada.descartar(this);
+			this.facade.cartaDescartada(cartaJugada);
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * Roba una carta del mazo al principio del turno
+	 * Roba una carta del mazo al principio del turno o cuando es afectado por el principe
 	 */
 	public void robarCarta(Carta cartaRobada) {
 		carta2 = cartaRobada;
 		
-		if (carta2.getTipo() == CartaTipo.CONDESA
-				&& (carta1.getTipo() == CartaTipo.REY || carta1.getTipo() == CartaTipo.PRINCIPE)) {
-			this.estado.setEstadoActual(EstadosJugador.DESCARTANDOCONDESA);
+		if (tieneCarta(CartaTipo.CONDESA) && (tieneCarta(CartaTipo.REY) || tieneCarta(CartaTipo.PRINCIPE))) {
+			this.facade.setEstadoActual(EstadosJugador.DESCARTANDOCONDESA);
 		}
 		else
-			this.estado.setEstadoActual(EstadosJugador.DESCARTANDO);
+			this.facade.setEstadoActual(EstadosJugador.DESCARTANDO);
 	}
 
 	/**
@@ -146,20 +136,24 @@ public class Jugador {
 	 * @param jugador jugador elegido para el evento
 	 */
 	public void elegirJugador(Jugador jugador){
-		if(this.estado.getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR) {
+		if(this.facade.getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR) {
 			if(!jugador.estaProtegido) {
-				this.estado.jugadorElegido(jugador);
+				this.facade.jugadorElegido(jugador);
 			}
 		}
 	}
 
+	/**
+	 * LLamado por el jugador cuando al descartar un guardia quiere adivinar la carta del adversario
+	 * @param cartaAdivinada la carta que adivina/elige
+	 */
 	public void elegirCarta(CartaTipo cartaAdivinada){
-		if(this.estado.getEstadoActual() == EstadosJugador.ADIVINANDOCARTA) {
-			this.estado.cartaAdivinada(cartaAdivinada);
+		if(this.facade.getEstadoActual() == EstadosJugador.ADIVINANDOCARTA) {
+			this.facade.cartaAdivinada(cartaAdivinada);
 		}
 	}
 	/**
-	 * Llamado por varias cartas al ser descartadas.
+	 * LLamado por varias cartas al ser descartadas.
 	 * Ve la carta que el jugador pasado por parametro tiene.
 	 * @param jugador jugador al cual this le ve las cartas
 	 */
@@ -168,10 +162,11 @@ public class Jugador {
 	}
 
 	/**
-	 * Generalmente llamado por otro jugador cuando descarta al guardia
+	 * Generalmente llamado cuando se descarta al guardia
+	 * @param tipo CartaTipo que se busca comprobar que se tenga
+	 * @return true cuando tiene ese tipo de carta
 	 */
 	public boolean tieneCarta(CartaTipo tipo) {
-		//tecnicamente tiene carta2 solo en tests
 		if(carta2 != null){
 			return (carta1.getTipo() == tipo || carta2.getTipo() == tipo);
 		} else return carta1.getTipo() == tipo;
@@ -183,7 +178,7 @@ public class Jugador {
 	}
 
 	public JugadorFacade getEstado() {
-		return estado;
+		return facade;
 	}
 
 	private void abandonarPartida() {
