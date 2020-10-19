@@ -80,14 +80,15 @@ public class Partida {
 	 * @param ganadorRonda jugador que gano la ronda anterior
 	 */
 	public void onNuevaRonda(Jugador ganadorRonda){
+		this.jugadorMano = ganadorRonda; // el que gano la anterior ronda es la nueva mano
+
 		if(partidaTerminada()){
 			onFinalizarPartida(ganadorRonda);
 			return;
 		}
 
-		this.jugadorMano = ganadorRonda; // el que gano la anterior ronda es la nueva mano
 		ronda++;
-		rondaActual.initRonda();
+		rondaActual.initRonda(); //empieza una nueva ronda
 
 	}
 

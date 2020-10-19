@@ -1,5 +1,7 @@
 package equipoalpha.lovelettertest;
 
+import equipoalpha.loveletter.carta.Carta;
+import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.partida.Jugador;
 import equipoalpha.loveletter.partida.Partida;
 import org.junit.Assert;
@@ -50,6 +52,23 @@ public class PartidaTest {
         partida.setCantSimbolosAfecto(5);
         partida.agregarJugador(jugador2);
         Assert.assertFalse(partida.partidaTerminada());
+    }
+
+    @Test
+    public void onFinalizarPartida(){
+        partida.agregarJugador(jugador2);
+        partida.setCantSimbolosAfecto(5);
+        partida.setJugadorMano(jugador1);
+
+        partida.initPartida();
+
+        jugador2.cantSimbolosAfecto = 4;
+        jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCESA));
+        jugador1.descartarCarta2();
+
+        Assert.assertFalse(partida.partidaEnCurso); // la partida termino
+        Assert.assertEquals(jugador2, partida.getJugadorMano()); // gano el jugador2
+
     }
 
     @Test

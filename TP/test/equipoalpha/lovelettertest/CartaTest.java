@@ -94,7 +94,7 @@ public class CartaTest {
 	public void testPrincipe() {
 		jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCIPE));
 		jugador1.descartarCarta2();
-		
+		jugador2.carta1 = new Carta(CartaTipo.GUARDIA); // para que no quede descartando condesa
 		jugador1.elegirJugador(jugador2);
 		
 		Assert.assertEquals(EstadosJugador.DESCARTANDO, jugador2.getEstado().getEstadoActual());

@@ -26,11 +26,13 @@ public class Ronda {
 	 */
 	public ArrayList<Jugador> jugadoresEnLaRonda;
 
+	public Jugador jugadorEnTurno;
+
 	/**
 	 * Mapa de la cantidad de cartas que descarto cada jugador durante la ronda. Es
 	 * importante en caso de desempate al finalizar la ronda.
 	 */
-	protected Map<Jugador, Integer> mapaCartasEliminadas;
+	public Map<Jugador, Integer> mapaCartasEliminadas;
 
 	/**
 	 * Carta que se elimina al principio de la ronda
@@ -50,9 +52,7 @@ public class Ronda {
 
 		// ---------Repartir Cartas--------------\\
 		cartaEliminada = mazo.remove();
-		ListIterator<Jugador> iterador = partida.jugadores.listIterator(partida.jugadores.indexOf(partida.jugadorMano));
-		while (iterador.hasNext()) {
-			Jugador jugadorIterando = iterador.next();
+		for (Jugador jugadorIterando : partida.jugadores) {
 			jugadorIterando.carta1 = mazo.remove();
 			jugadorIterando.rondaJugando = this;
 			jugadoresEnLaRonda.add(jugadorIterando);
@@ -61,6 +61,8 @@ public class Ronda {
 			jugadorIterando.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
 		}
 
+		jugadorEnTurno = partida.jugadorMano;
+		jugadorEnTurno.onComienzoTurno(darCarta());
 	}
 	
 	private void initMazo() {
@@ -152,7 +154,23 @@ public class Ronda {
 		
 		if(rondaTerminada()) {
 			onRondaTerminada();
+			return;
 		}
+
+		ListIterator<Jugador> iterador = partida.jugadores.listIterator();
+		Jugador jugadorIterando = iterador.next();
+		while (jugadorIterando != jugadorEnTurno) {
+			jugadorIterando = iterador.next();
+		}
+		do{
+			if(!iterador.hasNext()){
+					iterador = partida.jugadores.listIterator();
+				}
+			jugadorEnTurno = iterador.next();
+		} while(!jugadoresEnLaRonda.contains(jugadorEnTurno));
+
+		jugadorEnTurno.onComienzoTurno(darCarta());
+
 	}
 
 	/**
