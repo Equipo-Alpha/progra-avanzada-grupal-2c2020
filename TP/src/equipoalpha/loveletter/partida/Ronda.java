@@ -122,7 +122,12 @@ public class Ronda {
 	}
 
 	public Carta darCarta(){
+		if(mazo.isEmpty()) return null;
 		return mazo.remove();
+	}
+
+	public Carta darCartaEliminada(){
+		return cartaEliminada;
 	}
 
 	public void eliminarJugador(Jugador jugador){
@@ -151,7 +156,16 @@ public class Ronda {
 		}
 		jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
 		jugador.getEstado().resetElecciones();
-		
+
+		//si el jugador descarto el principe sale de este evento para que
+		//el jugador elegido pueda descartar su carta
+		for(Jugador j : jugadoresEnLaRonda){
+			if(j.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDO ||
+			j.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDOCONDESA){
+				return;
+			}
+		}
+
 		if(rondaTerminada()) {
 			onRondaTerminada();
 			return;
@@ -163,14 +177,30 @@ public class Ronda {
 			jugadorIterando = iterador.next();
 		}
 		do{
-			if(!iterador.hasNext()){
-					iterador = partida.jugadores.listIterator();
-				}
+			if(!iterador.hasNext()) {
+				iterador = partida.jugadores.listIterator();
+			}
 			jugadorEnTurno = iterador.next();
 		} while(!jugadoresEnLaRonda.contains(jugadorEnTurno));
 
 		jugadorEnTurno.onComienzoTurno(darCarta());
 
+	}
+
+	/**
+	 * LLamado al descartar una carta que requiera elegir a otro jugador.
+	 * @param jugador jugador que descarto la carta
+	 * @param carta la carta que descarto el jugador
+	 * @return false si no hay jugador disponible para elegir
+	 */
+	public boolean puedeElegir(Jugador jugador, CartaTipo carta){
+		ArrayList<Jugador> jugadores = new ArrayList<>(jugadoresEnLaRonda);
+		if(carta != CartaTipo.PRINCIPE) jugadores.remove(jugador);
+		int cant = 0;
+		for(Jugador j : jugadoresEnLaRonda){
+			if(j.estaProtegido) cant++;
+		}
+		return jugadores.size() != cant;
 	}
 
 	/**
@@ -180,5 +210,10 @@ public class Ronda {
 	 */
 	public boolean rondaTerminada() {
 		return (mazo.isEmpty() || jugadoresEnLaRonda.size() == 1);
+	}
+
+	//@TestOnly
+	public void vaciarMazo() {
+		mazo.clear();
 	}
 }

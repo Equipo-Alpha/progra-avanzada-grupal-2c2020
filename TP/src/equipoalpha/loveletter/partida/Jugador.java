@@ -149,7 +149,9 @@ public class Jugador {
 	 */
 	public void elegirCarta(CartaTipo cartaAdivinada){
 		if(this.facade.getEstadoActual() == EstadosJugador.ADIVINANDOCARTA) {
-			this.facade.cartaAdivinada(cartaAdivinada);
+			if(cartaAdivinada != CartaTipo.GUARDIA) {
+				this.facade.cartaAdivinada(cartaAdivinada);
+			}
 		}
 	}
 	/**

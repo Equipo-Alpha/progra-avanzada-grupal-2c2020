@@ -64,6 +64,7 @@ public class RondaTest {
 
     @Test
     public void rondaTerminadaUnJugador() {
+        jugador3.getEstado().setEstadoActual(EstadosJugador.ESPERANDO); // porque es mano
         jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCESA));
         jugador1.descartarCarta2();
         jugador2.onComienzoTurno(new Carta(CartaTipo.PRINCESA));
@@ -75,10 +76,8 @@ public class RondaTest {
 
     @Test
     public void rondaTerminadaMazoVacioValorMasAlto(){
-        try {
-            while (partida.rondaActual.darCarta() != null){} //se vacia el mazo
-        } catch (Exception ignored){}
-
+        partida.rondaActual.vaciarMazo();
+        jugador3.getEstado().setEstadoActual(EstadosJugador.ESPERANDO); // porque es mano
         jugador1.carta1 = new Carta(CartaTipo.BARON);
         jugador3.carta1 = new Carta(CartaTipo.GUARDIA);
         jugador2.carta1 = new Carta(CartaTipo.PRINCESA);
@@ -91,10 +90,8 @@ public class RondaTest {
 
     @Test
     public void rondaTerminadaMazoVacioCartasDescartadas(){
-        try {
-            while (partida.rondaActual.darCarta() != null){} //se vacia el mazo
-        } catch (Exception ignored){}
-
+        partida.rondaActual.vaciarMazo();
+        jugador3.getEstado().setEstadoActual(EstadosJugador.ESPERANDO); // porque es mano
         jugador1.carta1 = new Carta(CartaTipo.BARON);
         jugador1.carta2 = null;
         jugador3.carta1 = new Carta(CartaTipo.BARON);

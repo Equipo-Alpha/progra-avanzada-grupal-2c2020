@@ -98,6 +98,22 @@ public class CartaTest {
 		jugador1.elegirJugador(jugador2);
 		
 		Assert.assertEquals(EstadosJugador.DESCARTANDO, jugador2.getEstado().getEstadoActual());
+		Assert.assertEquals(EstadosJugador.ESPERANDO, jugador1.getEstado().getEstadoActual());
+		Assert.assertEquals(EstadosJugador.ESPERANDO, jugador3.getEstado().getEstadoActual());
+	}
+
+	@Test
+	public void testPrincipeCartaEliminada(){
+		partida.rondaActual.vaciarMazo();
+		jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCIPE));
+		jugador1.descartarCarta2();
+		jugador2.carta1 = new Carta(CartaTipo.GUARDIA); // para que no quede descartando condesa
+		jugador1.elegirJugador(jugador2);
+
+		Assert.assertEquals(EstadosJugador.DESCARTANDO, jugador2.getEstado().getEstadoActual());
+		Assert.assertEquals(jugador2.carta2, partida.rondaActual.darCartaEliminada());
+		Assert.assertEquals(EstadosJugador.ESPERANDO, jugador1.getEstado().getEstadoActual());
+		Assert.assertEquals(EstadosJugador.ESPERANDO, jugador3.getEstado().getEstadoActual());
 	}
 	
 	@Test
@@ -143,6 +159,16 @@ public class CartaTest {
 
 		Assert.assertFalse(partida.rondaActual.jugadoresEnLaRonda.contains(jugador1));
 		Assert.assertNull(jugador1.rondaJugando);
+	}
+
+	@Test
+	public void testElegirJugadorNingunoDisponible(){
+		jugador2.estaProtegido = true;
+		jugador3.estaProtegido = true;
+		jugador1.onComienzoTurno(new Carta(CartaTipo.GUARDIA));
+		jugador1.descartarCarta2();
+
+		Assert.assertEquals(EstadosJugador.ESPERANDO, jugador1.getEstado().getEstadoActual());
 	}
 
 }

@@ -4,7 +4,6 @@ import equipoalpha.loveletter.partida.EstadosJugador;
 import equipoalpha.loveletter.partida.Jugador;
 import equipoalpha.loveletter.partida.Ronda;
 
-@SuppressWarnings("incomplete-switch")
 public class Carta implements Comparable<Carta> {
 	private final CartaTipo tipo;
 
@@ -25,9 +24,13 @@ public class Carta implements Comparable<Carta> {
 			case CONDESA:
 				break;
 			case PRINCESA:
-				jugador.rondaJugando.eliminarJugador(jugador);
+				ronda.eliminarJugador(jugador);
 				break;
-			default: jugador.getEstado().setEstadoActual(EstadosJugador.ELIGIENDOJUGADOR); return;
+			default:
+				if(ronda.puedeElegir(jugador, this.tipo)) {
+					jugador.getEstado().setEstadoActual(EstadosJugador.ELIGIENDOJUGADOR);
+					return;
+				}
 		}
 
 		ronda.onFinalizarDescarte(jugador);
@@ -37,24 +40,26 @@ public class Carta implements Comparable<Carta> {
 		Ronda ronda = jugadorQueDescarto.partidaJugando.rondaActual;
 
 		switch (tipo){
-			case GUARDIA:
-				jugadorQueDescarto.getEstado().setEstadoActual(EstadosJugador.ADIVINANDOCARTA); return;
 			case SACERDOTE:
 				jugadorQueDescarto.verCarta(jugadorElegido);
 				break;
 			case BARON:
 				jugadorElegido.verCarta(jugadorQueDescarto);
 				jugadorQueDescarto.verCarta(jugadorElegido);
-				jugadorQueDescarto.rondaJugando.determinarCartaMayor(jugadorQueDescarto, jugadorElegido);
+				ronda.determinarCartaMayor(jugadorQueDescarto, jugadorElegido);
 				break;
 			case PRINCIPE:
-				jugadorElegido.robarCarta(jugadorElegido.rondaJugando.darCarta());
+				Carta cartaADar = ronda.darCarta();
+				if(cartaADar == null) cartaADar = ronda.darCartaEliminada();
+				jugadorElegido.robarCarta(cartaADar);
 				break;
 			case REY:
 				Carta carta = jugadorQueDescarto.carta1;
 				jugadorQueDescarto.carta1 = jugadorElegido.carta1;
 				jugadorElegido.carta1 = carta;
 				break;
+			default:
+				jugadorQueDescarto.getEstado().setEstadoActual(EstadosJugador.ADIVINANDOCARTA); return;
 		}
 		ronda.onFinalizarDescarte(jugadorQueDescarto);
 
