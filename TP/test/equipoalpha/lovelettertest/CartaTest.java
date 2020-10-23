@@ -97,6 +97,7 @@ public class CartaTest {
 
 	@Test
 	public void testPrincipe() throws JugadorNoValido {
+		jugador1.carta1 = new Carta(CartaTipo.GUARDIA); // para que no quede descartando condesa
 		jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCIPE));
 		jugador1.descartarCarta2();
 		jugador2.carta1 = new Carta(CartaTipo.GUARDIA); // para que no quede descartando condesa
@@ -109,12 +110,12 @@ public class CartaTest {
 
 	@Test
 	public void testPrincipeCartaEliminada() throws JugadorNoValido {
+		jugador1.carta1 = new Carta(CartaTipo.GUARDIA); // para que no quede descartando condesa
 		partida.rondaActual.vaciarMazo();
 		jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCIPE));
 		jugador1.descartarCarta2();
 		jugador2.carta1 = new Carta(CartaTipo.GUARDIA); // para que no quede descartando condesa
 		jugador1.elegirJugador(jugador2);
-		System.out.println(jugador2.getEstado().getEstadoActual()); // averiguar porque a veces el estado de jugador2 es Esperando
 		Assert.assertEquals(EstadosJugador.DESCARTANDO, jugador2.getEstado().getEstadoActual());
 		Assert.assertEquals(jugador2.carta2, partida.rondaActual.darCartaEliminada());
 		Assert.assertEquals(EstadosJugador.ESPERANDO, jugador1.getEstado().getEstadoActual());
@@ -179,6 +180,13 @@ public class CartaTest {
 	@Test(expected = JugadorNoValido.class)
 	public void testElegirseASiMismo() throws JugadorException {
 		jugador1.onComienzoTurno(new Carta(CartaTipo.GUARDIA));
+		jugador1.descartarCarta2();
+		jugador1.elegirJugador(jugador1);
+	}
+
+	@Test
+	public void testElegirseASiMismoPrincipe() throws JugadorException {
+		jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCIPE));
 		jugador1.descartarCarta2();
 		jugador1.elegirJugador(jugador1);
 	}

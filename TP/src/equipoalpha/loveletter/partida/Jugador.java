@@ -140,7 +140,7 @@ public class Jugador {
 	 * @throws JugadorNoValido
 	 */
 	public void elegirJugador(Jugador jugador) throws JugadorNoValido {
-		if (this.nombre == jugador.nombre)
+		if (this.facade.getCartaDescartada().getTipo() != CartaTipo.PRINCIPE && jugador.equals(this))
 			throw new JugadorNoValido();
 
 		if (jugador.estaProtegido)
