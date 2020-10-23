@@ -140,14 +140,14 @@ public class Jugador {
 	 * @throws JugadorNoValido
 	 */
 	public void elegirJugador(Jugador jugador) throws JugadorNoValido {
-		if (this.nombre == jugador.nombre) {
+		if (this.nombre == jugador.nombre)
 			throw new JugadorNoValido();
-		}
-		if (this.facade.getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR) {
-			if (!jugador.estaProtegido) {
-				this.facade.jugadorElegido(jugador);
-			}
-		}
+
+		if (jugador.estaProtegido)
+			throw new JugadorNoValido();
+
+		if (this.facade.getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR)
+			this.facade.jugadorElegido(jugador);
 	}
 
 	/**

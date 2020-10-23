@@ -114,7 +114,7 @@ public class CartaTest {
 		jugador1.descartarCarta2();
 		jugador2.carta1 = new Carta(CartaTipo.GUARDIA); // para que no quede descartando condesa
 		jugador1.elegirJugador(jugador2);
-		System.out.println(jugador2.getEstado().getEstadoActual());
+		System.out.println(jugador2.getEstado().getEstadoActual()); // averiguar porque a veces el estado de jugador2 es Esperando
 		Assert.assertEquals(EstadosJugador.DESCARTANDO, jugador2.getEstado().getEstadoActual());
 		Assert.assertEquals(jugador2.carta2, partida.rondaActual.darCartaEliminada());
 		Assert.assertEquals(EstadosJugador.ESPERANDO, jugador1.getEstado().getEstadoActual());
@@ -181,11 +181,13 @@ public class CartaTest {
 		jugador1.onComienzoTurno(new Carta(CartaTipo.GUARDIA));
 		jugador1.descartarCarta2();
 		jugador1.elegirJugador(jugador1);
+	}
 
-		// A esto le pondria "Adivinar carta y le pasaria el jugador 2 y la carta, de
-		// manera que retorne true o false para poder descalificarlo
-
-		//Assert.assertFalse(partida.rondaActual.jugadoresEnLaRonda.contains(jugador2));
-		//Assert.assertNull(jugador2.rondaJugando);
+	@Test(expected = JugadorNoValido.class)
+	public void testElegirJugadorProtegido() throws JugadorException {
+		jugador1.onComienzoTurno(new Carta(CartaTipo.GUARDIA));
+		jugador1.descartarCarta2();
+		jugador2.estaProtegido = true;
+		jugador1.elegirJugador(jugador2);
 	}
 }
