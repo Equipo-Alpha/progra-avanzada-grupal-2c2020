@@ -2,13 +2,11 @@ package equipoalpha.lovelettertest;
 
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
-import equipoalpha.loveletter.partida.Jugador;
+import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Partida;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class PartidaTest {
 
@@ -55,7 +53,7 @@ public class PartidaTest {
     }
 
     @Test
-    public void onFinalizarPartida(){
+    public void onFinalizarPartida() {
         partida.agregarJugador(jugador2);
         partida.setCantSimbolosAfecto(5);
         partida.setJugadorMano(jugador1);

@@ -2,8 +2,8 @@ package equipoalpha.lovelettertest;
 
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
-import equipoalpha.loveletter.partida.EstadosJugador;
-import equipoalpha.loveletter.partida.Jugador;
+import equipoalpha.loveletter.jugador.EstadosJugador;
+import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Partida;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,7 +16,7 @@ public class RondaTest {
     private Partida partida;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         jugador1 = new Jugador("TesterDeJava");
         jugador2 = new Jugador("TesterDeJS");
         jugador3 = new Jugador("TesterDeC");
@@ -29,12 +29,12 @@ public class RondaTest {
     }
 
     @Test
-    public void initRonda(){ //al iniciar partida la ronda tambien inicia
+    public void initRonda() { //al iniciar partida la ronda tambien inicia
         Assert.assertNotNull(partida.rondaActual);
     }
 
     @Test
-    public void testTurnos(){
+    public void testTurnos() {
         jugador1.carta1 = new Carta(CartaTipo.GUARDIA);
         jugador2.carta1 = new Carta(CartaTipo.GUARDIA);
         Assert.assertEquals(EstadosJugador.ESPERANDO, jugador1.getEstado().getEstadoActual());
@@ -75,7 +75,7 @@ public class RondaTest {
     }
 
     @Test
-    public void rondaTerminadaMazoVacioValorMasAlto(){
+    public void rondaTerminadaMazoVacioValorMasAlto() {
         partida.rondaActual.vaciarMazo();
         jugador3.getEstado().setEstadoActual(EstadosJugador.ESPERANDO); // porque es mano
         jugador1.carta1 = new Carta(CartaTipo.BARON);
@@ -89,7 +89,7 @@ public class RondaTest {
     }
 
     @Test
-    public void rondaTerminadaMazoVacioCartasDescartadas(){
+    public void rondaTerminadaMazoVacioCartasDescartadas() {
         partida.rondaActual.vaciarMazo();
         jugador3.getEstado().setEstadoActual(EstadosJugador.ESPERANDO); // porque es mano
         jugador1.carta1 = new Carta(CartaTipo.BARON);

@@ -1,7 +1,7 @@
 package equipoalpha.lovelettertest;
 
-import equipoalpha.loveletter.partida.EstadosJugador;
-import equipoalpha.loveletter.partida.Jugador;
+import equipoalpha.loveletter.jugador.EstadosJugador;
+import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Partida;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,7 +14,7 @@ public class JugadorTest {
     private Partida partida;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         this.jugador = new Jugador("TesterDeJava");
         this.jugador2 = new Jugador("dummy");
 
@@ -70,7 +70,7 @@ public class JugadorTest {
     }
 
     @Test
-    public void cancelarInicio(){
+    public void cancelarInicio() {
         jugador2.unirseAPartida(partida);
         partida.setJugadorMano(jugador);
         partida.setCantSimbolosAfecto(5);
