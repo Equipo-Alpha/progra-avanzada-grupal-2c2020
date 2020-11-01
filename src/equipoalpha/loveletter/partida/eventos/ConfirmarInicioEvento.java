@@ -3,16 +3,17 @@ package equipoalpha.loveletter.partida.eventos;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Partida;
+import equipoalpha.loveletter.partida.Sala;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConfirmarInicioEvento implements EventoObservado {
-    private final Partida partida;
+    private final Sala sala;
     private List<Jugador> observadores;
 
-    public ConfirmarInicioEvento(Partida partida) {
-        this.partida = partida;
+    public ConfirmarInicioEvento(Sala sala) {
+        this.sala = sala;
     }
 
     @Override
@@ -28,7 +29,7 @@ public class ConfirmarInicioEvento implements EventoObservado {
         observadores.remove(jugador);
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
         if (observadores.isEmpty())
-            partida.initPartida();
+            sala.empezarPartida();
     }
 
     @Override

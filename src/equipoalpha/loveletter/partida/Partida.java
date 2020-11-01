@@ -2,16 +2,10 @@ package equipoalpha.loveletter.partida;
 
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
-import equipoalpha.loveletter.partida.eventos.ConfirmarInicioEvento;
-import equipoalpha.loveletter.partida.eventos.EventoObservado;
-import equipoalpha.loveletter.partida.eventos.EventosPartida;
-import equipoalpha.loveletter.partida.eventos.EventosPartidaManager;
 
 import java.util.ArrayList;
 
 public class Partida {
-
-    public final EventosPartidaManager eventos;
     /**
      * El jugador que creo la partida
      */
@@ -46,14 +40,14 @@ public class Partida {
      */
     private int cantSimbolosAfecto = 0;
 
-    public Partida(Jugador creador) {
-        this.creador = creador;
-        creador.partidaJugando = this;
-        this.jugadores = new ArrayList<>();
-        jugadores.add(creador);
-        this.eventos = new EventosPartidaManager();
-        EventoObservado confirmarInicio = new ConfirmarInicioEvento(this);
-        eventos.registrar(EventosPartida.PEDIRCONFIRMACION, confirmarInicio);
+    public Partida(Jugador jugador, ArrayList<Jugador> jugadores, Jugador jugadorMano, int cantSimbolosAfecto) {
+        this.creador = jugador;
+        this.jugadores = jugadores;
+        this.jugadorMano = jugadorMano;
+        this.cantSimbolosAfecto = cantSimbolosAfecto;
+        for (Jugador j : this.jugadores) {
+            j.partidaJugando = this;
+        }
     }
 
     public void initPartida() {
@@ -85,7 +79,6 @@ public class Partida {
 
         ronda++;
         rondaActual.initRonda(); //empieza una nueva ronda
-
     }
 
     /**
@@ -95,20 +88,6 @@ public class Partida {
      */
     private void onFinalizarPartida(Jugador ganadorPartida) {
         partidaEnCurso = false;
-    }
-
-    /**
-     * Agrega jugadores a la partida.
-     *
-     * @return false cuando ya hay 4 jugadores en la partida
-     */
-    public boolean agregarJugador(Jugador jugadorAAgregar) {
-        if (jugadores.size() < 4 && !jugadores.contains(jugadorAAgregar)) {
-            jugadores.add(jugadorAAgregar);
-            jugadorAAgregar.partidaJugando = this;
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -131,23 +110,7 @@ public class Partida {
         return cantSimbolosAfecto;
     }
 
-    /**
-     * Setters para la configuracion de la partida. Si la partida esta en curso no
-     * se pueden modificar.
-     */
-    public void setCantSimbolosAfecto(int cantSimbolosAfecto) {
-        if (partidaEnCurso || cantSimbolosAfecto < 2 || cantSimbolosAfecto > 7)
-            return;
-        this.cantSimbolosAfecto = cantSimbolosAfecto;
-    }
-
     public Jugador getJugadorMano() {
         return jugadorMano;
-    }
-
-    public void setJugadorMano(Jugador jugadorMano) {
-        if (partidaEnCurso || !jugadores.contains(jugadorMano))
-            return;
-        this.jugadorMano = jugadorMano;
     }
 }

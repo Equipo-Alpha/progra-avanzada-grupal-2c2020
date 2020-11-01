@@ -4,12 +4,13 @@ import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.partida.Partida;
 import equipoalpha.loveletter.partida.Ronda;
+import equipoalpha.loveletter.partida.Sala;
 import equipoalpha.loveletter.partida.eventos.EventosPartida;
 import equipoalpha.loveletter.util.excepcion.JugadorNoValido;
 
 public class Jugador {
 
-    private final JugadorFacade facade;
+    protected final JugadorFacade facade;
     /**
      * Nombre del jugador
      */
@@ -20,6 +21,10 @@ public class Jugador {
      */
     public Carta carta1;
     public Carta carta2;
+    /**
+     * La sala en la que actualmente esta
+     */
+    public Sala salaActual;
     /**
      * La partida en la que actualmente esta jugando
      */
@@ -44,47 +49,43 @@ public class Jugador {
     }
 
     /**
-     * Crea una partida
+     * Crea una sala
      */
-    public Partida crearPartida() {
-        if (partidaJugando != null)
+    public Sala crearSala(String nombre) {
+        if (salaActual != null)
             return null;
 
         facade.setEstadoActual(EstadosJugador.CREANDOPARTIDA);
 
-        return new Partida(this);
+        return new Sala(nombre, this);
     }
 
-    public boolean unirseAPartida(Partida partida) {
+    public boolean unirseASala(Sala sala) {
         if (partidaJugando != null)
             return false;
 
         facade.setEstadoActual(EstadosJugador.ESPERANDO);
 
-        return partida.agregarJugador(this);
+        return sala.agregarJugador(this);
     }
 
     public void iniciarPartida() {
-        if (facade.getEstadoActual() != EstadosJugador.CREANDOPARTIDA) {
-            return;
-        }
-        // TODO estos checks pueden volar cuando tengamos algun boton
-        if (partidaJugando.getCantSimbolosAfecto() == 0 || partidaJugando.getJugadorMano() == null) {
+        if (facade.getEstadoActual() != EstadosJugador.CREANDOPARTIDA || !salaActual.isConfigurada()) {
             return;
         }
 
-        partidaJugando.eventos.ejecutar(EventosPartida.PEDIRCONFIRMACION, partidaJugando.jugadores);
+        salaActual.eventos.ejecutar(EventosPartida.PEDIRCONFIRMACION, salaActual.jugadores);
     }
 
     public void confirmarInicio() {
         if (this.facade.getEstadoActual() == EstadosJugador.CONFIRMANDOINICIO) {
-            partidaJugando.eventos.removerObservador(EventosPartida.PEDIRCONFIRMACION, this);
+            salaActual.eventos.removerObservador(EventosPartida.PEDIRCONFIRMACION, this);
         }
     }
 
     public void cancelarInicio() {
         if (this.facade.getEstadoActual() == EstadosJugador.CONFIRMANDOINICIO) {
-            partidaJugando.eventos.cancelarEvento(EventosPartida.PEDIRCONFIRMACION);
+            salaActual.eventos.cancelarEvento(EventosPartida.PEDIRCONFIRMACION);
         }
     }
 
@@ -194,15 +195,14 @@ public class Jugador {
         return facade;
     }
 
-    private void abandonarPartida() {
-        if (partidaJugando == null)
+    private void salirSala() {
+        if (salaActual == null)
             return;
-        if (rondaJugando != null) {
+        if (partidaJugando != null) {
             this.rondaJugando.jugadoresEnLaRonda.remove(this);
             this.rondaJugando = null;
         }
-        this.partidaJugando.jugadores.remove(this);
-        this.partidaJugando = null;
+        this.salaActual.eliminarJugador(this);
     }
 
     @Override

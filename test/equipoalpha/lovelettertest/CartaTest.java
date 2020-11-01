@@ -5,6 +5,7 @@ import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Partida;
+import equipoalpha.loveletter.partida.Sala;
 import equipoalpha.loveletter.util.excepcion.JugadorException;
 import equipoalpha.loveletter.util.excepcion.JugadorNoValido;
 import org.junit.Assert;
@@ -24,14 +25,14 @@ public class CartaTest {
         jugador2 = new Jugador("TesterDeJS");
         jugador3 = new Jugador("TesterDeC");
 
-        this.partida = jugador1.crearPartida();
-        partida.agregarJugador(jugador2);
-        partida.agregarJugador(jugador3);
+        Sala sala = jugador1.crearSala("test");
+        sala.agregarJugador(jugador2);
+        sala.agregarJugador(jugador3);
 
-        partida.setCantSimbolosAfecto(5);
-        partida.setJugadorMano(jugador1);
-        partida.initPartida();
-
+        sala.setCantSimbolosAfecto(5);
+        sala.setJugadorMano(jugador1);
+        sala.empezarPartida();
+        this.partida = sala.partida;
     }
 
     @Test

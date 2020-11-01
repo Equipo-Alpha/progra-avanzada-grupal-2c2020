@@ -2,23 +2,22 @@ package equipoalpha.lovelettertest;
 
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
-import equipoalpha.loveletter.partida.Partida;
+import equipoalpha.loveletter.partida.Sala;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-
 public class JugadorTest {
     private Jugador jugador;
     private Jugador jugador2;
-    private Partida partida;
+    private Sala sala;
 
     @Before
     public void setUp() {
         this.jugador = new Jugador("TesterDeJava");
         this.jugador2 = new Jugador("dummy");
 
-        this.partida = jugador.crearPartida();
+        this.sala = jugador.crearSala("test");
     }
 
     @Test
@@ -26,36 +25,36 @@ public class JugadorTest {
     }
 
     @Test
-    public void unirseAPartida() {
-        Assert.assertFalse(jugador.unirseAPartida(partida));
+    public void unirseASala() {
+        Assert.assertFalse(jugador.unirseASala(sala));
     }
 
     @Test
     public void iniciarPartida() {
         jugador2.iniciarPartida();
-        Assert.assertNull(jugador2.partidaJugando); // no esta en ninguna partida
+        Assert.assertNull(jugador2.salaActual); // no esta en ninguna sala
 
         jugador.iniciarPartida();
-        Assert.assertFalse(partida.partidaEnCurso); // solo 1 jugador
+        Assert.assertNull(sala.partida); // solo 1 jugador
 
-        jugador2.unirseAPartida(partida);
+        jugador2.unirseASala(sala);
         jugador.iniciarPartida();
-        Assert.assertFalse(partida.partidaEnCurso); // faltan setear condiciones
+        Assert.assertNull(sala.partida); // faltan setear condiciones
 
-        partida.setJugadorMano(jugador);
-        partida.setCantSimbolosAfecto(5);
+        sala.setJugadorMano(jugador);
+        sala.setCantSimbolosAfecto(5);
 
         jugador.iniciarPartida();
-        //la partida puede iniciar ambos se encuentran confirmando que estan listos
+        //la sala puede iniciar ambos se encuentran confirmando que estan listos
         Assert.assertEquals(EstadosJugador.CONFIRMANDOINICIO, jugador.getEstado().getEstadoActual());
         Assert.assertEquals(EstadosJugador.CONFIRMANDOINICIO, jugador2.getEstado().getEstadoActual());
     }
 
     @Test
     public void confirmarInicio() {
-        jugador2.unirseAPartida(partida);
-        partida.setJugadorMano(jugador);
-        partida.setCantSimbolosAfecto(5);
+        jugador2.unirseASala(sala);
+        sala.setJugadorMano(jugador);
+        sala.setCantSimbolosAfecto(5);
 
         jugador.iniciarPartida();
 
@@ -71,9 +70,9 @@ public class JugadorTest {
 
     @Test
     public void cancelarInicio() {
-        jugador2.unirseAPartida(partida);
-        partida.setJugadorMano(jugador);
-        partida.setCantSimbolosAfecto(5);
+        jugador2.unirseASala(sala);
+        sala.setJugadorMano(jugador);
+        sala.setCantSimbolosAfecto(5);
 
         jugador.iniciarPartida();
         //Los jugadores se encuentran confirmando el inicio
@@ -84,8 +83,7 @@ public class JugadorTest {
 
         //La partida no inicia
         Assert.assertEquals(EstadosJugador.ESPERANDO, jugador2.getEstado().getEstadoActual());
-        Assert.assertFalse(jugador.partidaJugando.partidaEnCurso);
-        Assert.assertFalse(jugador2.partidaJugando.partidaEnCurso);
+        Assert.assertNull(sala.partida);
     }
 
     @Test

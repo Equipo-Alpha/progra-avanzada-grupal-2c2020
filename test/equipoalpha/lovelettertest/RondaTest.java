@@ -5,6 +5,7 @@ import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Partida;
+import equipoalpha.loveletter.partida.Sala;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,12 +21,14 @@ public class RondaTest {
         jugador1 = new Jugador("TesterDeJava");
         jugador2 = new Jugador("TesterDeJS");
         jugador3 = new Jugador("TesterDeC");
-        partida = jugador1.crearPartida();
-        partida.agregarJugador(jugador2);
-        partida.agregarJugador(jugador3);
-        partida.setCantSimbolosAfecto(5);
-        partida.setJugadorMano(jugador3);
-        partida.initPartida();
+        Sala sala = jugador1.crearSala("test");
+        sala.agregarJugador(jugador2);
+        sala.agregarJugador(jugador3);
+
+        sala.setCantSimbolosAfecto(5);
+        sala.setJugadorMano(jugador3);
+        sala.empezarPartida();
+        this.partida = sala.partida;
     }
 
     @Test
