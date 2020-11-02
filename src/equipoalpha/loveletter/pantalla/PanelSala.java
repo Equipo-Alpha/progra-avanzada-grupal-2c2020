@@ -69,7 +69,8 @@ public class PanelSala extends JPanel implements Drawable {
         simbolosAfecto.setSize(200, 50);
         jugadorMano.setSize(200, 50);
         aceptarConfiguracion.addActionListener(actionEvent -> {
-            checkYGuardarConfiguraciones((Integer) simbolosAfecto.getSelectedItem(), (Jugador) jugadorMano.getSelectedItem());
+            checkYGuardarConfiguraciones(simbolosAfecto.getItemAt(simbolosAfecto.getSelectedIndex()),
+                                        jugadorMano.getItemAt(jugadorMano.getSelectedIndex()));
             panelSetCondiciones.setVisible(false);
         });
         botonSetCondiciones.addActionListener(actionEvent -> {
@@ -114,7 +115,7 @@ public class PanelSala extends JPanel implements Drawable {
         botonEmpezarPartida.addActionListener(actionEvent -> {
             //TODO ver como implementar
             //loveletter.getJugador().iniciarPartida();
-            sala.empezarPartida();
+            sala.crearPartida();
             ventana.onPartidaEmpezada(this);
         });
 

@@ -31,8 +31,9 @@ public class CartaTest {
 
         sala.setCantSimbolosAfecto(5);
         sala.setJugadorMano(jugador1);
-        sala.empezarPartida();
+        sala.crearPartida();
         this.partida = sala.partida;
+        partida.initPartida();
     }
 
     @Test
@@ -113,10 +114,8 @@ public class CartaTest {
         jugador1.descartarCarta2();
         jugador2.carta1 = new Carta(CartaTipo.GUARDIA); // para que no quede descartando condesa
         jugador1.elegirJugador(jugador2);
-        Assert.assertEquals(EstadosJugador.DESCARTANDO, jugador2.getEstado().getEstadoActual());
-        Assert.assertEquals(jugador2.carta2, partida.rondaActual.darCartaEliminada());
-        Assert.assertEquals(EstadosJugador.ESPERANDO, jugador1.getEstado().getEstadoActual());
-        Assert.assertEquals(EstadosJugador.ESPERANDO, jugador3.getEstado().getEstadoActual());
+        // termina la ronda
+        Assert.assertFalse(partida.rondaActual.mazoVacio());
     }
 
     @Test

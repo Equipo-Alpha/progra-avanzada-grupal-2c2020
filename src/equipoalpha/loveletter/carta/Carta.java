@@ -7,6 +7,8 @@ import equipoalpha.loveletter.partida.Ronda;
 
 import java.awt.image.BufferedImage;
 
+import static java.lang.System.exit;
+
 public class Carta implements Comparable<Carta> {
     private final CartaTipo tipo;
 
@@ -19,7 +21,7 @@ public class Carta implements Comparable<Carta> {
      */
     public void descartar(Jugador jugador) {
         Ronda ronda = jugador.partidaJugando.rondaActual;
-
+        System.out.println(jugador + " descarta " + this);
         switch (tipo) {
             case MUCAMA:
                 jugador.estaProtegido = true;
@@ -35,7 +37,9 @@ public class Carta implements Comparable<Carta> {
                     if (jugador instanceof JugadorIA) {
                         try {
                             ((JugadorIA) jugador).onElegirJugador();
-                        } catch (Exception ignored) {
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            exit(0);
                         }
                     }
                     return;
@@ -47,7 +51,7 @@ public class Carta implements Comparable<Carta> {
 
     public void jugadorElegido(Jugador jugadorQueDescarto, Jugador jugadorElegido) {
         Ronda ronda = jugadorQueDescarto.partidaJugando.rondaActual;
-
+        System.out.println(jugadorQueDescarto + " elige al jugador " + jugadorElegido);
         switch (tipo) {
             case SACERDOTE:
                 jugadorQueDescarto.verCarta(jugadorElegido);
@@ -58,9 +62,13 @@ public class Carta implements Comparable<Carta> {
                 ronda.determinarCartaMayor(jugadorQueDescarto, jugadorElegido);
                 break;
             case PRINCIPE:
-                Carta cartaADar = ronda.darCarta();
-                if (cartaADar == null) cartaADar = ronda.darCartaEliminada();
-                jugadorElegido.robarCarta(cartaADar);
+                if(jugadorElegido.carta1.getTipo() == CartaTipo.PRINCESA) {
+                    ronda.eliminarJugador(jugadorElegido);
+                } else {
+                    Carta cartaADar = ronda.darCarta();
+                    if (cartaADar == null) cartaADar = ronda.darCartaEliminada();
+                    jugadorElegido.carta1 = cartaADar;
+                }
                 break;
             case REY:
                 Carta carta = jugadorQueDescarto.carta1;
@@ -79,9 +87,12 @@ public class Carta implements Comparable<Carta> {
     }
 
     public void cartaAdivinada(Jugador jugadorQueDescarto, Jugador jugadorElegido, CartaTipo cartaAdivinada) {
+        System.out.println(jugadorQueDescarto + " intenta adivinar con " + cartaAdivinada.nombre);
         if (tipo == CartaTipo.GUARDIA)
-            if (jugadorElegido.tieneCarta(cartaAdivinada))
+            if (jugadorElegido.tieneCarta(cartaAdivinada)) {
+                System.out.println(jugadorQueDescarto + " adivina correctamente");
                 jugadorQueDescarto.rondaJugando.eliminarJugador(jugadorElegido);
+            }
 
         jugadorQueDescarto.rondaJugando.onFinalizarDescarte(jugadorQueDescarto);
     }
@@ -118,7 +129,7 @@ public class Carta implements Comparable<Carta> {
 
     @Override
     public String toString() {
-        return tipo.toString();
+        return tipo.nombre;
     }
 
 }

@@ -58,6 +58,7 @@ public class Ventana {
         ventana.pack();
         panelAnterior.setVisible(false);
         panelPartida.setVisible(true);
+        panelPartida.getSala().partida.initPartida();
     }
 
     public void onPartidaTerminada(JPanel panelAnterior) {

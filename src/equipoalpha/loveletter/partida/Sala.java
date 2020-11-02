@@ -27,9 +27,8 @@ public class Sala {
         eventos.registrar(EventosPartida.PEDIRCONFIRMACION, confirmarInicio);
     }
 
-    public void empezarPartida() {
+    public void crearPartida() {
         this.partida = new Partida(creador, jugadores, jugadorMano, cantSimbolosAfecto);
-        partida.initPartida();
     }
 
     public Integer getCantSimbolosAfecto() {

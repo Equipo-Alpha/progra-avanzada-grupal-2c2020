@@ -78,6 +78,7 @@ public class Ronda {
     private void onRondaTerminada() {
         Jugador jugadorGanador = determinarGanador();
         jugadorGanador.cantSimbolosAfecto++;
+        System.out.println("El ganador de la ronda es: " + jugadorGanador);
         partida.onNuevaRonda(jugadorGanador);
     }
 

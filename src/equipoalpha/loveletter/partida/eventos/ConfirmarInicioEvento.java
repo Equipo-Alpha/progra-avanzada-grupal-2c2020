@@ -28,8 +28,10 @@ public class ConfirmarInicioEvento implements EventoObservado {
     public void removerObservador(Jugador jugador) {
         observadores.remove(jugador);
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
-        if (observadores.isEmpty())
-            sala.empezarPartida();
+        if (observadores.isEmpty()) {
+            sala.crearPartida();
+            sala.partida.initPartida();
+        }
     }
 
     @Override

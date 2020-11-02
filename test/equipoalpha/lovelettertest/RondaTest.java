@@ -27,8 +27,9 @@ public class RondaTest {
 
         sala.setCantSimbolosAfecto(5);
         sala.setJugadorMano(jugador3);
-        sala.empezarPartida();
+        sala.crearPartida();
         this.partida = sala.partida;
+        partida.initPartida();
     }
 
     @Test

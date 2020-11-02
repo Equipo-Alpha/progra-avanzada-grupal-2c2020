@@ -19,6 +19,7 @@ public class JugadorIA extends Jugador {
     @Override
     public void onComienzoTurno(Carta cartaRobada) {
         this.estaProtegido = false;
+        System.out.println("Turno de " + nombre);
         robarCarta(cartaRobada);
         //Actualizo la carta que me toco
         int cant = cartasDescartadas.remove(carta2.getTipo());
@@ -27,11 +28,11 @@ public class JugadorIA extends Jugador {
     }
 
     public void onElegirJugador() throws JugadorNoValido {
-        elegirJugador(elegirJugador());
+        super.elegirJugador(elegirJugadorIA());
     }
 
     public void onAdivinarCarta() {
-        elegirCarta(adivinarCarta());
+        super.elegirCarta(adivinarCarta());
     }
 
     private void elegirCartaAJugar() {
@@ -124,7 +125,7 @@ public class JugadorIA extends Jugador {
         descartarCarta2();
     }
 
-    private Jugador elegirJugador() {
+    private Jugador elegirJugadorIA() {
         ArrayList<Jugador> disponibles = new ArrayList<>(rondaJugando.jugadoresEnLaRonda);
 
         if (facade.getCartaDescartada().getTipo() != CartaTipo.PRINCIPE)
@@ -192,7 +193,8 @@ public class JugadorIA extends Jugador {
 
     private Jugador menorCartaConocida(List<Jugador> lista) {
         Jugador menor = null;
-        for (Jugador jugador : lista) {
+        for (Jugador jugador : cartasConocidas.keySet()) {
+            if (!lista.contains(jugador)) continue;
             if (menor == null) menor = jugador;
             if (cartasConocidas.get(jugador).fuerza < cartasConocidas.get(menor).fuerza)
                 menor = jugador;
@@ -213,9 +215,10 @@ public class JugadorIA extends Jugador {
 
     private Jugador mayorCartaConocida(List<Jugador> lista) {
         Jugador mayor = null;
-        for (Jugador jugador : lista) {
+        for (Jugador jugador : cartasConocidas.keySet()) {
+            if (!lista.contains(jugador)) continue;
             if (mayor == null) mayor = jugador;
-            if (cartasConocidas.get(jugador).fuerza > cartasConocidas.get(mayor).fuerza)
+            if (cartasConocidas.getOrDefault(jugador, CartaTipo.GUARDIA).fuerza > cartasConocidas.getOrDefault(mayor, CartaTipo.GUARDIA).fuerza)
                 mayor = jugador;
         }
         return mayor;

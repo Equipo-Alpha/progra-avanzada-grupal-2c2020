@@ -24,8 +24,9 @@ public class PartidaTest {
 
         sala.setCantSimbolosAfecto(5);
         sala.setJugadorMano(jugador1);
-        sala.empezarPartida();
+        sala.crearPartida();
         this.partida = sala.partida;
+        partida.initPartida();
     }
 
     @Test
