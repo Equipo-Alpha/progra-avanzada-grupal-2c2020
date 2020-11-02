@@ -32,10 +32,11 @@ public class Carta implements Comparable<Carta> {
             default:
                 if (ronda.puedeElegir(jugador, this.tipo)) {
                     jugador.getEstado().setEstadoActual(EstadosJugador.ELIGIENDOJUGADOR);
-                    if(jugador instanceof JugadorIA){
+                    if (jugador instanceof JugadorIA) {
                         try {
                             ((JugadorIA) jugador).onElegirJugador();
-                        } catch (Exception ignored){}
+                        } catch (Exception ignored) {
+                        }
                     }
                     return;
                 }
@@ -68,7 +69,7 @@ public class Carta implements Comparable<Carta> {
                 break;
             default:
                 jugadorQueDescarto.getEstado().setEstadoActual(EstadosJugador.ADIVINANDOCARTA);
-                if(jugadorQueDescarto instanceof JugadorIA){
+                if (jugadorQueDescarto instanceof JugadorIA) {
                     ((JugadorIA) jugadorQueDescarto).onAdivinarCarta();
                 }
                 return;

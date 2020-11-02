@@ -17,9 +17,6 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
     private final JButton buttonUnirseSala;
     private final JButton buttonSalir;
     private final JButton buttonEquipo;
-    private boolean isExpanding, isMaxSize, isAchicandose, isMinSize, moviendoCentro;
-    private float sizeX = 0, sizeY = 0;
-    private int centroX;
     private final JLabel ramiro;
     private final JLabel kevin;
     private final JLabel santiG;
@@ -27,6 +24,9 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
     private final JLabel ignacio;
     private final JLabel santiV;
     private final JLabel mati;
+    private boolean isExpanding, isMaxSize, isAchicandose, isMinSize, moviendoCentro;
+    private float sizeX = 0, sizeY = 0;
+    private int centroX;
 
     public PanelMenuPrincipal(Ventana ventana) {
         parent = ventana;

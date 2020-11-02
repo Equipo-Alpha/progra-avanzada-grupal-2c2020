@@ -15,9 +15,6 @@ public class PanelSala extends JPanel implements Drawable {
     private final Sala sala;
     private final Ventana parent;
     private final LoveLetter loveletter;
-    boolean bot1Agregado = false;
-    boolean bot2Agregado = false;
-    boolean bot3Agregado = false;
     private final JButton botonJugador;
     private final JButton botonSetCondiciones;
     private final JPanel panelSetCondiciones;
@@ -32,6 +29,9 @@ public class PanelSala extends JPanel implements Drawable {
     private final JugadorIA bot1 = new JugadorIA("SrBot1");
     private final JugadorIA bot2 = new JugadorIA("SrBot2");
     private final JugadorIA bot3 = new JugadorIA("SrBot3");
+    boolean bot1Agregado = false;
+    boolean bot2Agregado = false;
+    boolean bot3Agregado = false;
 
     public PanelSala(Ventana ventana) {
         this.loveletter = LoveLetter.getInstance();
@@ -143,7 +143,7 @@ public class PanelSala extends JPanel implements Drawable {
         g2.fillRect(0, 0, 300, loveletter.HEIGHT);
 
         botonJugador.setIcon(Imagenes.iconoPrincipe);
-        botonJugador.setBounds(420,120,150,150);
+        botonJugador.setBounds(420, 120, 150, 150);
 
         botonAgregarBot1.setIcon(Imagenes.iconoSuma);
         botonAgregarBot1.setOpaque(true);

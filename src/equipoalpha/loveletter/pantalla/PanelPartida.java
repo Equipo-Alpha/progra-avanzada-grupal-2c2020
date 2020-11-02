@@ -89,7 +89,7 @@ public class PanelPartida extends JPanel implements Drawable {
         this.jugadoresAdibujar.remove(jugador); // ya me dibuje
 
         // mazo
-        if(!sala.partida.rondaActual.mazoVacio()) {
+        if (!sala.partida.rondaActual.mazoVacio()) {
             //TODO buscar imagen de algun mazo tal vez?
             g2.drawImage(Imagenes.reversoPeq, null, 380, 200);
             g2.drawImage(Imagenes.reversoPeq, null, 390, 205);
@@ -97,7 +97,7 @@ public class PanelPartida extends JPanel implements Drawable {
         }
 
         // la carta eliminada
-        if(sala.partida.rondaActual.cartaEliminada != null) {
+        if (sala.partida.rondaActual.cartaEliminada != null) {
             g2.drawImage(Imagenes.reversoPeq, null, 10, 610);
         }
 
@@ -105,21 +105,21 @@ public class PanelPartida extends JPanel implements Drawable {
         for (Jugador jugador : jugadoresAdibujar) {
             switch (i) {
                 case 0:
-                    g2.drawImage(Imagenes.reversoPeq, null, 10,250);
-                    if(jugador.carta2 != null) {
-                        g2.drawImage(Imagenes.reversoPeq, null, 80,250);
+                    g2.drawImage(Imagenes.reversoPeq, null, 10, 250);
+                    if (jugador.carta2 != null) {
+                        g2.drawImage(Imagenes.reversoPeq, null, 80, 250);
                     }
                     break;
                 case 1:
-                    g2.drawImage(Imagenes.reversoPeq, null, 400,10);
-                    if(jugador.carta2 != null) {
-                        g2.drawImage(Imagenes.reversoPeq, null, 470,10);
+                    g2.drawImage(Imagenes.reversoPeq, null, 400, 10);
+                    if (jugador.carta2 != null) {
+                        g2.drawImage(Imagenes.reversoPeq, null, 470, 10);
                     }
                     break;
                 case 2:
-                    g2.drawImage(Imagenes.reversoPeq, null, 925,250);
-                    if(jugador.carta2 != null) {
-                        g2.drawImage(Imagenes.reversoPeq, null, 850,250);
+                    g2.drawImage(Imagenes.reversoPeq, null, 925, 250);
+                    if (jugador.carta2 != null) {
+                        g2.drawImage(Imagenes.reversoPeq, null, 850, 250);
                     }
                     break;
             }
@@ -137,12 +137,12 @@ public class PanelPartida extends JPanel implements Drawable {
     @Override
     public void render() {
         this.repaint();
-        if(panelElegirJugador.isVisible()) {
+        if (panelElegirJugador.isVisible()) {
             actualizarJugadores = true;
         }
-        if(actualizarJugadores) {
+        if (actualizarJugadores) {
             jugadorElegido.removeAllItems();
-            for(Jugador jugador : sala.partida.rondaActual.jugadoresEnLaRonda) {
+            for (Jugador jugador : sala.partida.rondaActual.jugadoresEnLaRonda) {
                 jugadorElegido.addItem(jugador);
             }
             actualizarJugadores = false;
