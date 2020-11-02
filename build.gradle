@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+def version = "0.2.0."
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+group 'EquipoAlpha'
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'equipoalpha.loveletter.LoveLetter'
+    }
+    archiveBaseName.set('EquipoAlpha-LoveLetter')
+    archiveClassifier.set('prev')
+    archiveVersion.set(version)
+}
