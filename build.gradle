@@ -55,7 +55,7 @@ task github() {
 
     doLast {
         def github = GitHub.connectUsingOAuth(ENV.GITHUB_TOKEN as String)
-        def repository = github.getRepository("Equipo-Alpha/progra-avanzada-grupal-2c2020")
+        def repository = github.getRepository(ENV.GITHUB_REPOSITORY)
 
         def releaseBuilder = new GHReleaseBuilder(repository, version as String)
         releaseBuilder.name("LoveLetter Equipo-Alpha Version ${version} build $ENV.BUILD_NUMBER")
