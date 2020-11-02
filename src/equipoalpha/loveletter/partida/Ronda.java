@@ -4,6 +4,7 @@ import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
+import equipoalpha.loveletter.jugador.JugadorIA;
 
 import java.util.*;
 
@@ -25,7 +26,7 @@ public class Ronda {
     /**
      * Carta que se elimina al principio de la ronda
      */
-    protected Carta cartaEliminada;
+    public Carta cartaEliminada;
     /**
      * Conjunto de 16 cartas al empezar, termina la ronda si se vacia
      */
@@ -51,7 +52,12 @@ public class Ronda {
             jugadorIterando.getEstado().resetElecciones();
             mapaCartasEliminadas.put(jugadorIterando, 0);
             jugadorIterando.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
+            if(jugadorIterando instanceof JugadorIA){
+                ((JugadorIA) jugadorIterando).inicioRonda();
+            }
         }
+
+        System.out.println("Empezando Ronda");
 
         jugadorEnTurno = partida.jugadorMano;
         jugadorEnTurno.onComienzoTurno(darCarta());
@@ -145,6 +151,13 @@ public class Ronda {
         } else {
             jugador.rondaJugando = null;
         }
+
+        for(Jugador jugador1 : jugadoresEnLaRonda){
+            if(jugador1 instanceof JugadorIA){
+                ((JugadorIA) jugador1).finTurno(jugador, jugador.getEstado().getCartaDescartada());
+            }
+        }
+
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
         jugador.getEstado().resetElecciones();
 
@@ -203,6 +216,10 @@ public class Ronda {
      */
     public boolean rondaTerminada() {
         return (mazo.isEmpty() || jugadoresEnLaRonda.size() == 1);
+    }
+
+    public boolean mazoVacio() {
+        return mazo.isEmpty();
     }
 
     //@TestOnly

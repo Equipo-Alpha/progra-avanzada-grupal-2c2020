@@ -59,6 +59,8 @@ public class Partida {
             jugador.estaProtegido = false;
         }
 
+        System.out.println("Empezando Partida");
+
         this.rondaActual = new Ronda(this);
         onNuevaRonda(jugadorMano);
     }

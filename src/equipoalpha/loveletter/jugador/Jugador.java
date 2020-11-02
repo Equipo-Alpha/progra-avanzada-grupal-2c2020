@@ -91,6 +91,7 @@ public class Jugador {
 
     public void onComienzoTurno(Carta cartaRobada) {
         this.estaProtegido = false;
+        System.out.println("Turno de " + nombre);
         robarCarta(cartaRobada);
     }
 
@@ -195,7 +196,7 @@ public class Jugador {
         return facade;
     }
 
-    private void salirSala() {
+    public void salirSala() {
         if (salaActual == null)
             return;
         if (partidaJugando != null) {
