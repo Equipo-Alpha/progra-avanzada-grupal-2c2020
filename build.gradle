@@ -1,3 +1,9 @@
+buildscript {
+    dependencies {
+        classpath 'org.kohsuke:github-api:1.114'
+    }
+}
+
 plugins {
     id 'java'
     id 'eclipse'
@@ -5,7 +11,8 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
-def version = "0.2.0."
+def ENV = System.getenv()
+def version = "0.2.0." + (ENV.GITHUB_RUN_NUMBER ? "" : "dev")
 
 compileJava {
     sourceCompatibility = 1.8
@@ -36,4 +43,24 @@ jar {
     archiveBaseName.set('EquipoAlpha-LoveLetter')
     archiveClassifier.set('prev')
     archiveVersion.set(version)
+}
+
+import org.kohsuke.github.GHReleaseBuilder
+import org.kohsuke.github.GitHub
+
+task github() {
+    onlyIf {
+        ENV.GITHUB_TOKEN
+    }
+
+    doLast {
+        def github = GitHub.connectUsingOAuth(ENV.GITHUB_TOKEN as String)
+        def repository = github.getRepository("Equipo-Alpha/progra-avanzada-grupal-2c2020")
+
+        def releaseBuilder = new GHReleaseBuilder(repository, version as String)
+        releaseBuilder.name("LoveLetter Equipo-Alpha Version ${version} build $ENV.BUILD_NUMBER")
+
+        def ghRelease = releaseBuilder.create()
+        ghRelease.uploadAsset(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"), "application/java-archive");
+    }
 }
