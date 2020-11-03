@@ -42,7 +42,7 @@ public class RondaTest {
         jugador1.carta1 = new Carta(CartaTipo.GUARDIA);
         jugador2.carta1 = new Carta(CartaTipo.GUARDIA);
         Assert.assertEquals(EstadosJugador.ESPERANDO, jugador1.getEstado().getEstadoActual());
-        Assert.assertEquals(EstadosJugador.DESCARTANDO, jugador3.getEstado().getEstadoActual());
+        Assert.assertNotEquals(EstadosJugador.ESPERANDO, jugador3.getEstado().getEstadoActual());
         jugador3.carta2 = new Carta(CartaTipo.CONDESA);
         jugador3.descartarCarta2();
         Assert.assertEquals(EstadosJugador.ESPERANDO, jugador3.getEstado().getEstadoActual());

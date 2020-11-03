@@ -20,7 +20,7 @@ public class CartaTest {
     private Partida partida;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp(){
         jugador1 = new Jugador("TesterDeJava");
         jugador2 = new Jugador("TesterDeJS");
         jugador3 = new Jugador("TesterDeC");
@@ -43,7 +43,7 @@ public class CartaTest {
         jugador1.elegirJugador(jugador2);
 
         // le damos al jugador2 una carta
-        jugador2.carta2 = new Carta(CartaTipo.SACERDOTE);
+        jugador2.carta1 = new Carta(CartaTipo.SACERDOTE);
 
         jugador1.elegirCarta(CartaTipo.SACERDOTE);
 
@@ -58,7 +58,7 @@ public class CartaTest {
         jugador1.elegirJugador(jugador2);
 
         // le damos al jugador2 una carta
-        jugador2.carta2 = new Carta(CartaTipo.SACERDOTE);
+        jugador2.carta1 = new Carta(CartaTipo.SACERDOTE);
 
         jugador1.elegirCarta(CartaTipo.MUCAMA);
 
@@ -101,7 +101,7 @@ public class CartaTest {
         jugador2.carta1 = new Carta(CartaTipo.GUARDIA); // para que no quede descartando condesa
         jugador1.elegirJugador(jugador2);
 
-        Assert.assertEquals(EstadosJugador.DESCARTANDO, jugador2.getEstado().getEstadoActual());
+        Assert.assertNotEquals(EstadosJugador.ESPERANDO, jugador2.getEstado().getEstadoActual());
         Assert.assertEquals(EstadosJugador.ESPERANDO, jugador1.getEstado().getEstadoActual());
         Assert.assertEquals(EstadosJugador.ESPERANDO, jugador3.getEstado().getEstadoActual());
     }
@@ -182,6 +182,7 @@ public class CartaTest {
 
     @Test
     public void testElegirseASiMismoPrincipe() throws JugadorException {
+        jugador1.carta1 = new Carta(CartaTipo.GUARDIA);
         jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCIPE));
         jugador1.descartarCarta2();
         jugador1.elegirJugador(jugador1);
