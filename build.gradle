@@ -1,8 +1,8 @@
-buildscript {
-    dependencies {
-        classpath 'org.kohsuke:github-api:1.114'
-    }
-}
+//buildscript {
+//    dependencies {
+//        classpath 'org.kohsuke:github-api:1.114'
+//    }
+//}
 
 plugins {
     id 'java'
@@ -10,9 +10,6 @@ plugins {
     id 'idea'
     id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
-
-def ENV = System.getenv()
-def version = "0.2.0." + (ENV.GITHUB_RUN_NUMBER ? "" : "dev")
 
 compileJava {
     sourceCompatibility = 1.8
@@ -41,26 +38,26 @@ jar {
         attributes 'Main-Class': 'equipoalpha.loveletter.LoveLetter'
     }
     archiveBaseName.set('EquipoAlpha-LoveLetter')
-    archiveClassifier.set('prev')
-    archiveVersion.set(version)
+    archiveClassifier.set('')
+    archiveVersion.set('')
 }
 
-import org.kohsuke.github.GHReleaseBuilder
-import org.kohsuke.github.GitHub
+//import org.kohsuke.github.GHReleaseBuilder
+//import org.kohsuke.github.GitHub
 
-task github() {
-    onlyIf {
-        ENV.GITHUB_TOKEN
-    }
-
-    doLast {
-        def github = GitHub.connectUsingOAuth(ENV.GITHUB_TOKEN as String)
-        def repository = github.getRepository(ENV.GITHUB_REPOSITORY)
-
-        def releaseBuilder = new GHReleaseBuilder(repository, version as String)
-        releaseBuilder.name("LoveLetter Equipo-Alpha Version ${version} build $ENV.BUILD_NUMBER")
-
-        def ghRelease = releaseBuilder.create()
-        ghRelease.uploadAsset(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"), "application/java-archive");
-    }
-}
+//task github() {
+//    onlyIf {
+//        ENV.GITHUB_TOKEN
+//    }
+//
+//    doLast {
+//        def github = GitHub.connectUsingOAuth(ENV.GITHUB_TOKEN as String)
+//        def repository = github.getRepository(ENV.GITHUB_REPOSITORY)
+//
+//        def releaseBuilder = new GHReleaseBuilder(repository, version as String)
+//        releaseBuilder.name("LoveLetter Equipo-Alpha Version ${version} build $ENV.BUILD_NUMBER")
+//
+//        def ghRelease = releaseBuilder.create()
+//        ghRelease.uploadAsset(file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar"), "application/java-archive");
+//    }
+//}
