@@ -16,5 +16,7 @@ jobs:
         run: chmod +x gradlew
       - name: Github Release
         run: ./gradlew github --stacktrace
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
