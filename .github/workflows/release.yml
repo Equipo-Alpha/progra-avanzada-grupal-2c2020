@@ -15,8 +15,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Github Release
-        run: ./gradlew github --stacktrace
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew build github --stacktrace
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
