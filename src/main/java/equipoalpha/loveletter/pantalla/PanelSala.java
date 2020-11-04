@@ -70,7 +70,7 @@ public class PanelSala extends JPanel implements Drawable {
         jugadorMano.setSize(200, 50);
         aceptarConfiguracion.addActionListener(actionEvent -> {
             checkYGuardarConfiguraciones(simbolosAfecto.getItemAt(simbolosAfecto.getSelectedIndex()),
-                                        jugadorMano.getItemAt(jugadorMano.getSelectedIndex()));
+                    jugadorMano.getItemAt(jugadorMano.getSelectedIndex()));
             panelSetCondiciones.setVisible(false);
         });
         botonSetCondiciones.addActionListener(actionEvent -> {

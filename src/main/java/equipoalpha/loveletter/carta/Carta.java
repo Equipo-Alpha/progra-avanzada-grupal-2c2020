@@ -57,6 +57,7 @@ public class Carta implements Comparable<Carta> {
                 if (jugadorElegido.carta1.getTipo() == CartaTipo.PRINCESA) {
                     ronda.eliminarJugador(jugadorElegido);
                 } else {
+                    agregarAlMapa(ronda, jugadorElegido, jugadorElegido.carta1);
                     Carta cartaADar = ronda.darCarta();
                     if (cartaADar == null) cartaADar = ronda.darCartaEliminada();
                     jugadorElegido.carta1 = cartaADar;
@@ -87,7 +88,10 @@ public class Carta implements Comparable<Carta> {
     }
 
     private void agregarAlMapa(Ronda ronda, Jugador jugador) {
-        Carta cartaAAgregar = new Carta(this.tipo);
+        agregarAlMapa(ronda, jugador, this);
+    }
+    private void agregarAlMapa(Ronda ronda, Jugador jugador, Carta carta) {
+        Carta cartaAAgregar = new Carta(carta.tipo);
         ArrayList<Carta> ALC = ronda.mapaCartasDescartadas.remove(jugador);
         ALC.add(cartaAAgregar);
         ronda.mapaCartasDescartadas.put(jugador, ALC);

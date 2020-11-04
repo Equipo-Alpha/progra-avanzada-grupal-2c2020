@@ -12,9 +12,6 @@ import equipoalpha.loveletter.util.excepcion.JugadorNoValido;
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImageOp;
 import java.util.ArrayList;
 
 public class PanelPartida extends JPanel implements Drawable {
@@ -80,12 +77,12 @@ public class PanelPartida extends JPanel implements Drawable {
 
         botonCarta1.addActionListener(actionEvent -> {
             jugador.descartarCarta1();
-            if(jugador.getEstado().getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR)
+            if (jugador.getEstado().getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR)
                 actualizarJugadores(jugador.getEstado().getCartaDescartada().getTipo());
         });
         botonCarta2.addActionListener(actionEvent -> {
             jugador.descartarCarta2();
-            if(jugador.getEstado().getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR)
+            if (jugador.getEstado().getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR)
                 actualizarJugadores(jugador.getEstado().getCartaDescartada().getTipo());
         });
         botonAbandonar.addActionListener(actionEvent -> {
@@ -181,7 +178,7 @@ public class PanelPartida extends JPanel implements Drawable {
         botonIconoJugador.setIcon(jugador.icono);
         botonIconoJugador.setBounds(700, 500, 150, 150);
         datosJugador.setText("Nombre: " + jugador + "\n\nSimbolos: " + jugador.cantSimbolosAfecto);
-        datosJugador.setBounds(720, 435, 250,60);
+        datosJugador.setBounds(720, 435, 250, 60);
         datosJugador.setOpaque(true);
         datosJugador.setBackground(new Color(255, 255, 255, 0));
         botonIconoJ1.setVisible(false);
@@ -198,7 +195,7 @@ public class PanelPartida extends JPanel implements Drawable {
 
             int y = 0;
             for (Carta carta : ALC) {
-                g2.drawImage(carta.getImagenP(), null, 315 + 30*y, 400);
+                g2.drawImage(carta.getImagenP(), null, 315 + 30 * y, 400);
                 y++;
             }
 
@@ -224,7 +221,7 @@ public class PanelPartida extends JPanel implements Drawable {
             }
 
             if (jugador.getEstado().getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR) {
-                if(mostrarPanelJugador) {
+                if (mostrarPanelJugador) {
                     panelElegirJugador.setVisible(true);
                     panelElegirJugador.requestFocus();
                     mostrarPanelJugador = false;
@@ -235,7 +232,7 @@ public class PanelPartida extends JPanel implements Drawable {
             }
 
             if (jugador.getEstado().getEstadoActual() == EstadosJugador.ADIVINANDOCARTA) {
-                if(mostrarPanelCarta) {
+                if (mostrarPanelCarta) {
                     panelAdivinarCarta.setVisible(true);
                     panelAdivinarCarta.requestFocus();
                     mostrarPanelCarta = false;
@@ -276,7 +273,7 @@ public class PanelPartida extends JPanel implements Drawable {
                     botonIconoJ1.setBackground(new Color(255, 255, 255, 0));
                     botonIconoJ1.setBounds(10, 140, 100, 100);
                     datosJ1.setText("Nombre: " + jugador + "\n\nSimbolos: " + jugador.cantSimbolosAfecto);
-                    datosJ1.setBounds(10, 75, 250,60);
+                    datosJ1.setBounds(10, 75, 250, 60);
                     datosJ1.setOpaque(true);
                     datosJ1.setBackground(new Color(255, 255, 255, 0));
                     if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
@@ -288,7 +285,7 @@ public class PanelPartida extends JPanel implements Drawable {
                     ALC = sala.partida.rondaActual.mapaCartasDescartadas.get(jugador);
                     y = 0;
                     for (Carta carta : ALC) {
-                        g2.drawImage(carta.getImagenP(), null,10 + 30 * y, 380);
+                        g2.drawImage(carta.getImagenP(), null, 10 + 30 * y, 380);
                         y++;
                     }
                     break;
@@ -299,7 +296,7 @@ public class PanelPartida extends JPanel implements Drawable {
                     botonIconoJ2.setBackground(new Color(255, 255, 255, 0));
                     botonIconoJ2.setBounds(290, 10, 100, 100);
                     datosJ2.setText("Nombre: " + jugador + "\n\nSimbolos: " + jugador.cantSimbolosAfecto);
-                    datosJ2.setBounds(250, 115, 250,60);
+                    datosJ2.setBounds(250, 115, 250, 60);
                     datosJ2.setOpaque(true);
                     datosJ2.setBackground(new Color(255, 255, 255, 0));
                     if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
@@ -311,7 +308,7 @@ public class PanelPartida extends JPanel implements Drawable {
                     ALC = sala.partida.rondaActual.mapaCartasDescartadas.get(jugador);
                     y = 0;
                     for (Carta carta : ALC) {
-                        g2.drawImage(carta.getImagenP(), null, 380 + 30*y, 130);
+                        g2.drawImage(carta.getImagenP(), null, 380 + 30 * y, 130);
                         y++;
                     }
                     break;
@@ -322,7 +319,7 @@ public class PanelPartida extends JPanel implements Drawable {
                     botonIconoJ3.setBackground(new Color(255, 255, 255, 0));
                     botonIconoJ3.setBounds(900, 140, 100, 100);
                     datosJ3.setText("Nombre: " + jugador + "\n\nSimbolos: " + jugador.cantSimbolosAfecto);
-                    datosJ3.setBounds(870, 75, 250,60);
+                    datosJ3.setBounds(870, 75, 250, 60);
                     datosJ3.setOpaque(true);
                     datosJ3.setBackground(new Color(255, 255, 255, 0));
                     if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
@@ -334,7 +331,7 @@ public class PanelPartida extends JPanel implements Drawable {
                     ALC = sala.partida.rondaActual.mapaCartasDescartadas.get(jugador);
                     y = 0;
                     for (Carta carta : ALC) {
-                        g2.drawImage(carta.getImagenP(), null, 935 - 30*y, 380);
+                        g2.drawImage(carta.getImagenP(), null, 935 - 30 * y, 380);
                         y++;
                     }
                     break;
