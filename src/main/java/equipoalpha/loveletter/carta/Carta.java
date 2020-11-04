@@ -2,12 +2,10 @@ package equipoalpha.loveletter.carta;
 
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
-import equipoalpha.loveletter.jugador.JugadorIA;
 import equipoalpha.loveletter.partida.Ronda;
 
 import java.awt.image.BufferedImage;
-
-import static java.lang.System.exit;
+import java.util.ArrayList;
 
 public class Carta implements Comparable<Carta> {
     private final CartaTipo tipo;
@@ -34,18 +32,12 @@ public class Carta implements Comparable<Carta> {
             default:
                 if (ronda.puedeElegir(jugador, this.tipo)) {
                     jugador.getEstado().setEstadoActual(EstadosJugador.ELIGIENDOJUGADOR);
-                    if (jugador instanceof JugadorIA) {
-                        try {
-                            ((JugadorIA) jugador).onElegirJugador();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                            exit(0);
-                        }
-                    }
+                    agregarAlMapa(ronda, jugador);
                     return;
                 }
         }
 
+        agregarAlMapa(ronda, jugador);
         ronda.onFinalizarDescarte(jugador);
     }
 
@@ -62,7 +54,7 @@ public class Carta implements Comparable<Carta> {
                 ronda.determinarCartaMayor(jugadorQueDescarto, jugadorElegido);
                 break;
             case PRINCIPE:
-                if(jugadorElegido.carta1.getTipo() == CartaTipo.PRINCESA) {
+                if (jugadorElegido.carta1.getTipo() == CartaTipo.PRINCESA) {
                     ronda.eliminarJugador(jugadorElegido);
                 } else {
                     Carta cartaADar = ronda.darCarta();
@@ -77,9 +69,6 @@ public class Carta implements Comparable<Carta> {
                 break;
             default:
                 jugadorQueDescarto.getEstado().setEstadoActual(EstadosJugador.ADIVINANDOCARTA);
-                if (jugadorQueDescarto instanceof JugadorIA) {
-                    ((JugadorIA) jugadorQueDescarto).onAdivinarCarta();
-                }
                 return;
         }
         ronda.onFinalizarDescarte(jugadorQueDescarto);
@@ -97,12 +86,23 @@ public class Carta implements Comparable<Carta> {
         jugadorQueDescarto.rondaJugando.onFinalizarDescarte(jugadorQueDescarto);
     }
 
+    private void agregarAlMapa(Ronda ronda, Jugador jugador) {
+        Carta cartaAAgregar = new Carta(this.tipo);
+        ArrayList<Carta> ALC = ronda.mapaCartasDescartadas.remove(jugador);
+        ALC.add(cartaAAgregar);
+        ronda.mapaCartasDescartadas.put(jugador, ALC);
+    }
+
     public CartaTipo getTipo() {
         return tipo;
     }
 
     public BufferedImage getImagen() {
         return tipo.imagen;
+    }
+
+    public BufferedImage getImagenP() {
+        return tipo.imagenP;
     }
 
     @Override

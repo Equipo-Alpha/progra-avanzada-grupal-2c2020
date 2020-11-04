@@ -2,18 +2,24 @@ package equipoalpha.loveletter.jugador;
 
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
+import equipoalpha.loveletter.pantalla.Imagenes;
+import equipoalpha.loveletter.util.Tickable;
 import equipoalpha.loveletter.util.excepcion.JugadorNoValido;
 
 import java.util.*;
 
-public class JugadorIA extends Jugador {
+import static java.lang.System.exit;
+
+public class JugadorIA extends Jugador implements Tickable {
     private final Map<Jugador, ArrayList<Carta>> cartasJugadas = new HashMap<>();
     private final Map<CartaTipo, Integer> cartasDescartadas = new HashMap<>();
     private final Map<Jugador, CartaTipo> cartasConocidas = new HashMap<>();
     private final Random random = new Random();
+    private int tickcount = 200; // espera 100 ticks para jugar
 
     public JugadorIA(String nombre) {
         super(nombre);
+        this.icono = Imagenes.iconoBot;
     }
 
     @Override
@@ -24,7 +30,6 @@ public class JugadorIA extends Jugador {
         //Actualizo la carta que me toco
         int cant = cartasDescartadas.remove(carta2.getTipo());
         cartasDescartadas.put(carta2.getTipo(), ++cant);
-        elegirCartaAJugar();
     }
 
     public void onElegirJugador() throws JugadorNoValido {
@@ -274,4 +279,37 @@ public class JugadorIA extends Jugador {
         });
     }
 
+    @Override
+    public void tick() {
+        if (this.getEstado().getEstadoActual() == null) return;
+
+        if (this.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDO ||
+                this.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDOCONDESA) {
+            if (--tickcount <= 0) {
+                tickcount = 200;
+                elegirCartaAJugar();
+                return;
+            }
+        }
+
+        if (this.getEstado().getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR) {
+            if (--tickcount <= 0) {
+                tickcount = 200;
+                try {
+                    onElegirJugador();
+                    return;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    exit(0);
+                }
+            }
+        }
+
+        if (this.getEstado().getEstadoActual() == EstadosJugador.ADIVINANDOCARTA) {
+            if (--tickcount <= 0) {
+                tickcount = 200;
+                onAdivinarCarta();
+            }
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package equipoalpha.loveletter.pantalla;
 
 import equipoalpha.loveletter.LoveLetter;
+import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
@@ -11,6 +12,9 @@ import equipoalpha.loveletter.util.excepcion.JugadorNoValido;
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImageOp;
 import java.util.ArrayList;
 
 public class PanelPartida extends JPanel implements Drawable {
@@ -31,6 +35,19 @@ public class PanelPartida extends JPanel implements Drawable {
     private JPanel panelAdivinarCarta;
     private boolean mostrarPanelJugador = true, mostrarPanelCarta = true;
 
+    private JButton botonIconoJugador;
+    private JTextArea datosJugador = new JTextArea();
+    private boolean viendoDatosJugador = false;
+    private JButton botonIconoJ1;
+    private JTextArea datosJ1 = new JTextArea();
+    private boolean viendoDatosJ1 = false;
+    private JButton botonIconoJ2;
+    private JTextArea datosJ2 = new JTextArea();
+    private boolean viendoDatosJ2 = false;
+    private JButton botonIconoJ3;
+    private JTextArea datosJ3 = new JTextArea();
+    private boolean viendoDatosJ3 = false;
+
     public PanelPartida(Ventana ventana, Sala sala) {
         this.parent = ventana;
         this.sala = sala;
@@ -39,22 +56,77 @@ public class PanelPartida extends JPanel implements Drawable {
         botonCarta1 = new JButton();
         botonCarta2 = new JButton();
         botonAbandonar = new JButton("Abandonar Partida");
-        botonAbandonar.setFont(new Font("Arial", Font.BOLD, 16));
+        Font font = new Font("Arial", Font.BOLD, 16);
+        botonAbandonar.setFont(font);
+        datosJugador.setFont(font);
+        datosJugador.setVisible(false);
+        datosJ1.setFont(font);
+        datosJ1.setVisible(false);
+        datosJ2.setFont(font);
+        datosJ2.setVisible(false);
+        datosJ3.setFont(font);
+        datosJ3.setVisible(false);
+        botonIconoJugador = new JButton();
+        botonIconoJ1 = new JButton();
+        botonIconoJ2 = new JButton();
+        botonIconoJ3 = new JButton();
         add(botonCarta1);
         add(botonCarta2);
         add(botonAbandonar);
+        add(botonIconoJugador);
+        add(botonIconoJ1);
+        add(botonIconoJ2);
+        add(botonIconoJ3);
 
         botonCarta1.addActionListener(actionEvent -> {
             jugador.descartarCarta1();
-            actualizarJugadores(jugador.getEstado().getCartaDescartada().getTipo());
+            if(jugador.getEstado().getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR)
+                actualizarJugadores(jugador.getEstado().getCartaDescartada().getTipo());
         });
         botonCarta2.addActionListener(actionEvent -> {
             jugador.descartarCarta2();
-            actualizarJugadores(jugador.getEstado().getCartaDescartada().getTipo());
+            if(jugador.getEstado().getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR)
+                actualizarJugadores(jugador.getEstado().getCartaDescartada().getTipo());
         });
         botonAbandonar.addActionListener(actionEvent -> {
             jugador.salirSala();
-            ventana.onSalirSala(this);
+            parent.onSalirSala(this);
+        });
+        botonIconoJugador.addActionListener(actionEvent -> {
+            if (viendoDatosJugador) {
+                datosJugador.setVisible(false);
+                viendoDatosJugador = false;
+            } else {
+                datosJugador.setVisible(true);
+                viendoDatosJugador = true;
+            }
+        });
+        botonIconoJ1.addActionListener(actionEvent -> {
+            if (viendoDatosJ1) {
+                datosJ1.setVisible(false);
+                viendoDatosJ1 = false;
+            } else {
+                datosJ1.setVisible(true);
+                viendoDatosJ1 = true;
+            }
+        });
+        botonIconoJ2.addActionListener(actionEvent -> {
+            if (viendoDatosJ2) {
+                datosJ2.setVisible(false);
+                viendoDatosJ2 = false;
+            } else {
+                datosJ2.setVisible(true);
+                viendoDatosJ2 = true;
+            }
+        });
+        botonIconoJ3.addActionListener(actionEvent -> {
+            if (viendoDatosJ3) {
+                datosJ3.setVisible(false);
+                viendoDatosJ3 = false;
+            } else {
+                datosJ3.setVisible(true);
+                viendoDatosJ3 = true;
+            }
         });
 
         panelElegirJugador = new JPanel();
@@ -88,19 +160,48 @@ public class PanelPartida extends JPanel implements Drawable {
         });
         add(panelElegirJugador);
         add(panelAdivinarCarta);
+
+        add(datosJugador);
+        add(datosJ1);
+        add(datosJ2);
+        add(datosJ3);
+
         registrar();
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        this.jugadoresAdibujar = new ArrayList<>(sala.partida.rondaActual.jugadoresEnLaRonda);
+        this.jugadoresAdibujar = new ArrayList<>(sala.partida.jugadores);
         Graphics2D g2 = (Graphics2D) g;
         g2.drawImage(Imagenes.backgroundPartida, null, 0, 0);
 
         botonAbandonar.setBounds(800, 670, 200, 40);
 
-        if (jugadoresAdibujar.contains(jugador)) {
+        botonIconoJugador.setIcon(jugador.icono);
+        botonIconoJugador.setBounds(700, 500, 150, 150);
+        datosJugador.setText("Nombre: " + jugador + "\n\nSimbolos: " + jugador.cantSimbolosAfecto);
+        datosJugador.setBounds(720, 435, 250,60);
+        datosJugador.setOpaque(true);
+        datosJugador.setBackground(new Color(255, 255, 255, 0));
+        botonIconoJ1.setVisible(false);
+        botonIconoJ2.setVisible(false);
+        botonIconoJ3.setVisible(false);
+
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Arial", Font.BOLD, 24));
+        g2.drawString("RONDA NUMERO: " + sala.partida.ronda, 750, 25);
+
+        ArrayList<Carta> ALC;
+        if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
+            ALC = sala.partida.rondaActual.mapaCartasDescartadas.get(jugador);
+
+            int y = 0;
+            for (Carta carta : ALC) {
+                g2.drawImage(carta.getImagenP(), null, 315 + 30*y, 400);
+                y++;
+            }
+
             botonCarta1.setIcon(new ImageIcon(jugador.carta1.getImagen()));
             botonCarta1.setVisible(true);
             botonCarta1.setBounds(380, 500, 150, 210);
@@ -154,9 +255,9 @@ public class PanelPartida extends JPanel implements Drawable {
         // mazo
         if (!sala.partida.rondaActual.mazoVacio()) {
             //TODO buscar imagen de algun mazo tal vez?
-            g2.drawImage(Imagenes.reversoPeq, null, 380, 200);
-            g2.drawImage(Imagenes.reversoPeq, null, 390, 205);
-            g2.drawImage(Imagenes.reversoPeq, null, 400, 210);
+            for (int i = 0; i < sala.partida.rondaActual.cantCartas(); i++) {
+                g2.drawImage(Imagenes.reversoPeq, null, 420 + i * 4, 230 + i * 4);
+            }
         }
 
         // la carta eliminada
@@ -166,23 +267,75 @@ public class PanelPartida extends JPanel implements Drawable {
 
         int i = 0;
         for (Jugador jugador : jugadoresAdibujar) {
+            int y;
             switch (i) {
                 case 0:
-                    g2.drawImage(Imagenes.reversoPeq, null, 10, 250);
-                    if (jugador.carta2 != null) {
-                        g2.drawImage(Imagenes.reversoPeq, null, 80, 250);
+                    botonIconoJ1.setVisible(true);
+                    botonIconoJ1.setIcon(jugador.icono);
+                    botonIconoJ1.setOpaque(true);
+                    botonIconoJ1.setBackground(new Color(255, 255, 255, 0));
+                    botonIconoJ1.setBounds(10, 140, 100, 100);
+                    datosJ1.setText("Nombre: " + jugador + "\n\nSimbolos: " + jugador.cantSimbolosAfecto);
+                    datosJ1.setBounds(10, 75, 250,60);
+                    datosJ1.setOpaque(true);
+                    datosJ1.setBackground(new Color(255, 255, 255, 0));
+                    if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
+                        g2.drawImage(Imagenes.reversoPeq, null, 10, 250);
+                        if (jugador.carta2 != null) {
+                            g2.drawImage(Imagenes.reversoPeq, null, 80, 250);
+                        }
+                    }
+                    ALC = sala.partida.rondaActual.mapaCartasDescartadas.get(jugador);
+                    y = 0;
+                    for (Carta carta : ALC) {
+                        g2.drawImage(carta.getImagenP(), null,10 + 30 * y, 380);
+                        y++;
                     }
                     break;
                 case 1:
-                    g2.drawImage(Imagenes.reversoPeq, null, 400, 10);
-                    if (jugador.carta2 != null) {
-                        g2.drawImage(Imagenes.reversoPeq, null, 470, 10);
+                    botonIconoJ2.setVisible(true);
+                    botonIconoJ2.setIcon(jugador.icono);
+                    botonIconoJ2.setOpaque(true);
+                    botonIconoJ2.setBackground(new Color(255, 255, 255, 0));
+                    botonIconoJ2.setBounds(290, 10, 100, 100);
+                    datosJ2.setText("Nombre: " + jugador + "\n\nSimbolos: " + jugador.cantSimbolosAfecto);
+                    datosJ2.setBounds(250, 115, 250,60);
+                    datosJ2.setOpaque(true);
+                    datosJ2.setBackground(new Color(255, 255, 255, 0));
+                    if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
+                        g2.drawImage(Imagenes.reversoPeq, null, 400, 10);
+                        if (jugador.carta2 != null) {
+                            g2.drawImage(Imagenes.reversoPeq, null, 470, 10);
+                        }
+                    }
+                    ALC = sala.partida.rondaActual.mapaCartasDescartadas.get(jugador);
+                    y = 0;
+                    for (Carta carta : ALC) {
+                        g2.drawImage(carta.getImagenP(), null, 380 + 30*y, 130);
+                        y++;
                     }
                     break;
                 case 2:
-                    g2.drawImage(Imagenes.reversoPeq, null, 925, 250);
-                    if (jugador.carta2 != null) {
-                        g2.drawImage(Imagenes.reversoPeq, null, 850, 250);
+                    botonIconoJ3.setVisible(true);
+                    botonIconoJ3.setIcon(jugador.icono);
+                    botonIconoJ3.setOpaque(true);
+                    botonIconoJ3.setBackground(new Color(255, 255, 255, 0));
+                    botonIconoJ3.setBounds(900, 140, 100, 100);
+                    datosJ3.setText("Nombre: " + jugador + "\n\nSimbolos: " + jugador.cantSimbolosAfecto);
+                    datosJ3.setBounds(870, 75, 250,60);
+                    datosJ3.setOpaque(true);
+                    datosJ3.setBackground(new Color(255, 255, 255, 0));
+                    if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
+                        g2.drawImage(Imagenes.reversoPeq, null, 925, 250);
+                        if (jugador.carta2 != null) {
+                            g2.drawImage(Imagenes.reversoPeq, null, 850, 250);
+                        }
+                    }
+                    ALC = sala.partida.rondaActual.mapaCartasDescartadas.get(jugador);
+                    y = 0;
+                    for (Carta carta : ALC) {
+                        g2.drawImage(carta.getImagenP(), null, 935 - 30*y, 380);
+                        y++;
                     }
                     break;
             }
@@ -211,6 +364,7 @@ public class PanelPartida extends JPanel implements Drawable {
         for (Jugador jugador : sala.partida.rondaActual.jugadoresEnLaRonda) {
             if (jugador.equals(this.jugador) && tipo != CartaTipo.PRINCIPE)
                 continue; // no me agrego si no descarte el principe
+            if (jugador.estaProtegido) continue; // si esta protegido no lo agrego
             jugadorElegido.addItem(jugador);
         }
     }

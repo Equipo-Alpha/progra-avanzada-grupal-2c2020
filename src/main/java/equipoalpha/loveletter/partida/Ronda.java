@@ -24,6 +24,10 @@ public class Ronda {
      */
     public Map<Jugador, Integer> mapaCartasEliminadas;
     /**
+     * Mapa de las cartas que descarto cada jugador durante la ronda.
+     */
+    public Map<Jugador, ArrayList<Carta>> mapaCartasDescartadas;
+    /**
      * Carta que se elimina al principio de la ronda
      */
     public Carta cartaEliminada;
@@ -36,12 +40,12 @@ public class Ronda {
         this.partida = partida;
     }
 
-    // TODO Cual es el orden de la ronda?
     public void initRonda() {
         initMazo();
 
         this.jugadoresEnLaRonda = new ArrayList<>();
         this.mapaCartasEliminadas = new HashMap<>();
+        this.mapaCartasDescartadas = new HashMap<>();
 
         // ---------Repartir Cartas--------------\\
         cartaEliminada = mazo.remove();
@@ -51,8 +55,9 @@ public class Ronda {
             jugadoresEnLaRonda.add(jugadorIterando);
             jugadorIterando.getEstado().resetElecciones();
             mapaCartasEliminadas.put(jugadorIterando, 0);
+            mapaCartasDescartadas.put(jugadorIterando, new ArrayList<>());
             jugadorIterando.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
-            if(jugadorIterando instanceof JugadorIA){
+            if (jugadorIterando instanceof JugadorIA) {
                 ((JugadorIA) jugadorIterando).inicioRonda();
             }
         }
@@ -130,9 +135,13 @@ public class Ronda {
     }
 
     public void eliminarJugador(Jugador jugador) {
+        ArrayList<Carta> ALC = mapaCartasDescartadas.remove(jugador);
+        ALC.add(jugador.carta1);
+        mapaCartasDescartadas.put(jugador, ALC);
         jugadoresEnLaRonda.remove(jugador);
         mapaCartasEliminadas.remove(jugador);
         jugador.rondaJugando = null;
+        jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
     }
 
     public void determinarCartaMayor(Jugador jugador1, Jugador jugador2) {
@@ -153,8 +162,8 @@ public class Ronda {
             jugador.rondaJugando = null;
         }
 
-        for(Jugador jugador1 : jugadoresEnLaRonda){
-            if(jugador1 instanceof JugadorIA){
+        for (Jugador jugador1 : jugadoresEnLaRonda) {
+            if (jugador1 instanceof JugadorIA) {
                 ((JugadorIA) jugador1).finTurno(jugador, jugador.getEstado().getCartaDescartada());
             }
         }
@@ -221,6 +230,10 @@ public class Ronda {
 
     public boolean mazoVacio() {
         return mazo.isEmpty();
+    }
+
+    public int cantCartas() {
+        return mazo.size();
     }
 
     //@TestOnly

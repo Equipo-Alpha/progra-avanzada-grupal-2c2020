@@ -84,27 +84,33 @@ public class PanelSala extends JPanel implements Drawable {
         botonAgregarBot1.addActionListener(actionEvent -> {
             if (bot1Agregado) {
                 sala.eliminarJugador(bot1);
+                LoveLetter.handler.removeTickableObject(bot1);
                 bot1Agregado = false;
             } else {
                 sala.agregarJugador(bot1);
+                bot1.registrar();
                 bot1Agregado = true;
             }
         });
         botonAgregarBot2.addActionListener(actionEvent -> {
             if (bot2Agregado) {
                 sala.eliminarJugador(bot2);
+                LoveLetter.handler.removeTickableObject(bot2);
                 bot2Agregado = false;
             } else {
                 sala.agregarJugador(bot2);
+                bot2.registrar();
                 bot2Agregado = true;
             }
         });
         botonAgregarBot3.addActionListener(actionEvent -> {
             if (bot3Agregado) {
                 sala.eliminarJugador(bot3);
+                LoveLetter.handler.removeTickableObject(bot3);
                 bot3Agregado = false;
             } else {
                 sala.agregarJugador(bot3);
+                bot3.registrar();
                 bot3Agregado = true;
             }
         });

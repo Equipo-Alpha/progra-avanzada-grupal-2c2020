@@ -22,7 +22,19 @@ public class Handler {
         this.tickableObject.add(object);
     }
 
+    public void removeTickableObject(Tickable object) {
+        if (!this.tickableObject.contains(object)) return;
+
+        this.tickableObject.remove(object);
+    }
+
     public void addDrawableObject(Drawable object) {
         this.drawableObject.add(object);
+    }
+
+    public void removeDrawableObject(Drawable object) {
+        if (!this.drawableObject.contains(object)) return;
+
+        this.drawableObject.remove(object);
     }
 }

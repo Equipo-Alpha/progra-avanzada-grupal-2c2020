@@ -2,11 +2,14 @@ package equipoalpha.loveletter.jugador;
 
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
+import equipoalpha.loveletter.pantalla.Imagenes;
 import equipoalpha.loveletter.partida.Partida;
 import equipoalpha.loveletter.partida.Ronda;
 import equipoalpha.loveletter.partida.Sala;
 import equipoalpha.loveletter.partida.eventos.EventosPartida;
 import equipoalpha.loveletter.util.excepcion.JugadorNoValido;
+
+import javax.swing.*;
 
 public class Jugador {
 
@@ -43,9 +46,12 @@ public class Jugador {
      */
     public int cantSimbolosAfecto;
 
+    public ImageIcon icono;
+
     public Jugador(String nombre) {
         this.nombre = nombre;
         this.facade = new JugadorFacade(this);
+        this.icono = Imagenes.iconoPrincipe;
     }
 
     /**

@@ -16,7 +16,7 @@ public class LoveLetter implements Runnable {
     private final int SECOND = 1000;
     private final int FRAMES_PER_SECOND = 60;
     private final int SKIP_FRAMES = SECOND / FRAMES_PER_SECOND;
-    private final int TICKS_PER_SECOND = 60;
+    private final int TICKS_PER_SECOND = 20;
     public final int SKIP_TICKS = SECOND / TICKS_PER_SECOND;
     public int loops = 0;
     public int fps = 0;
