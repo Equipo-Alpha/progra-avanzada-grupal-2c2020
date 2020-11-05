@@ -211,13 +211,18 @@ public class PanelPartida extends JPanel implements Drawable {
             if (jugador.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDO) {
                 botonCarta1.setEnabled(true);
                 botonCarta2.setEnabled(true);
+            } else if (jugador.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDOCONDESA) {
+                if (jugador.carta1.getTipo() == CartaTipo.CONDESA) {
+                    botonCarta1.setEnabled(true);
+                    botonCarta2.setEnabled(false);
+                }
+                else {
+                    botonCarta1.setEnabled(false);
+                    botonCarta2.setEnabled(true);
+                }
             } else {
                 botonCarta1.setEnabled(false);
                 botonCarta2.setEnabled(false);
-            }
-
-            if (jugador.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDOCONDESA) {
-                botonCarta2.setEnabled(true);
             }
 
             if (jugador.getEstado().getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR) {
@@ -245,6 +250,8 @@ public class PanelPartida extends JPanel implements Drawable {
         } else {
             botonCarta1.setVisible(false);
             botonCarta2.setVisible(false);
+            panelAdivinarCarta.setVisible(false);
+            panelElegirJugador.setVisible(false);
         }
 
         this.jugadoresAdibujar.remove(jugador); // ya me dibuje

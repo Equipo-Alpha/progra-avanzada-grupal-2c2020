@@ -205,10 +205,6 @@ public class Jugador {
     public void salirSala() {
         if (salaActual == null)
             return;
-        if (partidaJugando != null) {
-            this.rondaJugando.jugadoresEnLaRonda.remove(this);
-            this.rondaJugando = null;
-        }
         this.salaActual.eliminarJugador(this);
     }
 

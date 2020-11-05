@@ -71,7 +71,11 @@ public class Sala {
     }
 
     public void eliminarJugador(Jugador jugadorAEliminar) {
+        if (partida != null && partida.rondaActual.jugadoresEnLaRonda.contains(jugadorAEliminar)) {
+            partida.rondaActual.eliminarJugador(jugadorAEliminar);
+        }
         jugadores.remove(jugadorAEliminar);
+        jugadorAEliminar.partidaJugando = null;
         jugadorAEliminar.salaActual = null;
     }
 
