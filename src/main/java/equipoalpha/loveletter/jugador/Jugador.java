@@ -171,13 +171,19 @@ public class Jugador {
     }
 
     /**
-     * LLamado por varias cartas al ser descartadas. Ve la carta que el jugador
+     * LLamado por el sacerdote al ser descartado. Ve la carta que el jugador
      * pasado por parametro tiene.
      *
      * @param jugador jugador al cual this le ve las cartas
      */
     public void verCarta(Jugador jugador) {
-        System.out.println(this + " ve la carta de " + jugador + ":" + jugador.carta1);
+        facade.viendoCarta(jugador.carta1);
+    }
+
+    public void terminarDeVer() {
+        if (this.facade.getEstadoActual() == EstadosJugador.VIENDOCARTA) {
+            rondaJugando.onFinalizarDescarte(this);
+        }
     }
 
     /**

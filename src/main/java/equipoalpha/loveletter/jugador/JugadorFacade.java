@@ -20,6 +20,7 @@ public class JugadorFacade {
     private Carta cartaDescartada;
     private Jugador jugadorElegido;
     private CartaTipo cartaAdivinada;
+    private Carta cartaViendo;
 
     public JugadorFacade(Jugador jugador) {
         this.estadoActual = null;
@@ -60,6 +61,11 @@ public class JugadorFacade {
         ejecutar(EventosJugador.Nombre.CARTAADIVINADA);
     }
 
+    public void viendoCarta(Carta carta) {
+        this.cartaViendo = carta;
+        estadoActual = EstadosJugador.VIENDOCARTA;
+    }
+
     public Carta getCartaDescartada() {
         return cartaDescartada;
     }
@@ -72,10 +78,15 @@ public class JugadorFacade {
         return cartaAdivinada;
     }
 
+    public Carta getCartaViendo() {
+        return cartaViendo;
+    }
+
     public void resetElecciones() {
         this.cartaDescartada = null;
         this.jugadorElegido = null;
         this.cartaAdivinada = null;
+        this.cartaViendo = null;
     }
 
     public Jugador getJugador() {

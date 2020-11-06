@@ -47,10 +47,8 @@ public class Carta implements Comparable<Carta> {
         switch (tipo) {
             case SACERDOTE:
                 jugadorQueDescarto.verCarta(jugadorElegido);
-                break;
+                return;
             case BARON:
-                jugadorElegido.verCarta(jugadorQueDescarto);
-                jugadorQueDescarto.verCarta(jugadorElegido);
                 ronda.determinarCartaMayor(jugadorQueDescarto, jugadorElegido);
                 break;
             case PRINCIPE:

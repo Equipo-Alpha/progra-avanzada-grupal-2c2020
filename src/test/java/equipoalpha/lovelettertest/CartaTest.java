@@ -71,6 +71,7 @@ public class CartaTest {
         jugador1.onComienzoTurno(new Carta(CartaTipo.SACERDOTE));
         jugador1.descartarCarta2();
         jugador1.elegirJugador(jugador2);
+        Assert.assertEquals(EstadosJugador.VIENDOCARTA, jugador1.getEstado().getEstadoActual());
     }
 
     @Test

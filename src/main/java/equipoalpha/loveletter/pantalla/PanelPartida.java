@@ -31,7 +31,10 @@ public class PanelPartida extends JPanel implements Drawable {
     private JComboBox<CartaTipo> cartaAdivinada = new JComboBox<>();
     private JButton botonConfirmarCarta = new JButton("Confirmar");
     private JPanel panelAdivinarCarta;
-    private boolean mostrarPanelJugador = true, mostrarPanelCarta = true;
+    private JButton botonCartaViendo = new JButton();
+    private JButton botonTerminarDeVer = new JButton("Terminar de ver");
+    private JPanel panelViendoCarta;
+    private boolean mostrarPanelJugador = true, mostrarPanelCarta = true, mostrarPanelViendo;
 
     private JButton botonIconoJugador;
     private JTextArea datosJugador = new JTextArea();
@@ -158,8 +161,17 @@ public class PanelPartida extends JPanel implements Drawable {
         botonConfirmarCarta.addActionListener(actionEvent -> {
             jugador.elegirCarta(cartaAdivinada.getItemAt(cartaAdivinada.getSelectedIndex()));
         });
+
+        panelViendoCarta = new JPanel();
+        panelViendoCarta.setVisible(false);
+        panelViendoCarta.setBackground(new Color(0, 0, 0, 255));
+        panelViendoCarta.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 255, 255, 255)));
+        panelViendoCarta.add(botonTerminarDeVer);
+        panelViendoCarta.add(botonCartaViendo);
+        botonTerminarDeVer.addActionListener(actionEvent -> jugador.terminarDeVer());
         add(panelElegirJugador);
         add(panelAdivinarCarta);
+        add(panelViendoCarta);
 
         add(datosJugador);
         add(datosJ1);
@@ -251,11 +263,24 @@ public class PanelPartida extends JPanel implements Drawable {
                 mostrarPanelCarta = true;
             }
 
+            if (jugador.getEstado().getEstadoActual() == EstadosJugador.VIENDOCARTA) {
+                if (mostrarPanelViendo) {
+                    panelViendoCarta.setVisible(true);
+                    panelViendoCarta.requestFocus();
+                    botonCartaViendo.setIcon(new ImageIcon(jugador.getEstado().getCartaViendo().getImagen()));
+                    mostrarPanelViendo = false;
+                }
+            } else {
+                panelViendoCarta.setVisible(false);
+                mostrarPanelViendo = true;
+            }
+
         } else {
             botonCarta1.setVisible(false);
             botonCarta2.setVisible(false);
             panelAdivinarCarta.setVisible(false);
             panelElegirJugador.setVisible(false);
+            panelViendoCarta.setVisible(false);
         }
 
         this.jugadoresAdibujar.remove(jugador); // ya me dibuje
@@ -361,6 +386,9 @@ public class PanelPartida extends JPanel implements Drawable {
         cartaAdivinada.setBounds(100, 150, 200, 50);
         botonConfirmarCarta.setBounds(100, 250, 200, 50);
         panelAdivinarCarta.setBounds(300, 150, 400, 400);
+        botonCartaViendo.setBounds(125, 40, 150, 210);
+        botonTerminarDeVer.setBounds(100, 270, 200, 50);
+        panelViendoCarta.setBounds(300, 150, 400, 400);
 
         if (sala.partida != null && !sala.partida.partidaEnCurso && seleccionando) {
             seleccionando = false;

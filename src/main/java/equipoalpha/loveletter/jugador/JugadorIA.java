@@ -243,6 +243,7 @@ public class JugadorIA extends Jugador implements Tickable {
     @Override
     public void verCarta(Jugador jugador) {
         cartasConocidas.put(jugador, jugador.carta1.getTipo());
+        rondaJugando.onFinalizarDescarte(this);
     }
 
     public void inicioRonda() {
