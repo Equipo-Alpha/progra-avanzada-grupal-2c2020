@@ -90,6 +90,7 @@ public class Carta implements Comparable<Carta> {
     private void agregarAlMapa(Ronda ronda, Jugador jugador) {
         agregarAlMapa(ronda, jugador, this);
     }
+
     private void agregarAlMapa(Ronda ronda, Jugador jugador, Carta carta) {
         Carta cartaAAgregar = new Carta(carta.tipo);
         ArrayList<Carta> ALC = ronda.mapaCartasDescartadas.remove(jugador);
@@ -103,10 +104,6 @@ public class Carta implements Comparable<Carta> {
 
     public BufferedImage getImagen() {
         return tipo.imagen;
-    }
-
-    public BufferedImage getImagenP() {
-        return tipo.imagenP;
     }
 
     @Override

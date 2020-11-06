@@ -7,6 +7,11 @@ import java.util.ArrayList;
 
 public class Partida {
     /**
+     * Cantidad de simbolos de afecto que en total se pueden repartir durante la
+     * partida
+     */
+    private final int cantSimbolosAfecto;
+    /**
      * El jugador que creo la partida
      */
     public Jugador creador;
@@ -34,11 +39,6 @@ public class Partida {
      * anterior. En el caso de terminarse la partida este jugador seria el ganador.
      */
     protected Jugador jugadorMano;
-    /**
-     * Cantidad de simbolos de afecto que en total se pueden repartir durante la
-     * partida
-     */
-    private int cantSimbolosAfecto = 0;
 
     public Partida(Jugador jugador, ArrayList<Jugador> jugadores, Jugador jugadorMano, int cantSimbolosAfecto) {
         this.creador = jugador;
@@ -52,6 +52,7 @@ public class Partida {
 
     public void initPartida() {
         partidaEnCurso = true;
+        ronda = 0;
 
         for (Jugador jugador : jugadores) {
             jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
@@ -90,6 +91,7 @@ public class Partida {
      */
     private void onFinalizarPartida(Jugador ganadorPartida) {
         partidaEnCurso = false;
+        System.out.println("El ganador de la partida es: " + ganadorPartida);
     }
 
     /**
