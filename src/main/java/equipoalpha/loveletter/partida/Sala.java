@@ -1,14 +1,16 @@
 package equipoalpha.loveletter.partida;
 
+import equipoalpha.loveletter.LoveLetter;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.eventos.ConfirmarInicioEvento;
 import equipoalpha.loveletter.partida.eventos.EventoObservado;
 import equipoalpha.loveletter.partida.eventos.EventosPartida;
 import equipoalpha.loveletter.partida.eventos.EventosPartidaManager;
+import equipoalpha.loveletter.util.Tickable;
 
 import java.util.ArrayList;
 
-public class Sala {
+public class Sala implements Tickable {
     public final String nombre;
     public final EventosPartidaManager eventos;
     public Jugador creador;
@@ -16,6 +18,10 @@ public class Sala {
     public Partida partida;
     private Integer cantSimbolosAfecto;
     private Jugador jugadorMano;
+    /**
+     * Determina si la partida debe terminar si el creador la abandona, por defecto true
+     */
+    private Boolean creadorNull = true;
 
     public Sala(String nombre, Jugador creador) {
         this.nombre = nombre;
@@ -25,6 +31,8 @@ public class Sala {
         this.eventos = new EventosPartidaManager();
         EventoObservado confirmarInicio = new ConfirmarInicioEvento(this);
         eventos.registrar(EventosPartida.PEDIRCONFIRMACION, confirmarInicio);
+        if (LoveLetter.handler != null) // malditos tests
+            registrar();
     }
 
     public void crearPartida() {
@@ -52,6 +60,10 @@ public class Sala {
         this.jugadorMano = jugadorMano;
     }
 
+    public void setCreadorNull(Boolean creadorNull) {
+        this.creadorNull = creadorNull;
+    }
+
     public boolean isConfigurada() {
         return jugadorMano != null && cantSimbolosAfecto != null;
     }
@@ -77,6 +89,22 @@ public class Sala {
         jugadores.remove(jugadorAEliminar);
         jugadorAEliminar.partidaJugando = null;
         jugadorAEliminar.salaActual = null;
+        if (this.creador == jugadorAEliminar) {
+            this.creador = null;
+            if (!this.creadorNull) {
+                this.creador = jugadores.get(0);
+            }
+        }
     }
 
+    @Override
+    public void tick() {
+        if (this.creador == null) {
+            // TODO para cuando sea server avisarle a cada jugador porque termino la partida
+            ArrayList<Jugador> nJugadores = new ArrayList<>(this.jugadores);
+            nJugadores.forEach(Jugador::terminarAcciones);
+            nJugadores.forEach(this::eliminarJugador);
+            nJugadores.clear();
+        }
+    }
 }

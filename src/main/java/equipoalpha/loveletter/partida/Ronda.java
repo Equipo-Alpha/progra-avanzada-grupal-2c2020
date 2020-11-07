@@ -137,11 +137,26 @@ public class Ronda {
     public void eliminarJugador(Jugador jugador) {
         ArrayList<Carta> ALC = mapaCartasDescartadas.remove(jugador);
         ALC.add(jugador.carta1);
+        for (Jugador j : this.jugadoresEnLaRonda)
+            if (j instanceof JugadorIA)
+                ((JugadorIA) j).agregarCartaJugadorEliminado(jugador.carta1);
+
+        if (jugador.carta2 != null) {
+            ALC.add(jugador.carta2);
+            for (Jugador j : this.jugadoresEnLaRonda)
+                if (j instanceof JugadorIA)
+                    ((JugadorIA) j).agregarCartaJugadorEliminado(jugador.carta2);
+        }
         mapaCartasDescartadas.put(jugador, ALC);
         jugadoresEnLaRonda.remove(jugador);
         mapaCartasEliminadas.remove(jugador);
         jugador.rondaJugando = null;
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
+    }
+
+    public void eliminarJugadorEnTurno(Jugador jugador) {
+        eliminarJugador(jugador);
+        onFinalizarDescarte(jugador);
     }
 
     public void determinarCartaMayor(Jugador jugador1, Jugador jugador2) {
@@ -171,15 +186,6 @@ public class Ronda {
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
         jugador.getEstado().resetElecciones();
 
-        //si el jugador descarto el principe sale de este evento para que
-        //el jugador elegido pueda descartar su carta
-        for (Jugador j : jugadoresEnLaRonda) {
-            if (j.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDO ||
-                    j.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDOCONDESA) {
-                return;
-            }
-        }
-
         if (rondaTerminada()) {
             onRondaTerminada();
             return;
@@ -198,7 +204,6 @@ public class Ronda {
         } while (!jugadoresEnLaRonda.contains(jugadorEnTurno));
 
         jugadorEnTurno.onComienzoTurno(darCarta());
-
     }
 
     /**

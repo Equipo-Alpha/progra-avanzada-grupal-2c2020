@@ -211,7 +211,15 @@ public class Jugador {
     public void salirSala() {
         if (salaActual == null)
             return;
+        if (this.facade.getEstadoActual() != EstadosJugador.ESPERANDO) {
+            this.rondaJugando.eliminarJugadorEnTurno(this);
+        }
         this.salaActual.eliminarJugador(this);
+    }
+
+    public void terminarAcciones() {
+        this.facade.resetElecciones();
+        this.facade.setEstadoActual(EstadosJugador.ESPERANDO);
     }
 
     @Override

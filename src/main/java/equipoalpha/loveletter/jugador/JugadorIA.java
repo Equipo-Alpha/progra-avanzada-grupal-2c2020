@@ -11,7 +11,6 @@ import java.util.*;
 import static java.lang.System.exit;
 
 public class JugadorIA extends Jugador implements Tickable {
-    private final Map<Jugador, ArrayList<Carta>> cartasJugadas = new HashMap<>();
     private final Map<CartaTipo, Integer> cartasDescartadas = new HashMap<>();
     private final Map<Jugador, CartaTipo> cartasConocidas = new HashMap<>();
     private final Random random = new Random();
@@ -248,7 +247,6 @@ public class JugadorIA extends Jugador implements Tickable {
 
     public void inicioRonda() {
         cartasConocidas.clear();
-        cartasJugadas.clear();
         cartasDescartadas.clear();
 
         for (CartaTipo tipo : CartaTipo.values()) {
@@ -261,23 +259,16 @@ public class JugadorIA extends Jugador implements Tickable {
 
     public void finTurno(Jugador jugador, Carta carta) {
         if (jugador.equals(this)) return;
+        if (carta == null) return;
 
         int cant = cartasDescartadas.remove(carta.getTipo());
         cartasDescartadas.put(carta.getTipo(), ++cant);
-        ArrayList<Carta> array = cartasJugadas.getOrDefault(jugador, new ArrayList<>());
-        array.add(carta);
-        cartasJugadas.put(jugador, array);
         if (cartasConocidas.get(jugador) == carta.getTipo()) cartasConocidas.remove(jugador);
-        recalcularCartasConocidas();
     }
 
-    private void recalcularCartasConocidas() {
-        ArrayList<CartaTipo> arrayCartasEnJuego = new ArrayList<>();
-        cartasDescartadas.forEach((cartaTipo, cant) -> {
-            if (cartaTipo.cantCartas < cant) {
-                arrayCartasEnJuego.add(cartaTipo);
-            }
-        });
+    public void agregarCartaJugadorEliminado(Carta carta) {
+        int cant = cartasDescartadas.remove(carta.getTipo());
+        cartasDescartadas.put(carta.getTipo(), ++cant);
     }
 
     @Override

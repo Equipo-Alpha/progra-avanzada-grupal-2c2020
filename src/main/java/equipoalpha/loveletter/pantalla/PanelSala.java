@@ -9,6 +9,7 @@ import equipoalpha.loveletter.util.Drawable;
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
+import java.util.function.Consumer;
 
 public class PanelSala extends JPanel implements Drawable {
     private static final long serialVersionUID = 4L;
@@ -18,8 +19,12 @@ public class PanelSala extends JPanel implements Drawable {
     private final JButton botonJugador;
     private final JButton botonSetCondiciones;
     private final JPanel panelSetCondiciones;
+    private final JTextArea labelSimbolos;
     private final JComboBox<Integer> simbolosAfecto = new JComboBox<>();
+    private final JTextArea labelJugadorMano;
     private final JComboBox<Jugador> jugadorMano = new JComboBox<>();
+    private final JTextArea labelCreadorNull;
+    private final JComboBox<Boolean> creadorNull = new JComboBox<>();
     private final JButton aceptarConfiguracion;
     private final JButton botonEmpezarPartida;
     private final JButton botonAgregarBot1;
@@ -58,19 +63,37 @@ public class PanelSala extends JPanel implements Drawable {
         botonSalir.setFont(buttonFont);
         panelSetCondiciones = new JPanel();
         panelSetCondiciones.setVisible(false);
-        panelSetCondiciones.setBackground(new Color(0, 0, 0, 255));
-        panelSetCondiciones.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 255, 255, 255)));
+        panelSetCondiciones.setBackground(Color.BLACK);
+        panelSetCondiciones.setBorder(new BorderUIResource.LineBorderUIResource(Color.WHITE));
         simbolosAfecto.addItem(2);
         simbolosAfecto.addItem(3);
         simbolosAfecto.addItem(4);
         simbolosAfecto.addItem(5);
         simbolosAfecto.addItem(6);
         simbolosAfecto.addItem(7);
-        simbolosAfecto.setSize(200, 50);
-        jugadorMano.setSize(200, 50);
+        creadorNull.addItem(true);
+        creadorNull.addItem(false);
+        Font labelsConfiguracion = new Font("Arial", Font.BOLD, 13);
+        Color colorBg = new Color(255, 255, 255, 0);
+        Consumer<JTextArea> consumer = label -> {
+            label.setOpaque(true);
+            label.setBackground(colorBg);
+            label.setForeground(Color.WHITE);
+            label.setFont(labelsConfiguracion);
+            label.setEditable(false);
+        };
+        labelSimbolos = new JTextArea("Cantidad de simbolos\nnecesarios para ganar\nla partida");
+        consumer.accept(labelSimbolos);
+        labelJugadorMano = new JTextArea("Jugador mano para\nla primera ronda");
+        consumer.accept(labelJugadorMano);
+        labelCreadorNull = new JTextArea("Determina si la partida\ndebe terminar si el \ncreador la abandona");
+        consumer.accept(labelCreadorNull);
+
         aceptarConfiguracion.addActionListener(actionEvent -> {
-            checkYGuardarConfiguraciones(simbolosAfecto.getItemAt(simbolosAfecto.getSelectedIndex()),
-                    jugadorMano.getItemAt(jugadorMano.getSelectedIndex()));
+            checkYGuardarConfiguraciones(
+                    simbolosAfecto.getItemAt(simbolosAfecto.getSelectedIndex()),
+                    jugadorMano.getItemAt(jugadorMano.getSelectedIndex()),
+                    creadorNull.getItemAt(creadorNull.getSelectedIndex()));
             panelSetCondiciones.setVisible(false);
         });
         botonSetCondiciones.addActionListener(actionEvent -> {
@@ -127,7 +150,11 @@ public class PanelSala extends JPanel implements Drawable {
 
         panelSetCondiciones.add(simbolosAfecto);
         panelSetCondiciones.add(jugadorMano);
+        panelSetCondiciones.add(creadorNull);
         panelSetCondiciones.add(aceptarConfiguracion);
+        panelSetCondiciones.add(labelSimbolos);
+        panelSetCondiciones.add(labelJugadorMano);
+        panelSetCondiciones.add(labelCreadorNull);
         add(botonSetCondiciones);
         add(botonEmpezarPartida);
         add(panelSetCondiciones);
@@ -148,6 +175,14 @@ public class PanelSala extends JPanel implements Drawable {
         Color color = new Color(0, 0, 0, 185);
         g2.setColor(color);
         g2.fillRect(0, 0, 300, loveletter.HEIGHT);
+
+        if (panelSetCondiciones.isVisible()) {
+            botonJugador.setEnabled(false);
+            botonAgregarBot2.setEnabled(false);
+        } else {
+            botonJugador.setEnabled(true);
+            botonAgregarBot2.setEnabled(true);
+        }
 
         botonJugador.setIcon(Imagenes.iconoPrincipe);
         botonJugador.setBounds(420, 120, 150, 150);
@@ -182,9 +217,13 @@ public class PanelSala extends JPanel implements Drawable {
         botonEmpezarPartida.setBounds(50, 260, 200, 50);
         botonSalir.setBounds(50, 320, 200, 50);
 
-        simbolosAfecto.setBounds(100, 50, 200, 50);
-        jugadorMano.setBounds(100, 150, 200, 50);
-        aceptarConfiguracion.setBounds(100, 250, 200, 50);
+        labelSimbolos.setBounds(30, 31, 150, 50);
+        simbolosAfecto.setBounds(200, 30, 150, 50);
+        labelJugadorMano.setBounds(30, 140, 150, 50);
+        jugadorMano.setBounds(200, 130, 150, 50);
+        labelCreadorNull.setBounds(30, 230, 150, 50);
+        creadorNull.setBounds(200, 230, 150, 50);
+        aceptarConfiguracion.setBounds(100, 330, 200, 50);
         panelSetCondiciones.setBounds(300, 150, 400, 400);
     }
 
@@ -195,10 +234,11 @@ public class PanelSala extends JPanel implements Drawable {
         botonEmpezarPartida.setEnabled(sala.isConfigurada() && sala.jugadores.size() > 1);
     }
 
-    private void checkYGuardarConfiguraciones(Integer simbolos, Jugador mano) {
+    private void checkYGuardarConfiguraciones(Integer simbolos, Jugador mano, Boolean creadorNull) {
         // TODO realmente hacer un check y que el nombre no sea solo para asustar
         sala.setCantSimbolosAfecto(simbolos);
         sala.setJugadorMano(mano);
+        sala.setCreadorNull(creadorNull);
     }
 
     public Sala getSala() {
