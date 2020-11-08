@@ -13,6 +13,7 @@ public class Imagenes {
     public static BufferedImage backgroundPartida;
     public static ImageIcon iconoSuma = new ImageIcon();
     public static ImageIcon iconoPrincipe = new ImageIcon();
+    public static ImageIcon iconoPrincesa = new ImageIcon();
 
     public static BufferedImage guardia;
     public static BufferedImage sacerdote;
@@ -32,6 +33,7 @@ public class Imagenes {
             backgroundPartida = ImageIO.read(LoveLetter.classLoader.getResource("background.png"));
             iconoSuma.setImage(ImageIO.read(LoveLetter.classLoader.getResource("plus.png")));
             iconoPrincipe.setImage(ImageIO.read(LoveLetter.classLoader.getResource("principeIcono.png")));
+            iconoPrincesa.setImage(ImageIO.read(LoveLetter.classLoader.getResource("princesaIcono.png")));
 
             /// cartas
             guardia = ImageIO.read(LoveLetter.classLoader.getResource("guardia.png"));

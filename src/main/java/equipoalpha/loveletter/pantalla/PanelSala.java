@@ -184,7 +184,7 @@ public class PanelSala extends JPanel implements Drawable {
             botonAgregarBot2.setEnabled(true);
         }
 
-        botonJugador.setIcon(Imagenes.iconoPrincipe);
+        botonJugador.setIcon(loveletter.getJugador().icono);
         botonJugador.setBounds(420, 120, 150, 150);
 
         botonAgregarBot1.setIcon(Imagenes.iconoSuma);

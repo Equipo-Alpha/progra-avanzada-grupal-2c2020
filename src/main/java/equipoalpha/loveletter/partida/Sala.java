@@ -1,6 +1,7 @@
 package equipoalpha.loveletter.partida;
 
 import equipoalpha.loveletter.LoveLetter;
+import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.eventos.ConfirmarInicioEvento;
 import equipoalpha.loveletter.partida.eventos.EventoObservado;
@@ -84,7 +85,10 @@ public class Sala implements Tickable {
 
     public void eliminarJugador(Jugador jugadorAEliminar) {
         if (partida != null && partida.rondaActual.jugadoresEnLaRonda.contains(jugadorAEliminar)) {
-            partida.rondaActual.eliminarJugador(jugadorAEliminar);
+            if (jugadorAEliminar.getEstado().getEstadoActual() != EstadosJugador.ESPERANDO)
+                partida.rondaActual.eliminarJugadorEnTurno(jugadorAEliminar);
+            else
+                partida.rondaActual.eliminarJugador(jugadorAEliminar);
         }
         jugadores.remove(jugadorAEliminar);
         jugadorAEliminar.partidaJugando = null;

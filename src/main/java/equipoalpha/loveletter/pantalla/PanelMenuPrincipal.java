@@ -4,7 +4,9 @@ import equipoalpha.loveletter.LoveLetter;
 import equipoalpha.loveletter.util.Drawable;
 
 import javax.swing.*;
+import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
+import java.util.function.Consumer;
 
 import static java.lang.System.exit;
 
@@ -13,8 +15,15 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
     private final Ventana parent;
     private final LoveLetter loveletter;
     private final JPanel equipo;
+    private final JPanel panelConfiguracion;
+    private final JLabel labelNombre;
+    private final JLabel labelNombreInvalido;
+    private final JTextField textFieldNombre;
+    private final JLabel labelIcono;
+    private final JComboBox<String> comboBoxIcono;
+    private final JButton botonAceptar;
     private final JButton buttonCrearSala;
-    private final JButton buttonUnirseSala;
+    private final JButton buttonConfigurar;
     private final JButton buttonSalir;
     private final JButton buttonEquipo;
     private final JLabel ramiro;
@@ -30,7 +39,6 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
 
     public PanelMenuPrincipal(Ventana ventana) {
         parent = ventana;
-        setSize(1024, 768);
         loveletter = LoveLetter.getInstance();
         equipo = new JPanel();
         equipo.setBackground(new Color(78, 73, 73, 225));
@@ -67,22 +75,67 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         mati.setForeground(Color.WHITE);
         equipo.add(mati);
 
+        panelConfiguracion = new JPanel();
+        panelConfiguracion.setVisible(false);
+        panelConfiguracion.setBackground(Color.BLACK);
+        panelConfiguracion.setBorder(new BorderUIResource.LineBorderUIResource(Color.WHITE));
+        add(panelConfiguracion);
+
+        Font labelsConfiguracion = new Font("Arial", Font.BOLD, 16);
+        labelNombre = new JLabel("Nombre: ");
+        labelNombre.setFont(labelsConfiguracion);
+        labelNombre.setForeground(Color.WHITE);
+        panelConfiguracion.add(labelNombre);
+        labelIcono = new JLabel("Icono: ");
+        labelIcono.setFont(labelsConfiguracion);
+        labelIcono.setForeground(Color.WHITE);
+        panelConfiguracion.add(labelIcono);
+        labelNombreInvalido = new JLabel("Nombre invalido");
+        labelNombreInvalido.setFont(labelsConfiguracion);
+        labelNombreInvalido.setForeground(Color.WHITE);
+        labelNombreInvalido.setVisible(false);
+        panelConfiguracion.add(labelNombreInvalido);
+        textFieldNombre = new JTextField("Test");
+        panelConfiguracion.add(textFieldNombre);
+        botonAceptar = new JButton("Aceptar");
+        botonAceptar.setFont(labelsConfiguracion);
+        panelConfiguracion.add(botonAceptar);
+        comboBoxIcono = new JComboBox<>();
+        comboBoxIcono.addItem("Principe");
+        comboBoxIcono.addItem("Princesa");
+        panelConfiguracion.add(comboBoxIcono);
+
         isExpanding = isMaxSize = isMinSize = isAchicandose = moviendoCentro = false;
         centroX = (loveletter.WIDTH / 2) - 200;
         buttonCrearSala = new JButton("Crear sala");
-        buttonUnirseSala = new JButton("Unirse sala");
+        buttonConfigurar = new JButton("Configuración");
         buttonSalir = new JButton("Salir");
         buttonEquipo = new JButton("Miembros");
         Font buttonFont = new Font("Arial", Font.BOLD, 26);
         buttonCrearSala.setFont(buttonFont);
-        buttonUnirseSala.setFont(buttonFont);
+        buttonConfigurar.setFont(buttonFont);
         buttonSalir.setFont(buttonFont);
         buttonFont = new Font("Arial", Font.PLAIN, 14);
         buttonEquipo.setFont(buttonFont);
         add(buttonCrearSala);
-        add(buttonUnirseSala);
+        add(buttonConfigurar);
         add(buttonSalir);
         add(buttonEquipo);
+
+        buttonConfigurar.addActionListener(actionEvent -> {
+            panelConfiguracion.setVisible(true);
+            panelConfiguracion.requestFocus();
+        });
+
+        botonAceptar.addActionListener(actionEvent -> {
+            if (textFieldNombre.getText().isEmpty()) {
+                labelNombreInvalido.setVisible(true);
+            } else {
+                labelNombreInvalido.setVisible(false);
+                this.cambiarConfiguracion(textFieldNombre.getText(), comboBoxIcono.getItemAt(comboBoxIcono.getSelectedIndex()));
+                panelConfiguracion.setVisible(false);
+            }
+        });
 
         buttonEquipo.addActionListener(actionEvent -> {
             if (!equipo.isVisible()) {
@@ -111,6 +164,16 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
 
         g2.drawImage(Imagenes.background, null, 0, 0);
 
+        if (panelConfiguracion.isVisible()) {
+            buttonCrearSala.setEnabled(false);
+            buttonSalir.setEnabled(false);
+            buttonConfigurar.setEnabled(false);
+        } else {
+            buttonCrearSala.setEnabled(true);
+            buttonSalir.setEnabled(true);
+            buttonConfigurar.setEnabled(true);
+        }
+
         if (moviendoCentro) {
             moverCentro(g2);
         } else {
@@ -123,7 +186,7 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
             g2.setFont(new Font("Arial", Font.BOLD, 24));
             g2.drawString("Bienvenido " + loveletter.getJugador(), 25, 700);
 
-            buttonUnirseSala.setBounds(360, 280, 300, 64);
+            buttonConfigurar.setBounds(360, 280, 300, 64);
             buttonCrearSala.setBounds(360, 380, 300, 64);
             buttonSalir.setBounds(360, 480, 300, 64);
         }
@@ -164,6 +227,14 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
             g2.setFont(new Font("Dialog", Font.BOLD, 16));
             g2.drawString("FPS: " + loveletter.fps + "", 20, 25);
         }
+
+        labelNombre.setBounds(50, 60, 150, 50);
+        textFieldNombre.setBounds(190, 60, 150, 50);
+        labelIcono.setBounds(50, 150, 150, 50);
+        comboBoxIcono.setBounds(190, 150, 150, 50);
+        botonAceptar.setBounds(125, 240, 150, 50);
+        labelNombreInvalido.setBounds(125, 300, 150, 50);
+        panelConfiguracion.setBounds(312, 150, 400, 400);
     }
 
     @Override
@@ -203,5 +274,13 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         centroX -= 8;
         if (centroX > 10) g2.fillRect(centroX, 0, 400, loveletter.HEIGHT);
         else parent.onCrearSala(this);
+    }
+
+    private void cambiarConfiguracion(String nombre, String icono) {
+        loveletter.getJugador().nombre = nombre;
+        if (icono.equals("Principe"))
+            loveletter.getJugador().icono = Imagenes.iconoPrincipe;
+        else
+            loveletter.getJugador().icono = Imagenes.iconoPrincesa;
     }
 }
