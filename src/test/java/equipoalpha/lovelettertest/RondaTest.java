@@ -27,6 +27,7 @@ public class RondaTest {
 
         sala.setCantSimbolosAfecto(5);
         sala.setJugadorMano(jugador3);
+        sala.setCreadorNull(false);
         sala.crearPartida();
         this.partida = sala.partida;
         partida.initPartida();
@@ -106,5 +107,15 @@ public class RondaTest {
         //gana el jugador2 descarto mas cartas
         Assert.assertEquals(1, jugador2.cantSimbolosAfecto); // recibe 1 simbolo
         Assert.assertEquals(jugador2, partida.getJugadorMano()); // y es la mano de la siguiente ronda
+    }
+
+    @Test
+    public void eliminarJugadorEnTurno() {
+        Assert.assertEquals(jugador3, partida.rondaActual.jugadorEnTurno);
+        Assert.assertNotEquals(EstadosJugador.ESPERANDO, jugador3.getEstado().getEstadoActual());
+        jugador3.salirSala();
+        Assert.assertFalse(partida.rondaActual.jugadoresEnLaRonda.contains(jugador3));
+        Assert.assertNotEquals(jugador3, partida.rondaActual.jugadorEnTurno);
+        Assert.assertEquals(EstadosJugador.ESPERANDO, jugador3.getEstado().getEstadoActual());
     }
 }

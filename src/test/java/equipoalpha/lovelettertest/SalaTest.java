@@ -49,6 +49,11 @@ public class SalaTest {
 
     @Test
     public void isConfigurada() {
+        Assert.assertFalse(sala.isConfigurada());
+        sala.setJugadorMano(jugador1);
+        Assert.assertFalse(sala.isConfigurada());
+        sala.setCantSimbolosAfecto(5);
+        Assert.assertTrue(sala.isConfigurada());
     }
 
     @Test
@@ -59,5 +64,15 @@ public class SalaTest {
 
     @Test
     public void eliminarJugador() {
+        sala.agregarJugador(jugador2);
+        sala.setCreadorNull(false);
+        Assert.assertEquals(jugador1, sala.creador);
+        jugador1.salirSala();
+        Assert.assertEquals(jugador2, sala.creador);
+        sala.agregarJugador(jugador1);
+        sala.setCreadorNull(true);
+        jugador2.salirSala();
+        sala.tick();
+        Assert.assertNull(jugador1.salaActual);
     }
 }

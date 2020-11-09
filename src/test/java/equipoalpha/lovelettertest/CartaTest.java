@@ -75,7 +75,7 @@ public class CartaTest {
     }
 
     @Test
-    public void testBaron() throws JugadorNoValido {
+    public void testBaronGana() throws JugadorNoValido {
         jugador1.carta1 = new Carta(CartaTipo.REY);
         jugador2.carta1 = new Carta(CartaTipo.GUARDIA);
         jugador1.onComienzoTurno(new Carta(CartaTipo.BARON));
@@ -84,6 +84,18 @@ public class CartaTest {
 
         Assert.assertFalse(partida.rondaActual.jugadoresEnLaRonda.contains(jugador2));
         Assert.assertNull(jugador2.rondaJugando);
+    }
+
+    @Test
+    public void testBaronPierde() throws JugadorNoValido {
+        jugador1.carta1 = new Carta(CartaTipo.REY);
+        jugador2.carta1 = new Carta(CartaTipo.PRINCESA);
+        jugador1.onComienzoTurno(new Carta(CartaTipo.BARON));
+        jugador1.descartarCarta2();
+        jugador1.elegirJugador(jugador2);
+
+        Assert.assertFalse(partida.rondaActual.jugadoresEnLaRonda.contains(jugador1));
+        Assert.assertNull(jugador1.rondaJugando);
     }
 
     @Test
@@ -105,6 +117,17 @@ public class CartaTest {
         Assert.assertNotEquals(EstadosJugador.ESPERANDO, jugador2.getEstado().getEstadoActual());
         Assert.assertEquals(EstadosJugador.ESPERANDO, jugador1.getEstado().getEstadoActual());
         Assert.assertEquals(EstadosJugador.ESPERANDO, jugador3.getEstado().getEstadoActual());
+    }
+
+    @Test
+    public void testPrincipeDescartaPrincesa() throws JugadorNoValido {
+        jugador1.carta1 = new Carta(CartaTipo.GUARDIA); // para que no quede descartando condesa
+        jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCIPE));
+        jugador1.descartarCarta2();
+        jugador2.carta1 = new Carta(CartaTipo.PRINCESA); // para que no quede descartando condesa
+        jugador1.elegirJugador(jugador2);
+
+        Assert.assertFalse(partida.rondaActual.jugadoresEnLaRonda.contains(jugador2));
     }
 
     @Test
@@ -131,6 +154,16 @@ public class CartaTest {
 
         Assert.assertEquals(CartaTipo.BARON, jugador1.carta1.getTipo());
         Assert.assertNotEquals(CartaTipo.BARON, jugador2.carta1.getTipo());
+    }
+
+    @Test
+    public void testCondesa() {
+        jugador1.carta1 = new Carta(CartaTipo.BARON);
+        jugador1.onComienzoTurno(new Carta(CartaTipo.CONDESA));
+        jugador1.descartarCarta1();
+        // no sucede nada
+        Assert.assertTrue(partida.rondaActual.jugadoresEnLaRonda.contains(jugador1));
+        Assert.assertTrue(partida.rondaActual.jugadoresEnLaRonda.contains(jugador2));
     }
 
     @Test
