@@ -22,34 +22,39 @@ public class PanelPartida extends JPanel implements Drawable {
     private final LoveLetter loveletter;
     private final Jugador jugador;
     private ArrayList<Jugador> jugadoresAdibujar;
-    private JButton botonCarta1;
-    private JButton botonCarta2;
-    private JButton botonAbandonar;
-    private JComboBox<Jugador> jugadorElegido = new JComboBox<>();
-    private JButton botonConfirmarJugador = new JButton("Confirmar");
-    private JPanel panelElegirJugador;
-    private JComboBox<CartaTipo> cartaAdivinada = new JComboBox<>();
-    private JButton botonConfirmarCarta = new JButton("Confirmar");
-    private JPanel panelAdivinarCarta;
-    private JButton botonCartaViendo = new JButton();
-    private JButton botonTerminarDeVer = new JButton("Terminar de ver");
-    private JPanel panelViendoCarta;
+    private final JButton botonCarta1;
+    private final JButton botonCarta2;
+    private final JButton botonAbandonar;
+    private final JComboBox<Jugador> jugadorElegido = new JComboBox<>();
+    private final JButton botonConfirmarJugador = new JButton("Confirmar");
+    private final JPanel panelElegirJugador;
+    private final JComboBox<CartaTipo> cartaAdivinada = new JComboBox<>();
+    private final JButton botonConfirmarCarta = new JButton("Confirmar");
+    private final JPanel panelAdivinarCarta;
+    private final JButton botonCartaViendo = new JButton();
+    private final JButton botonTerminarDeVer = new JButton("Terminar de ver");
+    private final JPanel panelViendoCarta;
     private boolean mostrarPanelJugador = true, mostrarPanelCarta = true, mostrarPanelViendo;
 
-    private JButton botonIconoJugador;
-    private JTextArea datosJugador = new JTextArea();
+    private final JButton botonIconoJugador;
+    private final JTextArea datosJugador = new JTextArea();
     private boolean viendoDatosJugador = false;
-    private JButton botonIconoJ1;
-    private JTextArea datosJ1 = new JTextArea();
+    private final JButton botonIconoJ1;
+    private final JTextArea datosJ1 = new JTextArea();
     private boolean viendoDatosJ1 = false;
-    private JButton botonIconoJ2;
-    private JTextArea datosJ2 = new JTextArea();
+    private final JButton botonIconoJ2;
+    private final JTextArea datosJ2 = new JTextArea();
     private boolean viendoDatosJ2 = false;
-    private JButton botonIconoJ3;
-    private JTextArea datosJ3 = new JTextArea();
+    private final JButton botonIconoJ3;
+    private final JTextArea datosJ3 = new JTextArea();
     private boolean viendoDatosJ3 = false;
 
     private boolean seleccionando = true;
+    private boolean animandoJ = true, animacionIsFinihedJ = false, animacionStartedJ = false;
+    private boolean animandoJ1 = true, animacionIsFinihedJ1 = false, animacionStartedJ1 = false;
+    private boolean animandoJ2 = true, animacionIsFinihedJ2 = false, animacionStartedJ2 = false;
+    private boolean animandoJ3 = true, animacionIsFinihedJ3 = false, animacionStartedJ3 = false;
+    int xIni, yIni;
 
     public PanelPartida(Ventana ventana, Sala sala) {
         this.parent = ventana;
@@ -220,10 +225,27 @@ public class PanelPartida extends JPanel implements Drawable {
             botonCarta1.setVisible(true);
             botonCarta1.setBounds(380, 500, 150, 210);
             if (jugador.carta2 != null) {
-                botonCarta2.setIcon(new ImageIcon(jugador.carta2.getImagen()));
-                botonCarta2.setBounds(530, 500, 150, 210);
-                botonCarta2.setVisible(true);
-            } else botonCarta2.setVisible(false);
+                if (animandoJ) {
+                    animacionStartedJ = true;
+                    animacionIsFinihedJ = false;
+                    animandoJ = false;
+                    botonCarta2.setVisible(false);
+                    xIni = 460; yIni = 250;
+                }
+                if (animacionStartedJ) {
+                    g2.drawImage(Imagenes.reversoPeq, null, xIni, yIni+=2);
+                    if (yIni >= 510) animacionIsFinihedJ = true;
+                }
+                if (animacionIsFinihedJ) {
+                    animacionStartedJ = false;
+                    botonCarta2.setIcon(new ImageIcon(jugador.carta2.getImagen()));
+                    botonCarta2.setBounds(530, 500, 150, 210);
+                    botonCarta2.setVisible(true);
+                }
+            } else {
+                botonCarta2.setVisible(false);
+                animandoJ = true;
+            }
 
             if (jugador.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDO) {
                 botonCarta1.setEnabled(true);
@@ -314,8 +336,21 @@ public class PanelPartida extends JPanel implements Drawable {
                     if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
                         g2.drawImage(Imagenes.reversoPeq, null, 10, 250);
                         if (jugador.carta2 != null) {
-                            g2.drawImage(Imagenes.reversoPeq, null, 80, 250);
-                        }
+                            if (animandoJ1) {
+                                animacionStartedJ1 = true;
+                                animacionIsFinihedJ1 = false;
+                                animandoJ1 = false;
+                                xIni = 430; yIni = 250;
+                            }
+                            if (animacionStartedJ1) {
+                                g2.drawImage(Imagenes.reversoPeq, null, xIni-=2, yIni);
+                                if (xIni <= 80) animacionIsFinihedJ1 = true;
+                            }
+                            if (animacionIsFinihedJ1) {
+                                animacionStartedJ1 = false;
+                                g2.drawImage(Imagenes.reversoPeq, null, 80, 250);
+                            }
+                        } else animandoJ1 = true;
                     }
                     ALC = sala.partida.rondaActual.mapaCartasDescartadas.get(jugador);
                     t = new AffineTransform();
@@ -339,8 +374,21 @@ public class PanelPartida extends JPanel implements Drawable {
                     if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
                         g2.drawImage(Imagenes.reversoPeq, null, 400, 10);
                         if (jugador.carta2 != null) {
-                            g2.drawImage(Imagenes.reversoPeq, null, 470, 10);
-                        }
+                            if (animandoJ2) {
+                                animacionStartedJ2 = true;
+                                animacionIsFinihedJ2 = false;
+                                animandoJ2 = false;
+                                xIni = 450; yIni = 250;
+                            }
+                            if (animacionStartedJ2) {
+                                g2.drawImage(Imagenes.reversoPeq, null, xIni, yIni-=2);
+                                if (yIni <= 10) animacionIsFinihedJ2 = true;
+                            }
+                            if (animacionIsFinihedJ2) {
+                                animacionStartedJ2 = false;
+                                g2.drawImage(Imagenes.reversoPeq, null, 470, 10);
+                            }
+                        } else animandoJ2 = true;
                     }
                     ALC = sala.partida.rondaActual.mapaCartasDescartadas.get(jugador);
                     t = new AffineTransform();
@@ -364,8 +412,21 @@ public class PanelPartida extends JPanel implements Drawable {
                     if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
                         g2.drawImage(Imagenes.reversoPeq, null, 925, 250);
                         if (jugador.carta2 != null) {
-                            g2.drawImage(Imagenes.reversoPeq, null, 850, 250);
-                        }
+                            if (animandoJ3) {
+                                animacionStartedJ3 = true;
+                                animacionIsFinihedJ3 = false;
+                                animandoJ3 = false;
+                                xIni = 430; yIni = 250;
+                            }
+                            if (animacionStartedJ3) {
+                                g2.drawImage(Imagenes.reversoPeq, null, xIni+=2, yIni);
+                                if (xIni >= 850) animacionIsFinihedJ3 = true;
+                            }
+                            if (animacionIsFinihedJ3) {
+                                animacionStartedJ3 = false;
+                                g2.drawImage(Imagenes.reversoPeq, null, 850, 250);
+                            }
+                        } else animandoJ3 = true;
                     }
                     ALC = sala.partida.rondaActual.mapaCartasDescartadas.get(jugador);
                     t = new AffineTransform();
