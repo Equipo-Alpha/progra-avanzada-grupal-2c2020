@@ -22,6 +22,7 @@ public class PanelPartida extends JPanel implements Drawable {
     private final LoveLetter loveletter;
     private final Jugador jugador;
     private ArrayList<Jugador> jugadoresAdibujar;
+    private AnimacionInicioRonda AIR;
     private final JButton botonCarta1;
     private final JButton botonCarta2;
     private final JButton botonAbandonar;
@@ -67,12 +68,16 @@ public class PanelPartida extends JPanel implements Drawable {
         Font font = new Font("Arial", Font.BOLD, 16);
         botonAbandonar.setFont(font);
         datosJugador.setFont(font);
+        datosJugador.setForeground(Color.WHITE);
         datosJugador.setVisible(false);
         datosJ1.setFont(font);
+        datosJ1.setForeground(Color.WHITE);
         datosJ1.setVisible(false);
         datosJ2.setFont(font);
+        datosJ2.setForeground(Color.WHITE);
         datosJ2.setVisible(false);
         datosJ3.setFont(font);
+        datosJ3.setForeground(Color.WHITE);
         datosJ3.setVisible(false);
         botonIconoJugador = new JButton();
         botonIconoJ1 = new JButton();
@@ -85,6 +90,7 @@ public class PanelPartida extends JPanel implements Drawable {
         add(botonIconoJ1);
         add(botonIconoJ2);
         add(botonIconoJ3);
+        AIR = new AnimacionInicioRonda(sala);
 
         botonCarta1.addActionListener(actionEvent -> {
             jugador.descartarCarta1();
@@ -197,8 +203,8 @@ public class PanelPartida extends JPanel implements Drawable {
 
         botonIconoJugador.setIcon(jugador.icono);
         botonIconoJugador.setBounds(700, 500, 150, 150);
-        datosJugador.setText("Nombre: " + jugador + "\n\nSimbolos: " + jugador.cantSimbolosAfecto);
-        datosJugador.setBounds(720, 435, 250, 60);
+        datosJugador.setText("Nombre: " + jugador + "\nSimbolos: " + jugador.cantSimbolosAfecto);
+        datosJugador.setBounds(720, 455, 250, 60);
         datosJugador.setOpaque(true);
         datosJugador.setBackground(new Color(255, 255, 255, 0));
         botonIconoJ1.setVisible(false);
@@ -209,18 +215,25 @@ public class PanelPartida extends JPanel implements Drawable {
         g2.setFont(new Font("Arial", Font.BOLD, 24));
         g2.drawString("RONDA NUMERO: " + sala.partida.ronda, 750, 25);
 
+        if (!sala.partida.rondaActual.turnosIniciados) {
+            panelAdivinarCarta.setVisible(false);
+            botonCarta1.setVisible(false);
+            botonCarta2.setVisible(false);
+            AIR.animar(g2);
+            return;
+        }
+
         ArrayList<Carta> ALC;
         AffineTransform t = new AffineTransform();
+        ALC = sala.partida.rondaActual.mapaCartasDescartadas.get(jugador);
+        t.translate(340, 400);
+        t.scale(0.41, 0.41);
+        for (Carta carta : ALC) {
+            g2.drawImage(carta.getImagen(), t, null);
+            t.translate(60, 0);
+        }
+
         if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
-            ALC = sala.partida.rondaActual.mapaCartasDescartadas.get(jugador);
-
-            t.translate(340, 400);
-            t.scale(0.41, 0.41);
-            for (Carta carta : ALC) {
-                g2.drawImage(carta.getImagen(), t, null);
-                t.translate(60, 0);
-            }
-
             botonCarta1.setIcon(new ImageIcon(jugador.carta1.getImagen()));
             botonCarta1.setVisible(true);
             botonCarta1.setBounds(380, 500, 150, 210);
@@ -230,6 +243,7 @@ public class PanelPartida extends JPanel implements Drawable {
                     animacionIsFinihedJ = false;
                     animandoJ = false;
                     botonCarta2.setVisible(false);
+                    botonCarta1.setEnabled(false);
                     xIni = 460; yIni = 250;
                 }
                 if (animacionStartedJ) {
@@ -241,6 +255,7 @@ public class PanelPartida extends JPanel implements Drawable {
                     botonCarta2.setIcon(new ImageIcon(jugador.carta2.getImagen()));
                     botonCarta2.setBounds(530, 500, 150, 210);
                     botonCarta2.setVisible(true);
+                    botonCarta1.setEnabled(true);
                 }
             } else {
                 botonCarta2.setVisible(false);
@@ -248,7 +263,7 @@ public class PanelPartida extends JPanel implements Drawable {
             }
 
             if (jugador.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDO) {
-                botonCarta1.setEnabled(true);
+                //botonCarta1.setEnabled(true);
                 botonCarta2.setEnabled(true);
             } else if (jugador.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDOCONDESA) {
                 if (jugador.carta1.getTipo() == CartaTipo.CONDESA) {
@@ -329,8 +344,8 @@ public class PanelPartida extends JPanel implements Drawable {
                     botonIconoJ1.setOpaque(true);
                     botonIconoJ1.setBackground(new Color(255, 255, 255, 0));
                     botonIconoJ1.setBounds(10, 140, 100, 100);
-                    datosJ1.setText("Nombre: " + jugador + "\n\nSimbolos: " + jugador.cantSimbolosAfecto);
-                    datosJ1.setBounds(10, 75, 250, 60);
+                    datosJ1.setText("Nombre: " + jugador + "\nSimbolos: " + jugador.cantSimbolosAfecto);
+                    datosJ1.setBounds(10, 95, 250, 60);
                     datosJ1.setOpaque(true);
                     datosJ1.setBackground(new Color(255, 255, 255, 0));
                     if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
@@ -367,7 +382,7 @@ public class PanelPartida extends JPanel implements Drawable {
                     botonIconoJ2.setOpaque(true);
                     botonIconoJ2.setBackground(new Color(255, 255, 255, 0));
                     botonIconoJ2.setBounds(290, 10, 100, 100);
-                    datosJ2.setText("Nombre: " + jugador + "\n\nSimbolos: " + jugador.cantSimbolosAfecto);
+                    datosJ2.setText("Nombre: " + jugador + "\nSimbolos: " + jugador.cantSimbolosAfecto);
                     datosJ2.setBounds(250, 115, 250, 60);
                     datosJ2.setOpaque(true);
                     datosJ2.setBackground(new Color(255, 255, 255, 0));
@@ -405,8 +420,8 @@ public class PanelPartida extends JPanel implements Drawable {
                     botonIconoJ3.setOpaque(true);
                     botonIconoJ3.setBackground(new Color(255, 255, 255, 0));
                     botonIconoJ3.setBounds(900, 140, 100, 100);
-                    datosJ3.setText("Nombre: " + jugador + "\n\nSimbolos: " + jugador.cantSimbolosAfecto);
-                    datosJ3.setBounds(870, 75, 250, 60);
+                    datosJ3.setText("Nombre: " + jugador + "\nSimbolos: " + jugador.cantSimbolosAfecto);
+                    datosJ3.setBounds(870, 95, 250, 60);
                     datosJ3.setOpaque(true);
                     datosJ3.setBackground(new Color(255, 255, 255, 0));
                     if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {

@@ -40,6 +40,7 @@ public class RondaTest {
 
     @Test
     public void testTurnos() {
+        partida.rondaActual.initTurnos();
         jugador1.carta1 = new Carta(CartaTipo.GUARDIA);
         jugador2.carta1 = new Carta(CartaTipo.GUARDIA);
         Assert.assertEquals(EstadosJugador.ESPERANDO, jugador1.getEstado().getEstadoActual());
@@ -111,6 +112,7 @@ public class RondaTest {
 
     @Test
     public void eliminarJugadorEnTurno() {
+        partida.rondaActual.initTurnos();
         Assert.assertEquals(jugador3, partida.rondaActual.jugadorEnTurno);
         Assert.assertNotEquals(EstadosJugador.ESPERANDO, jugador3.getEstado().getEstadoActual());
         jugador3.salirSala();

@@ -34,6 +34,7 @@ public class CartaTest {
         sala.crearPartida();
         this.partida = sala.partida;
         partida.initPartida();
+        partida.rondaActual.initTurnos();
     }
 
     @Test

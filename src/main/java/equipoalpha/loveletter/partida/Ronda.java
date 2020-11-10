@@ -35,6 +35,8 @@ public class Ronda {
      * Conjunto de 16 cartas al empezar, termina la ronda si se vacia
      */
     private LinkedList<Carta> mazo;
+    public boolean turnosIniciados;
+    public LinkedList<Jugador> ordenReparto;
 
     public Ronda(Partida partida) {
         this.partida = partida;
@@ -46,25 +48,45 @@ public class Ronda {
         this.jugadoresEnLaRonda = new ArrayList<>();
         this.mapaCartasEliminadas = new HashMap<>();
         this.mapaCartasDescartadas = new HashMap<>();
+        this.ordenReparto = new LinkedList<>();
+
+        jugadorEnTurno = partida.jugadorMano;
+
+        ListIterator<Jugador> iterador = partida.jugadores.listIterator();
+        Jugador jugadorIterando = iterador.next();
+        while (jugadorIterando != jugadorEnTurno) {
+            jugadorIterando = iterador.next();
+        }
+        do {
+            ordenReparto.add(jugadorIterando);
+            if (!iterador.hasNext()) {
+                iterador = partida.jugadores.listIterator();
+            }
+            jugadorIterando = iterador.next();
+        } while (jugadorIterando != jugadorEnTurno);
 
         // ---------Repartir Cartas--------------\\
         cartaEliminada = mazo.remove();
-        for (Jugador jugadorIterando : partida.jugadores) {
-            jugadorIterando.carta1 = mazo.remove();
-            jugadorIterando.rondaJugando = this;
-            jugadoresEnLaRonda.add(jugadorIterando);
-            jugadorIterando.getEstado().resetElecciones();
-            mapaCartasEliminadas.put(jugadorIterando, 0);
-            mapaCartasDescartadas.put(jugadorIterando, new ArrayList<>());
-            jugadorIterando.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
-            if (jugadorIterando instanceof JugadorIA) {
-                ((JugadorIA) jugadorIterando).inicioRonda();
+        for (Jugador jugador : ordenReparto) {
+            jugador.carta1 = mazo.remove();
+            jugador.rondaJugando = this;
+            jugadoresEnLaRonda.add(jugador);
+            jugador.getEstado().resetElecciones();
+            mapaCartasEliminadas.put(jugador, 0);
+            mapaCartasDescartadas.put(jugador, new ArrayList<>());
+            jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
+            if (jugador instanceof JugadorIA) {
+                ((JugadorIA) jugador).inicioRonda();
             }
         }
 
         System.out.println("Empezando Ronda");
 
-        jugadorEnTurno = partida.jugadorMano;
+        turnosIniciados = false;
+    }
+
+    public void initTurnos() {
+        turnosIniciados = true;
         jugadorEnTurno.onComienzoTurno(darCarta());
     }
 
@@ -151,6 +173,8 @@ public class Ronda {
         jugadoresEnLaRonda.remove(jugador);
         mapaCartasEliminadas.remove(jugador);
         jugador.rondaJugando = null;
+        jugador.carta1 = null;
+        jugador.carta2 = null;
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
     }
 
@@ -163,6 +187,7 @@ public class Ronda {
         if (jugador1.carta1.getTipo().fuerza > jugador2.carta1.getTipo().fuerza) {
             eliminarJugador(jugador2);
             jugador2.rondaJugando = null;
+            return;
         }
         if (jugador1.carta1.getTipo().fuerza < jugador2.carta1.getTipo().fuerza)
             eliminarJugador(jugador1);
