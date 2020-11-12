@@ -61,8 +61,6 @@ public class Jugador {
         if (salaActual != null)
             return null;
 
-        facade.setEstadoActual(EstadosJugador.CREANDOPARTIDA);
-
         return new Sala(nombre, this);
     }
 
@@ -70,13 +68,13 @@ public class Jugador {
         if (partidaJugando != null)
             return false;
 
-        facade.setEstadoActual(EstadosJugador.ESPERANDO);
+        this.facade.setEstadoActual(EstadosJugador.ESPERANDO);
 
         return sala.agregarJugador(this);
     }
 
     public void iniciarPartida() {
-        if (facade.getEstadoActual() != EstadosJugador.CREANDOPARTIDA || !salaActual.isConfigurada()) {
+        if (salaActual == null || !salaActual.creador.equals(this) || !salaActual.isConfigurada()) {
             return;
         }
 
@@ -84,15 +82,11 @@ public class Jugador {
     }
 
     public void confirmarInicio() {
-        if (this.facade.getEstadoActual() == EstadosJugador.CONFIRMANDOINICIO) {
-            salaActual.eventos.removerObservador(EventosPartida.PEDIRCONFIRMACION, this);
-        }
+        this.salaActual.eventos.removerObservador(EventosPartida.PEDIRCONFIRMACION, this);
     }
 
     public void cancelarInicio() {
-        if (this.facade.getEstadoActual() == EstadosJugador.CONFIRMANDOINICIO) {
-            salaActual.eventos.cancelarEvento(EventosPartida.PEDIRCONFIRMACION);
-        }
+        this.salaActual.eventos.cancelarEvento(EventosPartida.PEDIRCONFIRMACION);
     }
 
     public void onComienzoTurno(Carta cartaRobada) {
@@ -152,8 +146,7 @@ public class Jugador {
         if (jugador.estaProtegido)
             throw new JugadorNoValido();
 
-        if (this.facade.getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR)
-            this.facade.jugadorElegido(jugador);
+        this.facade.jugadorElegido(jugador);
     }
 
     /**
@@ -163,11 +156,7 @@ public class Jugador {
      * @param cartaAdivinada la carta que adivina/elige
      */
     public void elegirCarta(CartaTipo cartaAdivinada) {
-        if (this.facade.getEstadoActual() == EstadosJugador.ADIVINANDOCARTA) {
-            if (cartaAdivinada != CartaTipo.GUARDIA) {
-                this.facade.cartaAdivinada(cartaAdivinada);
-            }
-        }
+        this.facade.cartaAdivinada(cartaAdivinada);
     }
 
     /**
@@ -177,13 +166,11 @@ public class Jugador {
      * @param jugador jugador al cual this le ve las cartas
      */
     public void verCarta(Jugador jugador) {
-        facade.viendoCarta(jugador.carta1);
+        this.facade.viendoCarta(jugador.carta1);
     }
 
     public void terminarDeVer() {
-        if (this.facade.getEstadoActual() == EstadosJugador.VIENDOCARTA) {
-            rondaJugando.onFinalizarDescarte(this);
-        }
+        this.facade.terminarDeVer();
     }
 
     /**

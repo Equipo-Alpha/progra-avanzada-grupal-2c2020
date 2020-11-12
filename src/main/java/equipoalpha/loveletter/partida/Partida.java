@@ -51,8 +51,8 @@ public class Partida {
     }
 
     public void initPartida() {
-        partidaEnCurso = true;
-        ronda = 0;
+        this.partidaEnCurso = true;
+        this.ronda = 0;
 
         for (Jugador jugador : jugadores) {
             jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
@@ -63,7 +63,7 @@ public class Partida {
         System.out.println("Empezando Partida");
 
         this.rondaActual = new Ronda(this);
-        onNuevaRonda(jugadorMano);
+        onNuevaRonda(this.jugadorMano);
     }
 
     /**
@@ -80,8 +80,8 @@ public class Partida {
             return;
         }
 
-        ronda++;
-        rondaActual.initRonda(); //empieza una nueva ronda
+        this.ronda++;
+        this.rondaActual.initRonda(); //empieza una nueva ronda
     }
 
     /**
@@ -90,7 +90,7 @@ public class Partida {
      * @param ganadorPartida el ganador de la partida
      */
     private void onFinalizarPartida(Jugador ganadorPartida) {
-        partidaEnCurso = false;
+        this.partidaEnCurso = false;
         System.out.println("El ganador de la partida es: " + ganadorPartida);
     }
 
@@ -101,17 +101,13 @@ public class Partida {
      * solo queda 1 jugador en la partida
      */
     public boolean partidaTerminada() {
-        if (jugadores.size() < 2)
+        if (this.jugadores.size() < 2)
             return true;
         for (Jugador jugador : this.jugadores) {
             if (jugador.cantSimbolosAfecto == this.cantSimbolosAfecto)
                 return true;
         }
         return false;
-    }
-
-    public int getCantSimbolosAfecto() {
-        return cantSimbolosAfecto;
     }
 
     public Jugador getJugadorMano() {

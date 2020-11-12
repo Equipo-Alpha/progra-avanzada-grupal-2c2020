@@ -31,12 +31,12 @@ public class Ronda {
      * Carta que se elimina al principio de la ronda
      */
     public Carta cartaEliminada;
+    public boolean turnosIniciados;
+    public LinkedList<Jugador> ordenReparto;
     /**
      * Conjunto de 16 cartas al empezar, termina la ronda si se vacia
      */
     private LinkedList<Carta> mazo;
-    public boolean turnosIniciados;
-    public LinkedList<Jugador> ordenReparto;
 
     public Ronda(Partida partida) {
         this.partida = partida;

@@ -15,7 +15,7 @@ public class Sala implements Tickable {
     public final String nombre;
     public final EventosPartidaManager eventos;
     public Jugador creador;
-    public ArrayList<Jugador> jugadores = new ArrayList<>();
+    public ArrayList<Jugador> jugadores;
     public Partida partida;
     private Integer cantSimbolosAfecto;
     private Jugador jugadorMano;
@@ -27,11 +27,12 @@ public class Sala implements Tickable {
     public Sala(String nombre, Jugador creador) {
         this.nombre = nombre;
         this.creador = creador;
-        creador.salaActual = this;
-        jugadores.add(creador);
+        this.creador.salaActual = this;
+        this.jugadores = new ArrayList<>();
+        this.jugadores.add(creador);
         this.eventos = new EventosPartidaManager();
         EventoObservado confirmarInicio = new ConfirmarInicioEvento(this);
-        eventos.registrar(EventosPartida.PEDIRCONFIRMACION, confirmarInicio);
+        this.eventos.registrar(EventosPartida.PEDIRCONFIRMACION, confirmarInicio);
         if (LoveLetter.handler != null) // malditos tests
             registrar();
     }
@@ -75,8 +76,8 @@ public class Sala implements Tickable {
      * @return false cuando ya hay 4 jugadores en la sala
      */
     public boolean agregarJugador(Jugador jugadorAAgregar) {
-        if (jugadores.size() < 4 && !jugadores.contains(jugadorAAgregar)) {
-            jugadores.add(jugadorAAgregar);
+        if (this.jugadores.size() < 4 && !this.jugadores.contains(jugadorAAgregar)) {
+            this.jugadores.add(jugadorAAgregar);
             jugadorAAgregar.salaActual = this;
             return true;
         }
@@ -84,19 +85,19 @@ public class Sala implements Tickable {
     }
 
     public void eliminarJugador(Jugador jugadorAEliminar) {
-        if (partida != null && partida.rondaActual.jugadoresEnLaRonda.contains(jugadorAEliminar)) {
+        if (this.partida != null && this.partida.rondaActual.jugadoresEnLaRonda.contains(jugadorAEliminar)) {
             if (jugadorAEliminar.getEstado().getEstadoActual() != EstadosJugador.ESPERANDO)
-                partida.rondaActual.eliminarJugadorEnTurno(jugadorAEliminar);
+                this.partida.rondaActual.eliminarJugadorEnTurno(jugadorAEliminar);
             else
-                partida.rondaActual.eliminarJugador(jugadorAEliminar);
+                this.partida.rondaActual.eliminarJugador(jugadorAEliminar);
         }
-        jugadores.remove(jugadorAEliminar);
+        this.jugadores.remove(jugadorAEliminar);
         jugadorAEliminar.partidaJugando = null;
         jugadorAEliminar.salaActual = null;
         if (this.creador == jugadorAEliminar) {
             this.creador = null;
             if (!this.creadorNull) {
-                this.creador = jugadores.get(0);
+                this.creador = this.jugadores.get(0);
             }
         }
     }

@@ -1,9 +1,10 @@
 package equipoalpha.loveletter.pantalla;
 
+import equipoalpha.loveletter.LoveLetter;
+import equipoalpha.loveletter.util.Drawable;
+
 import javax.swing.*;
 import java.awt.*;
-
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 public class Ventana {
     JFrame ventana;
@@ -15,7 +16,7 @@ public class Ventana {
         PanelElegirNombre panelElegirNombre = new PanelElegirNombre(this);
         ventana.add(panelElegirNombre);
         ventana.pack();
-        ventana.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setLocationRelativeTo(null);
         ventana.setResizable(false);
         ventana.setVisible(true);
@@ -24,32 +25,35 @@ public class Ventana {
         ventana.requestFocusInWindow();
     }
 
-    public void onLogin(JPanel panelAnterior) {
+    public void onLogin(PanelElegirNombre panelAnterior) {
         PanelMenuPrincipal panelMenuPrincipal = new PanelMenuPrincipal(this);
         ventana.add(panelMenuPrincipal);
         ventana.pack();
         panelAnterior.setVisible(false);
+        LoveLetter.handler.removeDrawableObject(panelAnterior);
         panelMenuPrincipal.setVisible(true);
     }
 
-    public void onCrearSala(JPanel panelAnterior) {
+    public void onCrearSala(PanelMenuPrincipal panelAnterior) {
         PanelSala panelJuego = new PanelSala(this);
         ventana.add(panelJuego);
         ventana.pack();
         panelAnterior.setVisible(false);
+        LoveLetter.handler.removeDrawableObject(panelAnterior);
         panelJuego.setVisible(true);
     }
 
-    public void onSalirSala(JPanel panelAnterior) {
-        Component[] components = ventana.getComponents();
-        for (Component comp : components) {
-            if (comp instanceof PanelMenuPrincipal) {
-                panelAnterior.setVisible(false);
-                comp.setVisible(true);
+    public void onSalirSala(Drawable panelAnterior) {
+        Container container = ventana.getContentPane();
+        for (Component component : container.getComponents()) {
+            if (component instanceof PanelMenuPrincipal) {
+                ((JPanel) panelAnterior).setVisible(false);
+                LoveLetter.handler.removeDrawableObject(panelAnterior);
+                component.setVisible(true);
+                LoveLetter.handler.addDrawableObject((Drawable) component);
                 return;
             }
         }
-        onLogin(panelAnterior); // deberia de encontrarlo pero bueno, por las dudas
     }
 
     public void onPartidaEmpezada(PanelSala panelAnterior) {
@@ -57,19 +61,21 @@ public class Ventana {
         ventana.add(panelPartida);
         ventana.pack();
         panelAnterior.setVisible(false);
+        LoveLetter.handler.removeDrawableObject(panelAnterior);
         panelPartida.setVisible(true);
         panelPartida.getSala().partida.initPartida();
     }
 
-    public void onPartidaTerminada(JPanel panelAnterior) {
-        Component[] components = ventana.getComponents();
-        for (Component comp : components) {
-            if (comp instanceof PanelSala) {
+    public void onPartidaTerminada(PanelPartida panelAnterior) {
+        Container container = ventana.getContentPane();
+        for (Component component : container.getComponents()) {
+            if (component instanceof PanelSala) {
                 panelAnterior.setVisible(false);
-                comp.setVisible(true);
+                LoveLetter.handler.removeDrawableObject(panelAnterior);
+                component.setVisible(true);
+                LoveLetter.handler.addDrawableObject((Drawable) component);
                 return;
             }
         }
-        onCrearSala(panelAnterior); // deberia de encontrarlo pero bueno, por las dudas
     }
 }

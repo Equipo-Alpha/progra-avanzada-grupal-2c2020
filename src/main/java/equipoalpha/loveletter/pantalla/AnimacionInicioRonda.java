@@ -7,7 +7,7 @@ import equipoalpha.loveletter.partida.Sala;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class AnimacionInicioRonda{
+public class AnimacionInicioRonda {
     private final Sala sala;
     private boolean animandoCartaDescartada = true, animacionCartaIsFinished = false, animacionCartaStarted = false;
     private boolean animandoJ = false, animacionIsFinihedJ = false, animacionStartedJ = false;
@@ -24,7 +24,7 @@ public class AnimacionInicioRonda{
     }
 
     public void animar(Graphics2D g2) {
-        if(!iniciado) {
+        if (!iniciado) {
             iniciar();
             return;
         }
@@ -76,12 +76,10 @@ public class AnimacionInicioRonda{
         }
         if (animacionStartedJ1) {
             g2.drawImage(Imagenes.reversoPeq, null, 10, 610);
-//            g2.drawImage(LoveLetter.getInstance().getJugador().carta1.getImagen(), null, 380, 500);
             g2.drawImage(Imagenes.reversoPeq, null, (int) (xIni -= 2), (int) (yIni));
             if (xIni <= 10) animacionIsFinihedJ1 = true;
         }
         if (animacionIsFinihedJ1) {
-//            g2.drawImage(Imagenes.reversoPeq, null, 10, 250);
             animacionStartedJ1 = false;
             animacionIsFinihedJ1 = false;
             dibujandoJ1 = true;
@@ -98,13 +96,10 @@ public class AnimacionInicioRonda{
         }
         if (animacionStartedJ2) {
             g2.drawImage(Imagenes.reversoPeq, null, 10, 610);
-//            g2.drawImage(LoveLetter.getInstance().getJugador().carta1.getImagen(), null, 380, 500);
-//            g2.drawImage(Imagenes.reversoPeq, null, 10, 250);
             g2.drawImage(Imagenes.reversoPeq, null, (int) (xIni), (int) (yIni -= 2));
             if (yIni <= 10) animacionIsFinihedJ2 = true;
         }
         if (animacionIsFinihedJ2) {
-//            g2.drawImage(Imagenes.reversoPeq, null, 400, 10);
             animacionStartedJ2 = false;
             animacionIsFinihedJ2 = false;
             dibujandoJ2 = true;
@@ -122,14 +117,10 @@ public class AnimacionInicioRonda{
         }
         if (animacionStartedJ3) {
             g2.drawImage(Imagenes.reversoPeq, null, 10, 610);
-//            g2.drawImage(LoveLetter.getInstance().getJugador().carta1.getImagen(), null, 380, 500);
-//            g2.drawImage(Imagenes.reversoPeq, null, 10, 250);
-//            g2.drawImage(Imagenes.reversoPeq, null, 400, 10);
             g2.drawImage(Imagenes.reversoPeq, null, (int) (xIni += 2), (int) (yIni));
             if (xIni >= 925) animacionIsFinihedJ3 = true;
         }
         if (animacionIsFinihedJ3) {
-//            g2.drawImage(Imagenes.reversoPeq, null, 925, 250);
             animacionStartedJ3 = false;
             animacionIsFinihedJ3 = false;
             dibujandoJ3 = true;

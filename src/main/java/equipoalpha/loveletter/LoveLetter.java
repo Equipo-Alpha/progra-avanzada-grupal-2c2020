@@ -10,28 +10,19 @@ import javax.swing.*;
 public class LoveLetter implements Runnable {
     public static final boolean DEBUGGING = true;
     public static ClassLoader classLoader = LoveLetter.class.getClassLoader();
-    public static Handler handler;
-    private static LoveLetter instance;
+    public static Handler handler = new Handler();
+    private static final LoveLetter instance = new LoveLetter();
     public final int WIDTH = 1024, HEIGHT = 768;
-    private final int SECOND = 1000;
-    private final int FRAMES_PER_SECOND = 60;
-    private final int SKIP_FRAMES = SECOND / FRAMES_PER_SECOND;
-    private final int TICKS_PER_SECOND = 20;
-    public final int SKIP_TICKS = SECOND / TICKS_PER_SECOND;
-    public int loops = 0;
     public int fps = 0;
     private Jugador jugador;
     private Thread thread;
     private boolean running = false;
 
-    public LoveLetter() {
-        instance = this;
-        handler = new Handler();
-        Imagenes.init();
-    }
+    private LoveLetter() {}
 
     public static void main(String[] args) {
-        LoveLetter game = new LoveLetter();
+        Imagenes.init();
+        LoveLetter game = LoveLetter.getInstance();
         game.start();
         SwingUtilities.invokeLater(Ventana::new);
         game.run();
@@ -42,9 +33,9 @@ public class LoveLetter implements Runnable {
     }
 
     public synchronized void start() {
-        thread = new Thread(this, "juego");
-        thread.start();
-        running = true;
+        this.thread = new Thread(this, "juego");
+        this.thread.start();
+        this.running = true;
     }
 
     public synchronized void stop() {
@@ -58,13 +49,17 @@ public class LoveLetter implements Runnable {
 
     @Override
     public void run() {
+        final int SECOND = 1000;
+        final int TICKS_PER_SECOND = 20;
+        final int SKIP_TICKS = SECOND / TICKS_PER_SECOND;
+        final int FRAMES_PER_SECOND = 60;
+        final int SKIP_FRAMES = SECOND / FRAMES_PER_SECOND;
         long next_game_tick = System.currentTimeMillis();
         long next_game_frame = System.currentTimeMillis();
         long next_frame_calc = System.currentTimeMillis();
         int frames = 0;
-        while (running) {
+        while (this.running) {
             if (System.currentTimeMillis() > next_game_tick) {
-                loops++;
                 next_game_tick += SKIP_TICKS;
                 tick();
             }
@@ -74,7 +69,7 @@ public class LoveLetter implements Runnable {
                 render();
             }
             if (System.currentTimeMillis() > next_frame_calc) {
-                fps = frames;
+                this.fps = frames;
                 next_frame_calc += SECOND;
                 frames = 0;
             }
@@ -91,7 +86,7 @@ public class LoveLetter implements Runnable {
     }
 
     public Jugador getJugador() {
-        return this.jugador;
+        return jugador;
     }
 
     public void setJugador(Jugador jugador) {

@@ -86,7 +86,7 @@ public class PanelElegirNombre extends JPanel implements Drawable {
         return new Dimension(1024, 768);
     }
 
-    private void crearJugador(String nombre, JPanel panel) {
+    private void crearJugador(String nombre, PanelElegirNombre panel) {
         SwingWorker<Boolean, Jugador> worker = new SwingWorker<Boolean, Jugador>() {
             @Override
             protected Boolean doInBackground() throws Exception {

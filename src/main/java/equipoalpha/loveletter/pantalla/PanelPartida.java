@@ -72,17 +72,29 @@ public class PanelPartida extends JPanel implements Drawable {
         datosJugador.setVisible(false);
         datosJ1.setFont(font);
         datosJ1.setForeground(Color.WHITE);
+        datosJ1.setOpaque(true);
+        datosJ1.setBackground(new Color(255, 255, 255, 0));
         datosJ1.setVisible(false);
         datosJ2.setFont(font);
         datosJ2.setForeground(Color.WHITE);
+        datosJ2.setOpaque(true);
+        datosJ2.setBackground(new Color(255, 255, 255, 0));
         datosJ2.setVisible(false);
         datosJ3.setFont(font);
         datosJ3.setForeground(Color.WHITE);
+        datosJ3.setOpaque(true);
+        datosJ3.setBackground(new Color(255, 255, 255, 0));
         datosJ3.setVisible(false);
         botonIconoJugador = new JButton();
         botonIconoJ1 = new JButton();
+        botonIconoJ1.setOpaque(true);
+        botonIconoJ1.setBackground(new Color(255, 255, 255, 0));
         botonIconoJ2 = new JButton();
+        botonIconoJ2.setOpaque(true);
+        botonIconoJ2.setBackground(new Color(255, 255, 255, 0));
         botonIconoJ3 = new JButton();
+        botonIconoJ3.setOpaque(true);
+        botonIconoJ3.setBackground(new Color(255, 255, 255, 0));
         add(botonCarta1);
         add(botonCarta2);
         add(botonAbandonar);
@@ -152,6 +164,7 @@ public class PanelPartida extends JPanel implements Drawable {
         botonConfirmarJugador.addActionListener(actionEvent -> {
             try {
                 jugador.elegirJugador(jugadorElegido.getItemAt(jugadorElegido.getSelectedIndex()));
+                panelElegirJugador.setVisible(false);
             } catch (JugadorNoValido jugadorNoValido) {
                 jugadorNoValido.printStackTrace();
                 jugador.salirSala();
@@ -171,6 +184,7 @@ public class PanelPartida extends JPanel implements Drawable {
         panelAdivinarCarta.add(botonConfirmarCarta);
         botonConfirmarCarta.addActionListener(actionEvent -> {
             jugador.elegirCarta(cartaAdivinada.getItemAt(cartaAdivinada.getSelectedIndex()));
+            panelAdivinarCarta.setVisible(false);
         });
 
         panelViendoCarta = new JPanel();
@@ -216,7 +230,6 @@ public class PanelPartida extends JPanel implements Drawable {
         g2.drawString("RONDA NUMERO: " + sala.partida.ronda, 750, 25);
 
         if (!sala.partida.rondaActual.turnosIniciados) {
-            panelAdivinarCarta.setVisible(false);
             botonCarta1.setVisible(false);
             botonCarta2.setVisible(false);
             AIR.animar(g2);
@@ -324,7 +337,6 @@ public class PanelPartida extends JPanel implements Drawable {
 
         // mazo
         if (!sala.partida.rondaActual.mazoVacio()) {
-            //TODO buscar imagen de algun mazo tal vez?
             for (int i = 0; i < sala.partida.rondaActual.cantCartas(); i++) {
                 g2.drawImage(Imagenes.reversoPeq, null, 420 + i * 4, 230 + i * 4);
             }
@@ -341,13 +353,9 @@ public class PanelPartida extends JPanel implements Drawable {
                 case 0:
                     botonIconoJ1.setVisible(true);
                     botonIconoJ1.setIcon(jugador.icono);
-                    botonIconoJ1.setOpaque(true);
-                    botonIconoJ1.setBackground(new Color(255, 255, 255, 0));
                     botonIconoJ1.setBounds(10, 140, 100, 100);
                     datosJ1.setText("Nombre: " + jugador + "\nSimbolos: " + jugador.cantSimbolosAfecto);
                     datosJ1.setBounds(10, 95, 250, 60);
-                    datosJ1.setOpaque(true);
-                    datosJ1.setBackground(new Color(255, 255, 255, 0));
                     if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
                         g2.drawImage(Imagenes.reversoPeq, null, 10, 250);
                         if (jugador.carta2 != null) {
@@ -379,13 +387,9 @@ public class PanelPartida extends JPanel implements Drawable {
                 case 1:
                     botonIconoJ2.setVisible(true);
                     botonIconoJ2.setIcon(jugador.icono);
-                    botonIconoJ2.setOpaque(true);
-                    botonIconoJ2.setBackground(new Color(255, 255, 255, 0));
                     botonIconoJ2.setBounds(290, 10, 100, 100);
                     datosJ2.setText("Nombre: " + jugador + "\nSimbolos: " + jugador.cantSimbolosAfecto);
                     datosJ2.setBounds(250, 115, 250, 60);
-                    datosJ2.setOpaque(true);
-                    datosJ2.setBackground(new Color(255, 255, 255, 0));
                     if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
                         g2.drawImage(Imagenes.reversoPeq, null, 400, 10);
                         if (jugador.carta2 != null) {
@@ -417,13 +421,9 @@ public class PanelPartida extends JPanel implements Drawable {
                 case 2:
                     botonIconoJ3.setVisible(true);
                     botonIconoJ3.setIcon(jugador.icono);
-                    botonIconoJ3.setOpaque(true);
-                    botonIconoJ3.setBackground(new Color(255, 255, 255, 0));
                     botonIconoJ3.setBounds(900, 140, 100, 100);
                     datosJ3.setText("Nombre: " + jugador + "\nSimbolos: " + jugador.cantSimbolosAfecto);
                     datosJ3.setBounds(870, 95, 250, 60);
-                    datosJ3.setOpaque(true);
-                    datosJ3.setBackground(new Color(255, 255, 255, 0));
                     if (sala.partida.rondaActual.jugadoresEnLaRonda.contains(jugador)) {
                         g2.drawImage(Imagenes.reversoPeq, null, 925, 250);
                         if (jugador.carta2 != null) {

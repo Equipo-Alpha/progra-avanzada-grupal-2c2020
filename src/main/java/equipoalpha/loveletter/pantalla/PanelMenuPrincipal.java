@@ -272,8 +272,13 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         Color color = new Color(0, 0, 0, 185);
         g2.setColor(color);
         centroX -= 8;
-        if (centroX > 10) g2.fillRect(centroX, 0, 400, loveletter.HEIGHT);
-        else parent.onCrearSala(this);
+        if (centroX > 10)
+            g2.fillRect(centroX, 0, 400, loveletter.HEIGHT);
+        else {
+            moviendoCentro = false;
+            centroX = (loveletter.WIDTH / 2) - 200;
+            parent.onCrearSala(this);
+        }
     }
 
     private void cambiarConfiguracion(String nombre, String icono) {

@@ -52,18 +52,28 @@ public class JugadorFacade {
     }
 
     public void jugadorElegido(Jugador jugadorElegido) {
-        this.jugadorElegido = jugadorElegido;
-        ejecutar(EventosJugador.Nombre.JUGADORELEGIDO);
+        if (this.estadoActual == EstadosJugador.ELIGIENDOJUGADOR) {
+            this.jugadorElegido = jugadorElegido;
+            ejecutar(EventosJugador.Nombre.JUGADORELEGIDO);
+        }
     }
 
     public void cartaAdivinada(CartaTipo cartaAdivinada) {
-        this.cartaAdivinada = cartaAdivinada;
-        ejecutar(EventosJugador.Nombre.CARTAADIVINADA);
+        if (this.estadoActual == EstadosJugador.ADIVINANDOCARTA && cartaAdivinada != CartaTipo.GUARDIA) {
+            this.cartaAdivinada = cartaAdivinada;
+            ejecutar(EventosJugador.Nombre.CARTAADIVINADA);
+        }
     }
 
     public void viendoCarta(Carta carta) {
         this.cartaViendo = carta;
-        estadoActual = EstadosJugador.VIENDOCARTA;
+        this.estadoActual = EstadosJugador.VIENDOCARTA;
+    }
+
+    public void terminarDeVer() {
+        if (this.estadoActual == EstadosJugador.VIENDOCARTA) {
+            this.jugador.rondaJugando.onFinalizarDescarte(this.jugador);
+        }
     }
 
     public Carta getCartaDescartada() {
@@ -94,6 +104,6 @@ public class JugadorFacade {
     }
 
     public void ejecutar(EventosJugador.Nombre nombre) {
-        evento.ejecutar(nombre, jugador);
+        this.evento.ejecutar(nombre, this.jugador);
     }
 }
