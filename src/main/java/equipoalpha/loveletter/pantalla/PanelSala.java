@@ -96,7 +96,7 @@ public class PanelSala extends JPanel implements Drawable {
         consumer.accept(labelCreadorNull);
 
         aceptarConfiguracion.addActionListener(actionEvent -> {
-            checkYGuardarConfiguraciones(
+            guardarConfiguraciones(
                     simbolosAfecto.getItemAt(simbolosAfecto.getSelectedIndex()),
                     jugadorMano.getItemAt(jugadorMano.getSelectedIndex()),
                     creadorNull.getItemAt(creadorNull.getSelectedIndex()));
@@ -222,8 +222,7 @@ public class PanelSala extends JPanel implements Drawable {
         botonEmpezarPartida.setEnabled(sala.isConfigurada() && sala.jugadores.size() > 1);
     }
 
-    private void checkYGuardarConfiguraciones(Integer simbolos, Jugador mano, Boolean creadorNull) {
-        // TODO realmente hacer un check y que el nombre no sea solo para asustar
+    private void guardarConfiguraciones(Integer simbolos, Jugador mano, Boolean creadorNull) {
         sala.setCantSimbolosAfecto(simbolos);
         sala.setJugadorMano(mano);
         sala.setCreadorNull(creadorNull);

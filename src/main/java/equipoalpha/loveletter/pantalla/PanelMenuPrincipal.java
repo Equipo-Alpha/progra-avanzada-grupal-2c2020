@@ -6,7 +6,6 @@ import equipoalpha.loveletter.util.Drawable;
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
-import java.util.function.Consumer;
 
 import static java.lang.System.exit;
 

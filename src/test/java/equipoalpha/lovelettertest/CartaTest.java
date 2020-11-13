@@ -76,13 +76,26 @@ public class CartaTest {
     }
 
     @Test
+    public void testBaron() throws JugadorNoValido {
+        jugador1.carta1 = new Carta(CartaTipo.REY);
+        jugador2.carta1 = new Carta(CartaTipo.GUARDIA);
+        jugador1.onComienzoTurno(new Carta(CartaTipo.BARON));
+        jugador1.descartarCarta2();
+        jugador1.elegirJugador(jugador2);
+        //ambos jugadores se encuentran comparando sus cartas
+        Assert.assertEquals(EstadosJugador.VIENDOCARTA, jugador1.getEstado().getEstadoActual());
+        Assert.assertEquals(EstadosJugador.VIENDOCARTA, jugador2.getEstado().getEstadoActual());
+    }
+
+    @Test
     public void testBaronGana() throws JugadorNoValido {
         jugador1.carta1 = new Carta(CartaTipo.REY);
         jugador2.carta1 = new Carta(CartaTipo.GUARDIA);
         jugador1.onComienzoTurno(new Carta(CartaTipo.BARON));
         jugador1.descartarCarta2();
         jugador1.elegirJugador(jugador2);
-
+        jugador1.terminarDeVer();
+        jugador2.terminarDeVer();
         Assert.assertFalse(partida.rondaActual.jugadoresEnLaRonda.contains(jugador2));
         Assert.assertNull(jugador2.rondaJugando);
     }
@@ -94,7 +107,8 @@ public class CartaTest {
         jugador1.onComienzoTurno(new Carta(CartaTipo.BARON));
         jugador1.descartarCarta2();
         jugador1.elegirJugador(jugador2);
-
+        jugador1.terminarDeVer();
+        jugador2.terminarDeVer();
         Assert.assertFalse(partida.rondaActual.jugadoresEnLaRonda.contains(jugador1));
         Assert.assertNull(jugador1.rondaJugando);
     }

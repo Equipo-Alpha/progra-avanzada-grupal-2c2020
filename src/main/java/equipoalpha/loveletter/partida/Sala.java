@@ -3,10 +3,7 @@ package equipoalpha.loveletter.partida;
 import equipoalpha.loveletter.LoveLetter;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
-import equipoalpha.loveletter.partida.eventos.ConfirmarInicioEvento;
-import equipoalpha.loveletter.partida.eventos.EventoObservado;
-import equipoalpha.loveletter.partida.eventos.EventosPartida;
-import equipoalpha.loveletter.partida.eventos.EventosPartidaManager;
+import equipoalpha.loveletter.partida.eventos.*;
 import equipoalpha.loveletter.util.Tickable;
 
 import java.util.ArrayList;
@@ -32,7 +29,9 @@ public class Sala implements Tickable {
         this.jugadores.add(creador);
         this.eventos = new EventosPartidaManager();
         EventoObservado confirmarInicio = new ConfirmarInicioEvento(this);
+        EventoObservado viendoCarta = new ViendoCartaEvento(this);
         this.eventos.registrar(EventosPartida.PEDIRCONFIRMACION, confirmarInicio);
+        this.eventos.registrar(EventosPartida.VIENDOCARTA, viendoCarta);
         if (LoveLetter.handler != null) // malditos tests
             registrar();
     }

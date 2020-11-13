@@ -3,8 +3,10 @@ package equipoalpha.loveletter.carta;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Ronda;
+import equipoalpha.loveletter.partida.eventos.EventosPartida;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Carta implements Comparable<Carta> {
     private final CartaTipo tipo;
@@ -48,8 +50,11 @@ public class Carta implements Comparable<Carta> {
                 jugadorQueDescarto.verCarta(jugadorElegido);
                 return;
             case BARON:
-                ronda.determinarCartaMayor(jugadorQueDescarto, jugadorElegido);
-                break;
+                ArrayList<Jugador> jugadores = new ArrayList<>();
+                jugadores.add(jugadorQueDescarto);
+                jugadores.add(jugadorElegido);
+                jugadorQueDescarto.salaActual.eventos.ejecutar(EventosPartida.VIENDOCARTA, jugadores);
+                return;
             case PRINCIPE:
                 if (jugadorElegido.carta1.getTipo() == CartaTipo.PRINCESA) {
                     ronda.eliminarJugador(jugadorElegido);

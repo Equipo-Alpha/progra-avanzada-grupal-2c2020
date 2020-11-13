@@ -5,6 +5,7 @@ import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.jugador.eventos.Evento;
 import equipoalpha.loveletter.jugador.eventos.EventosJugador;
 import equipoalpha.loveletter.jugador.eventos.EventosJugadorManager;
+import equipoalpha.loveletter.partida.eventos.EventosPartida;
 
 public class JugadorFacade {
 
@@ -72,7 +73,10 @@ public class JugadorFacade {
 
     public void terminarDeVer() {
         if (this.estadoActual == EstadosJugador.VIENDOCARTA) {
-            this.jugador.rondaJugando.onFinalizarDescarte(this.jugador);
+            if (cartaDescartada == null || cartaDescartada.getTipo() == CartaTipo.BARON)
+                jugador.salaActual.eventos.removerObservador(EventosPartida.VIENDOCARTA, jugador);
+            else
+                this.jugador.rondaJugando.onFinalizarDescarte(this.jugador);
         }
     }
 

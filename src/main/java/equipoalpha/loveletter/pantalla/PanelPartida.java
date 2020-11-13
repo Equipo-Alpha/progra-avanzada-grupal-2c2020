@@ -458,13 +458,13 @@ public class PanelPartida extends JPanel implements Drawable {
 
         jugadorElegido.setBounds(100, 150, 200, 50);
         botonConfirmarJugador.setBounds(100, 250, 200, 50);
-        panelElegirJugador.setBounds(300, 90, 400, 400);
+        panelElegirJugador.setBounds(300, 110, 400, 380);
         cartaAdivinada.setBounds(100, 150, 200, 50);
         botonConfirmarCarta.setBounds(100, 250, 200, 50);
-        panelAdivinarCarta.setBounds(300, 90, 400, 400);
+        panelAdivinarCarta.setBounds(300, 110, 400, 380);
         botonCartaViendo.setBounds(125, 40, 150, 210);
         botonTerminarDeVer.setBounds(100, 270, 200, 50);
-        panelViendoCarta.setBounds(300, 90, 400, 400);
+        panelViendoCarta.setBounds(300, 110, 400, 380);
 
         if (sala.partida != null && !sala.partida.partidaEnCurso && seleccionando) {
             seleccionando = false;

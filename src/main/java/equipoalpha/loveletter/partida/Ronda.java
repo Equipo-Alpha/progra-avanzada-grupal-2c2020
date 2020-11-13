@@ -176,7 +176,6 @@ public class Ronda {
     public void determinarCartaMayor(Jugador jugador1, Jugador jugador2) {
         if (jugador1.carta1.getTipo().fuerza > jugador2.carta1.getTipo().fuerza) {
             eliminarJugador(jugador2);
-            jugador2.rondaJugando = null;
             return;
         }
         if (jugador1.carta1.getTipo().fuerza < jugador2.carta1.getTipo().fuerza)
