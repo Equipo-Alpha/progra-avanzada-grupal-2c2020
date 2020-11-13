@@ -5,7 +5,6 @@ import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Ronda;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Carta implements Comparable<Carta> {
     private final CartaTipo tipo;
@@ -32,12 +31,12 @@ public class Carta implements Comparable<Carta> {
             default:
                 if (ronda.puedeElegir(jugador, this.tipo)) {
                     jugador.getEstado().setEstadoActual(EstadosJugador.ELIGIENDOJUGADOR);
-                    agregarAlMapa(ronda, jugador);
+                    agregarAlMapa(ronda, jugador, this);
                     return;
                 }
         }
 
-        agregarAlMapa(ronda, jugador);
+        agregarAlMapa(ronda, jugador, this);
         ronda.onFinalizarDescarte(jugador);
     }
 
@@ -71,7 +70,6 @@ public class Carta implements Comparable<Carta> {
                 return;
         }
         ronda.onFinalizarDescarte(jugadorQueDescarto);
-
     }
 
     public void cartaAdivinada(Jugador jugadorQueDescarto, Jugador jugadorElegido, CartaTipo cartaAdivinada) {
@@ -85,15 +83,8 @@ public class Carta implements Comparable<Carta> {
         jugadorQueDescarto.rondaJugando.onFinalizarDescarte(jugadorQueDescarto);
     }
 
-    private void agregarAlMapa(Ronda ronda, Jugador jugador) {
-        agregarAlMapa(ronda, jugador, this);
-    }
-
     private void agregarAlMapa(Ronda ronda, Jugador jugador, Carta carta) {
-        Carta cartaAAgregar = new Carta(carta.tipo);
-        ArrayList<Carta> ALC = ronda.mapaCartasDescartadas.remove(jugador);
-        ALC.add(cartaAAgregar);
-        ronda.mapaCartasDescartadas.put(jugador, ALC);
+        ronda.mapaCartasDescartadas.get(jugador).add(carta);
     }
 
     public CartaTipo getTipo() {

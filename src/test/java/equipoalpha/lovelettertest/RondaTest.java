@@ -65,7 +65,7 @@ public class RondaTest {
         jugador2.descartarCarta2();
 
         //el jugador2 deberia tener 3 cartas en el mapa de cartas descartadas
-        Assert.assertEquals(3, (int) partida.rondaActual.mapaCartasEliminadas.get(jugador2));
+        Assert.assertEquals(3, (int) partida.rondaActual.mapaCartasDescartadas.get(jugador2).size());
     }
 
     @Test

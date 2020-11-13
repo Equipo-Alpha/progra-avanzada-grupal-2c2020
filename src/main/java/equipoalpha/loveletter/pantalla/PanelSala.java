@@ -49,17 +49,23 @@ public class PanelSala extends JPanel implements Drawable {
         botonSalir = new JButton("Salir de la Sala");
         aceptarConfiguracion = new JButton("Aceptar");
         botonJugador = new JButton();
+        botonJugador.setIcon(loveletter.getJugador().icono);
         botonAgregarBot1 = new JButton();
         botonAgregarBot2 = new JButton();
         botonAgregarBot3 = new JButton();
+        botonAgregarBot1.setIcon(Imagenes.iconoSuma);
+        botonAgregarBot1.setOpaque(true);
+        botonAgregarBot1.setBackground(new Color(255, 255, 255, 0));
+        botonAgregarBot2.setIcon(Imagenes.iconoSuma);
+        botonAgregarBot2.setOpaque(true);
+        botonAgregarBot2.setBackground(new Color(255, 255, 255, 0));
+        botonAgregarBot3.setIcon(Imagenes.iconoSuma);
+        botonAgregarBot3.setOpaque(true);
+        botonAgregarBot3.setBackground(new Color(255, 255, 255, 0));
         Font buttonFont = new Font("Arial", Font.BOLD, 22);
         botonSetCondiciones.setFont(buttonFont);
         botonEmpezarPartida.setFont(buttonFont);
         aceptarConfiguracion.setFont(buttonFont);
-        botonJugador.setFont(buttonFont);
-        botonAgregarBot1.setFont(buttonFont);
-        botonAgregarBot2.setFont(buttonFont);
-        botonAgregarBot3.setFont(buttonFont);
         botonSalir.setFont(buttonFont);
         panelSetCondiciones = new JPanel();
         panelSetCondiciones.setVisible(false);
@@ -102,17 +108,19 @@ public class PanelSala extends JPanel implements Drawable {
             for (Jugador jugador : sala.jugadores) {
                 jugadorMano.addItem(jugador);
             }
-            panelSetCondiciones.requestFocus();
+            panelSetCondiciones.requestFocusInWindow();
         });
         botonAgregarBot1.addActionListener(actionEvent -> {
             if (bot1Agregado) {
                 sala.eliminarJugador(bot1);
                 LoveLetter.handler.removeTickableObject(bot1);
                 bot1Agregado = false;
+                botonAgregarBot1.setIcon(Imagenes.iconoSuma);
             } else {
                 sala.agregarJugador(bot1);
                 bot1.registrar();
                 bot1Agregado = true;
+                botonAgregarBot1.setIcon(Imagenes.iconoBot);
             }
         });
         botonAgregarBot2.addActionListener(actionEvent -> {
@@ -120,10 +128,12 @@ public class PanelSala extends JPanel implements Drawable {
                 sala.eliminarJugador(bot2);
                 LoveLetter.handler.removeTickableObject(bot2);
                 bot2Agregado = false;
+                botonAgregarBot2.setIcon(Imagenes.iconoSuma);
             } else {
                 sala.agregarJugador(bot2);
                 bot2.registrar();
                 bot2Agregado = true;
+                botonAgregarBot2.setIcon(Imagenes.iconoBot);
             }
         });
         botonAgregarBot3.addActionListener(actionEvent -> {
@@ -131,10 +141,12 @@ public class PanelSala extends JPanel implements Drawable {
                 sala.eliminarJugador(bot3);
                 LoveLetter.handler.removeTickableObject(bot3);
                 bot3Agregado = false;
+                botonAgregarBot3.setIcon(Imagenes.iconoSuma);
             } else {
                 sala.agregarJugador(bot3);
                 bot3.registrar();
                 bot3Agregado = true;
+                botonAgregarBot3.setIcon(Imagenes.iconoBot);
             }
         });
         botonSalir.addActionListener(actionEvent -> {
@@ -184,34 +196,10 @@ public class PanelSala extends JPanel implements Drawable {
             botonAgregarBot2.setEnabled(true);
         }
 
-        botonJugador.setIcon(loveletter.getJugador().icono);
         botonJugador.setBounds(420, 120, 150, 150);
-
-        botonAgregarBot1.setIcon(Imagenes.iconoSuma);
-        botonAgregarBot1.setOpaque(true);
-        botonAgregarBot1.setBackground(new Color(255, 255, 255, 0));
         botonAgregarBot1.setBounds(700, 120, 150, 150);
-
-        botonAgregarBot2.setIcon(Imagenes.iconoSuma);
-        botonAgregarBot2.setOpaque(true);
-        botonAgregarBot2.setBackground(new Color(255, 255, 255, 0));
         botonAgregarBot2.setBounds(420, 330, 150, 150);
-
-        botonAgregarBot3.setIcon(Imagenes.iconoSuma);
-        botonAgregarBot3.setOpaque(true);
-        botonAgregarBot3.setBackground(new Color(255, 255, 255, 0));
         botonAgregarBot3.setBounds(700, 330, 150, 150);
-
-
-        if (bot1Agregado) {
-            botonAgregarBot1.setIcon(Imagenes.iconoBot);
-        }
-        if (bot2Agregado) {
-            botonAgregarBot2.setIcon(Imagenes.iconoBot);
-        }
-        if (bot3Agregado) {
-            botonAgregarBot3.setIcon(Imagenes.iconoBot);
-        }
 
         botonSetCondiciones.setBounds(50, 200, 200, 50);
         botonEmpezarPartida.setBounds(50, 260, 200, 50);

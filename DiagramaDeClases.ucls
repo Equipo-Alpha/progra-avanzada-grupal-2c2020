@@ -2,8 +2,8 @@
 <class-diagram version="1.2.4" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="equipoalpha.loveletter.carta.Carta" project="LoveLetters" 
-    file="/LoveLetters/src/equipoalpha/loveletter/carta/Carta.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="250" width="299" x="289" y="339"/>    
+    file="/LoveLetters/src/main/java/equipoalpha/loveletter/carta/Carta.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="471" y="579"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -11,7 +11,7 @@
     </display>  
   </class>  
   <enumeration id="2" language="java" name="equipoalpha.loveletter.carta.CartaTipo" project="LoveLetters" 
-    file="/LoveLetters/src/equipoalpha/loveletter/carta/CartaTipo.java" binary="false" corner="BOTTOM_RIGHT">    
+    file="/LoveLetters/src/main/java/equipoalpha/loveletter/carta/CartaTipo.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="68" y="454"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -19,9 +19,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="3" language="java" name="equipoalpha.loveletter.jugador.Jugador" project="LoveLetters"
-    file="/LoveLetters/src/equipoalpha/loveletter/partida/Jugador.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="472" y="9"/>    
+  <class id="3" language="java" name="equipoalpha.loveletter.jugador.Jugador" project="LoveLetters" 
+    file="/LoveLetters/src/main/java/equipoalpha/loveletter/jugador/Jugador.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="493" y="2"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -29,8 +29,8 @@
     </display>  
   </class>  
   <class id="4" language="java" name="equipoalpha.loveletter.partida.Ronda" project="LoveLetters" 
-    file="/LoveLetters/src/equipoalpha/loveletter/partida/Ronda.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="322" width="296" x="762" y="-240"/>    
+    file="/LoveLetters/src/main/java/equipoalpha/loveletter/partida/Ronda.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="935" y="-365"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -38,26 +38,28 @@
     </display>  
   </class>  
   <class id="5" language="java" name="equipoalpha.loveletter.partida.Partida" project="LoveLetters" 
-    file="/LoveLetters/src/equipoalpha/loveletter/partida/Partida.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="480" y="-489"/>    
+    file="/LoveLetters/src/main/java/equipoalpha/loveletter/partida/Partida.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="486" y="-518"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="equipoalpha.loveletter.jugador.JugadorFacade" project="LoveLetters"
-    file="/LoveLetters/src/equipoalpha/loveletter/partida/JugadorFacade.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="68" y="-69"/>    
+  <class id="6" language="java" name="equipoalpha.loveletter.jugador.JugadorFacade" project="LoveLetters" 
+    file="/LoveLetters/src/main/java/equipoalpha/loveletter/jugador/JugadorFacade.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="71" y="-41"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="equipoalpha.loveletter.jugador.eventos.EventosJugadorManager"
-    project="LoveLetters" file="/LoveLetters/src/equipoalpha/loveletter/partida/eventos/EventosJugadorManager.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
+  <class id="7" language="java" name="equipoalpha.loveletter.jugador.eventos.EventosJugadorManager" 
+    project="LoveLetters" 
+    file="/LoveLetters/src/main/java/equipoalpha/loveletter/jugador/eventos/EventosJugadorManager.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="76" y="-408"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -65,8 +67,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="8" language="java" name="equipoalpha.loveletter.jugador.eventos.Evento" project="LoveLetters"
-    file="/LoveLetters/src/equipoalpha/loveletter/partida/eventos/Evento.java" binary="false" corner="BOTTOM_RIGHT">    
+  <interface id="8" language="java" name="equipoalpha.loveletter.jugador.eventos.Evento" project="LoveLetters" 
+    file="/LoveLetters/src/main/java/equipoalpha/loveletter/jugador/eventos/Evento.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
     <position height="88" width="217" x="-37" y="-660"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -75,9 +78,10 @@
     </display>  
   </interface>  
   <class id="9" language="java" name="equipoalpha.loveletter.partida.eventos.EventosPartidaManager" 
-    project="LoveLetters" file="/LoveLetters/src/equipoalpha/loveletter/partida/eventos/EventosPartidaManager.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="906" y="-481"/>    
+    project="LoveLetters" 
+    file="/LoveLetters/src/main/java/equipoalpha/loveletter/partida/eventos/EventosPartidaManager.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="858" y="624"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -85,9 +89,9 @@
     </display>  
   </class>  
   <interface id="10" language="java" name="equipoalpha.loveletter.partida.eventos.EventoObservado" project="LoveLetters" 
-    file="/LoveLetters/src/equipoalpha/loveletter/partida/eventos/EventoObservado.java" binary="false" 
+    file="/LoveLetters/src/main/java/equipoalpha/loveletter/partida/eventos/EventoObservado.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="893" y="-659"/>    
+    <position height="-1" width="-1" x="1224" y="632"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -95,17 +99,17 @@
     </display>  
   </interface>  
   <enumeration id="11" language="java" name="equipoalpha.loveletter.partida.eventos.EventosPartida" 
-    project="LoveLetters" file="/LoveLetters/src/equipoalpha/loveletter/partida/eventos/EventosPartida.java" 
+    project="LoveLetters" file="/LoveLetters/src/main/java/equipoalpha/loveletter/partida/eventos/EventosPartida.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1280" y="-486"/>    
+    <position height="-1" width="-1" x="1202" y="451"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <class id="12" language="java" name="equipoalpha.loveletter.jugador.eventos.EventosJugador" project="LoveLetters"
-    file="/LoveLetters/src/equipoalpha/loveletter/partida/eventos/EventosJugador.java" binary="false" 
+  <class id="12" language="java" name="equipoalpha.loveletter.jugador.eventos.EventosJugador" project="LoveLetters" 
+    file="/LoveLetters/src/main/java/equipoalpha/loveletter/jugador/eventos/EventosJugador.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-237" y="-406"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -114,8 +118,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="13" language="java" name="equipoalpha.loveletter.jugador.eventos.EventosJugador.Nombre"
-    project="LoveLetters" file="/LoveLetters/src/equipoalpha/loveletter/partida/eventos/EventosJugador.java" 
+  <enumeration id="13" language="java" name="equipoalpha.loveletter.jugador.eventos.EventosJugador.Nombre" 
+    project="LoveLetters" file="/LoveLetters/src/main/java/equipoalpha/loveletter/jugador/eventos/EventosJugador.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-237" y="-224"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -124,284 +128,419 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </enumeration>  
-  <association id="14">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="15" name="mapaEvento">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="16" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <dependency id="17">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <nesting id="18">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="13"/>  
-  </nesting>  
-  <association id="19">    
+  <class id="14" language="java" name="equipoalpha.loveletter.partida.Sala" project="LoveLetters" 
+    file="/LoveLetters/src/main/java/equipoalpha/loveletter/partida/Sala.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="898" y="224"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="15" language="java" name="equipoalpha.loveletter.jugador.EstadosJugador" project="LoveLetters" 
+    file="/LoveLetters/src/main/java/equipoalpha/loveletter/jugador/EstadosJugador.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="214" width="288" x="-425" y="-113"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <association id="16">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="20" name="estado">        
+      <attribute id="17" name="facade">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="21" minimum="0" maximum="1">        
+      <multiplicity id="18" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <dependency id="22">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="9"/>  
-  </dependency>  
-  <association id="23">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="24" name="carta2">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="25" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="26">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="27" name="mazo">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="28" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="29">    
+  <association id="19">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="30" name="jugador">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <attribute id="20" name="jugador">        
+        <position height="0" width="0" x="21" y="-7"/>      
       </attribute>      
-      <multiplicity id="31" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="21" minimum="0" maximum="1">        
+        <position height="0" width="0" x="21" y="-7"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="32">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="33" name="cartaAdivinada">        
-        <position height="0" width="0" x="-857" y="-3"/>      
+  <association id="22">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="23" name="partida">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="34" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-857" y="-3"/>      
+      <multiplicity id="24" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <dependency id="35">    
+  <association id="25">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="26" name="carta2">        
+        <position height="0" width="0" x="33" y="115"/>      
+      </attribute>      
+      <multiplicity id="27" minimum="0" maximum="1">        
+        <position height="0" width="0" x="33" y="115"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="28">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="29" name="jugadoresEnLaRonda">        
+        <position height="0" width="0" x="21" y="-7"/>      
+      </attribute>      
+      <multiplicity id="30" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="21" y="-7"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="31">    
     <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="11"/>  
+    <end type="TARGET" refId="3"/>  
   </dependency>  
-  <association id="36">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="37" name="jugadores">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="38" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <dependency id="39">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="12"/>  
-  </dependency>  
-  <association id="40">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="41" name="rondaJugando">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="42" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="43">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="44" name="mapaEvento">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="45" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="46">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="47" name="cartaEliminada">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="48" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="49">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="50" name="eventos">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="51" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="52">    
+  <nesting id="32">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="13"/>  
+  </nesting>  
+  <association id="33">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="53" name="jugadorElegido">        
+      <attribute id="34" name="evento">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="54" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="55">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="56" name="carta1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="57" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="58">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="59" name="evento">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="60" minimum="0" maximum="1">        
+      <multiplicity id="35" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="61">    
+  <association id="36">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="62" name="jugadorMano">        
+      <attribute id="37" name="jugadorMano">        
+        <position height="0" width="0" x="21" y="-7"/>      
+      </attribute>      
+      <multiplicity id="38" minimum="0" maximum="1">        
+        <position height="0" width="0" x="21" y="-7"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="39">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="40" name="cartaAdivinada">        
+        <position height="0" width="0" x="-857" y="-3"/>      
+      </attribute>      
+      <multiplicity id="41" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-857" y="-3"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="42">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="12"/>  
+  </dependency>  
+  <association id="43">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="44" name="jugadorEnTurno">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="45" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="46">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="47" name="salaActual">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="48" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="49">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="50" name="carta1">        
+        <position height="0" width="0" x="33" y="115"/>      
+      </attribute>      
+      <multiplicity id="51" minimum="0" maximum="1">        
+        <position height="0" width="0" x="33" y="115"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="52">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="53" name="mazo">        
+        <position height="0" width="0" x="33" y="115"/>      
+      </attribute>      
+      <multiplicity id="54" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="33" y="115"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="55">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="56" name="jugadores">        
+        <position height="0" width="0" x="21" y="-7"/>      
+      </attribute>      
+      <multiplicity id="57" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="21" y="-7"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="58">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="59" name="mapaEvento">        
+        <position height="0" width="0" x="331" y="1291"/>      
+      </attribute>      
+      <multiplicity id="60" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="331" y="1291"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="61">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="62" name="estadoActual">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="63" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
   <association id="64">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="65" name="jugadoresEnLaRonda">        
-        <position height="0" width="0" x="0" y="0"/>      
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="65" name="rondaJugando">        
+        <position height="0" width="0" x="25" y="-286"/>      
       </attribute>      
-      <multiplicity id="66" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="66" minimum="0" maximum="1">        
+        <position height="0" width="0" x="25" y="-286"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
   <association id="67">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="68" name="partida">        
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="68" name="eventos">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="69" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
+    <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
   <dependency id="70">    
     <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <dependency id="71">    
-    <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="13"/>  
   </dependency>  
-  <association id="72">    
+  <association id="71">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="73" name="cartaDescartada">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <attribute id="72" name="jugadorElegido">        
+        <position height="0" width="0" x="21" y="-7"/>      
       </attribute>      
-      <multiplicity id="74" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="73" minimum="0" maximum="1">        
+        <position height="0" width="0" x="21" y="-7"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="75">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="76" name="partidaJugando">        
+  <association id="74">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="75" name="jugadores">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="77" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <association id="78">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="79" name="creador">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="80" minimum="0" maximum="1">        
+      <multiplicity id="76" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="81">    
+  <association id="77">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="78" name="ordenReparto">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="79" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="80">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="81" name="cartaDescartada">        
+        <position height="0" width="0" x="33" y="115"/>      
+      </attribute>      
+      <multiplicity id="82" minimum="0" maximum="1">        
+        <position height="0" width="0" x="33" y="115"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="83">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="84" name="mapaEvento">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="85" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="86">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <association id="87">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="88" name="creador">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="89" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="90">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="91" name="partidaJugando">        
+        <position height="0" width="0" x="6" y="-29"/>      
+      </attribute>      
+      <multiplicity id="92" minimum="0" maximum="1">        
+        <position height="0" width="0" x="6" y="-29"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="93">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="94" name="cartaEliminada">        
+        <position height="0" width="0" x="33" y="115"/>      
+      </attribute>      
+      <multiplicity id="95" minimum="0" maximum="1">        
+        <position height="0" width="0" x="33" y="115"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="96">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="97" name="creador">        
+        <position height="0" width="0" x="21" y="-7"/>      
+      </attribute>      
+      <multiplicity id="98" minimum="0" maximum="1">        
+        <position height="0" width="0" x="21" y="-7"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="99">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="100" name="cartaViendo">        
+        <position height="0" width="0" x="-5" y="2"/>      
+      </attribute>      
+      <multiplicity id="101" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-5" y="2"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="102">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <association id="103">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="104" name="partida">        
+        <position height="0" width="0" x="6" y="-29"/>      
+      </attribute>      
+      <multiplicity id="105" minimum="0" maximum="1">        
+        <position height="0" width="0" x="6" y="-29"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="106">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="107" name="rondaActual">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="108" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="109">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="82" name="tipo">        
+      <attribute id="110" name="tipo">        
         <position height="0" width="0" x="-857" y="-3"/>      
       </attribute>      
-      <multiplicity id="83" minimum="0" maximum="1">        
+      <multiplicity id="111" minimum="0" maximum="1">        
         <position height="0" width="0" x="-857" y="-3"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="112">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="113" name="jugadorMano">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="114" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

@@ -19,11 +19,6 @@ public class Ronda {
     public ArrayList<Jugador> jugadoresEnLaRonda;
     public Jugador jugadorEnTurno;
     /**
-     * Mapa de la cantidad de cartas que descarto cada jugador durante la ronda. Es
-     * importante en caso de desempate al finalizar la ronda.
-     */
-    public Map<Jugador, Integer> mapaCartasEliminadas;
-    /**
      * Mapa de las cartas que descarto cada jugador durante la ronda.
      */
     public Map<Jugador, ArrayList<Carta>> mapaCartasDescartadas;
@@ -46,7 +41,6 @@ public class Ronda {
         initMazo();
 
         this.jugadoresEnLaRonda = new ArrayList<>();
-        this.mapaCartasEliminadas = new HashMap<>();
         this.mapaCartasDescartadas = new HashMap<>();
         this.ordenReparto = new LinkedList<>();
 
@@ -72,7 +66,6 @@ public class Ronda {
             jugador.rondaJugando = this;
             jugadoresEnLaRonda.add(jugador);
             jugador.getEstado().resetElecciones();
-            mapaCartasEliminadas.put(jugador, 0);
             mapaCartasDescartadas.put(jugador, new ArrayList<>());
             jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
             if (jugador instanceof JugadorIA) {
@@ -138,8 +131,8 @@ public class Ronda {
 
         // Si hay empate, gana el jugador que haya descartado mas cartas en la ronda
         for (Jugador jugador : jugadorCartaMasFuerte) {
-            if (mapaCartasEliminadas.get(jugador) > cantCartas) {
-                cantCartas = mapaCartasEliminadas.get(jugador);
+            if (mapaCartasDescartadas.get(jugador).size() > cantCartas) {
+                cantCartas = mapaCartasDescartadas.get(jugador).size();
                 jugadorMasCartasDescartadas = jugador;
             }
         }
@@ -157,21 +150,18 @@ public class Ronda {
     }
 
     public void eliminarJugador(Jugador jugador) {
-        ArrayList<Carta> ALC = mapaCartasDescartadas.remove(jugador);
-        ALC.add(jugador.carta1);
+        mapaCartasDescartadas.get(jugador).add(jugador.carta1);
         for (Jugador j : this.jugadoresEnLaRonda)
             if (j instanceof JugadorIA)
                 ((JugadorIA) j).agregarCartaJugadorEliminado(jugador.carta1);
 
         if (jugador.carta2 != null) {
-            ALC.add(jugador.carta2);
+            mapaCartasDescartadas.get(jugador).add(jugador.carta2);
             for (Jugador j : this.jugadoresEnLaRonda)
                 if (j instanceof JugadorIA)
                     ((JugadorIA) j).agregarCartaJugadorEliminado(jugador.carta2);
         }
-        mapaCartasDescartadas.put(jugador, ALC);
         jugadoresEnLaRonda.remove(jugador);
-        mapaCartasEliminadas.remove(jugador);
         jugador.rondaJugando = null;
         jugador.carta1 = null;
         jugador.carta2 = null;
@@ -194,14 +184,6 @@ public class Ronda {
     }
 
     public void onFinalizarDescarte(Jugador jugador) {
-        if (jugadoresEnLaRonda.contains(jugador)) {
-            int nuevaCantidad = mapaCartasEliminadas.remove(jugador);
-            nuevaCantidad++;
-            mapaCartasEliminadas.putIfAbsent(jugador, nuevaCantidad);
-        } else {
-            jugador.rondaJugando = null;
-        }
-
         for (Jugador jugador1 : jugadoresEnLaRonda) {
             if (jugador1 instanceof JugadorIA) {
                 ((JugadorIA) jugador1).finTurno(jugador, jugador.getEstado().getCartaDescartada());
