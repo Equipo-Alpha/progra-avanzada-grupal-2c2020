@@ -8,6 +8,7 @@ import java.awt.*;
 
 public class Ventana {
     JFrame ventana;
+    private PanelSala panelSala;
 
     public Ventana() {
         ventana = new JFrame("Love Letter");
@@ -35,12 +36,12 @@ public class Ventana {
     }
 
     public void onCrearSala(PanelMenuPrincipal panelAnterior) {
-        PanelSala panelJuego = new PanelSala(this);
-        ventana.add(panelJuego);
+        this.panelSala = new PanelSala(this);
+        ventana.add(panelSala);
         ventana.pack();
         panelAnterior.setVisible(false);
         LoveLetter.handler.removeDrawableObject(panelAnterior);
-        panelJuego.setVisible(true);
+        panelSala.setVisible(true);
     }
 
     public void onSalirSala(Drawable panelAnterior) {
@@ -54,6 +55,9 @@ public class Ventana {
                 return;
             }
         }
+    }
+    public void onPartidaEmpezada() {
+        onPartidaEmpezada(panelSala);
     }
 
     public void onPartidaEmpezada(PanelSala panelAnterior) {

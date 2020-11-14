@@ -193,7 +193,10 @@ public class PanelPartida extends JPanel implements Drawable {
         panelViendoCarta.setBorder(new BorderUIResource.LineBorderUIResource(new Color(255, 255, 255, 255)));
         panelViendoCarta.add(botonTerminarDeVer);
         panelViendoCarta.add(botonCartaViendo);
-        botonTerminarDeVer.addActionListener(actionEvent -> jugador.terminarDeVer());
+        botonTerminarDeVer.addActionListener(actionEvent -> {
+            panelViendoCarta.setVisible(false);
+            jugador.terminarDeVer();
+        });
         add(panelElegirJugador);
         add(panelAdivinarCarta);
         add(panelViendoCarta);

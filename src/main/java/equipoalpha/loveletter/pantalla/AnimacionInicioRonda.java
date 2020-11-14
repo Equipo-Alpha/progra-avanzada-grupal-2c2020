@@ -51,7 +51,7 @@ public class AnimacionInicioRonda {
             animacionStartedJ = true;
             animacionIsFinihedJ = false;
             animandoJ = false;
-            xIni = 460;
+            xIni = 400;
             yIni = 250;
         }
         if (animacionStartedJ) {
@@ -91,7 +91,7 @@ public class AnimacionInicioRonda {
             animacionIsFinihedJ1 = false;
             animacionIsFinihedJ2 = false;
             animandoJ2 = false;
-            xIni = 450;
+            xIni = 410;
             yIni = 250;
         }
         if (animacionStartedJ2) {

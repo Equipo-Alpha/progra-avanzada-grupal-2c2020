@@ -37,7 +37,7 @@ public class Sala implements Tickable {
     }
 
     public void crearPartida() {
-        this.partida = new Partida(creador, jugadores, jugadorMano, cantSimbolosAfecto);
+        this.partida = new Partida(jugadores, jugadorMano, cantSimbolosAfecto);
     }
 
     public Integer getCantSimbolosAfecto() {

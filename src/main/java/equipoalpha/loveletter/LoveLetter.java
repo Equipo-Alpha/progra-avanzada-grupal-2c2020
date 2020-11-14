@@ -12,6 +12,7 @@ public class LoveLetter implements Runnable {
     private static final LoveLetter instance = new LoveLetter();
     public static ClassLoader classLoader = LoveLetter.class.getClassLoader();
     public static Handler handler = Handler.getInstance();
+    public Ventana ventana;
     public final int WIDTH = 1024, HEIGHT = 768;
     public int fps = 0;
     private Jugador jugador;
@@ -24,7 +25,7 @@ public class LoveLetter implements Runnable {
         Imagenes.init();
         LoveLetter game = LoveLetter.getInstance();
         game.start();
-        SwingUtilities.invokeLater(Ventana::new);
+        SwingUtilities.invokeLater(() -> game.ventana = new Ventana());
         game.run();
     }
 

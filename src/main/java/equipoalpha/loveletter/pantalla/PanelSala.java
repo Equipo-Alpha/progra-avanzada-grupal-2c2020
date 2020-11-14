@@ -154,10 +154,17 @@ public class PanelSala extends JPanel implements Drawable {
             parent.onSalirSala(this);
         });
         botonEmpezarPartida.addActionListener(actionEvent -> {
-            //TODO ver como implementar
-            //loveletter.getJugador().iniciarPartida();
-            sala.crearPartida();
-            ventana.onPartidaEmpezada(this);
+            loveletter.getJugador().iniciarPartida();
+            int seleccion = JOptionPane.showConfirmDialog(this,
+                    "El creador selecciono para empezar la partida" +
+                            ".\n¿Estas listo?",
+                    "Partida empezando",
+                    JOptionPane.YES_NO_OPTION);
+            if (seleccion == JOptionPane.YES_OPTION) {
+                this.loveletter.getJugador().confirmarInicio();
+            } else {
+                this.loveletter.getJugador().cancelarInicio();
+            }
         });
 
         panelSetCondiciones.add(simbolosAfecto);

@@ -12,10 +12,6 @@ public class Partida {
      */
     private final int cantSimbolosAfecto;
     /**
-     * El jugador que creo la partida
-     */
-    public Jugador creador;
-    /**
      * Conjunto de jugadores, se necesitan 2-4 para empezar la partida. El creador
      * de la partida se agrega por defecto.
      */
@@ -40,8 +36,7 @@ public class Partida {
      */
     protected Jugador jugadorMano;
 
-    public Partida(Jugador jugador, ArrayList<Jugador> jugadores, Jugador jugadorMano, int cantSimbolosAfecto) {
-        this.creador = jugador;
+    public Partida(ArrayList<Jugador> jugadores, Jugador jugadorMano, int cantSimbolosAfecto) {
         this.jugadores = jugadores;
         this.jugadorMano = jugadorMano;
         this.cantSimbolosAfecto = cantSimbolosAfecto;
