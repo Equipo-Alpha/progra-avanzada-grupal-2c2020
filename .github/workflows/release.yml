@@ -17,7 +17,6 @@ jobs:
         run: |
             git config user.name github-actions
             git config user.email github-actions@github.com
-            git tag -d latest
             git push origin :refs/tags/latest
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
