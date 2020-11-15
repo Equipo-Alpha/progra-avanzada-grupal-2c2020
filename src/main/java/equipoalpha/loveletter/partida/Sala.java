@@ -90,6 +90,9 @@ public class Sala implements Tickable {
             else
                 this.partida.rondaActual.eliminarJugador(jugadorAEliminar);
         }
+        if (this.partida == null && this.jugadorMano != null && this.jugadorMano.equals(jugadorAEliminar)) {
+            this.jugadorMano = null;
+        }
         this.jugadores.remove(jugadorAEliminar);
         jugadorAEliminar.partidaJugando = null;
         jugadorAEliminar.salaActual = null;
