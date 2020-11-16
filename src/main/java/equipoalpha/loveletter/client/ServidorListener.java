@@ -1,21 +1,26 @@
 package equipoalpha.loveletter.client;
 
+import com.google.gson.Gson;
+import equipoalpha.loveletter.common.MensajeNetwork;
+
 import java.io.BufferedReader;
 
-public class ServidorListener extends Thread{
+public class ServidorListener extends Thread {
     private final BufferedReader inputClient;
-    private final ClientNetworkHandler cnh;
+    private final MensajeClienteManager cnh;
 
     public ServidorListener(Cliente client) {
         this.inputClient = client.getInput();
-        this.cnh = new ClientNetworkHandler();
+        this.cnh = MensajeClienteManager.getInstancia();
     }
 
     public void run() {
         try {
             String input;
             while ((input = inputClient.readLine()) != null) {
-                //cnh.processInput(input);
+                Gson gson = new Gson();
+                MensajeNetwork mensaje = gson.fromJson(input, MensajeNetwork.class);
+                cnh.procesar(mensaje.getTipoMensaje(), mensaje);
             }
         } catch (Exception ex) {
             System.out.println("Fallo al recibir del servidor");
@@ -23,6 +28,5 @@ public class ServidorListener extends Thread{
             System.exit(0);
         }
     }
-
 
 }

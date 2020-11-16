@@ -37,7 +37,7 @@ public class LoveLetterServidor extends Thread{
             System.exit(0);
         }
         this.isRunning = true;
-        MensajeServerManager.getInstancia().init();
+        //MensajeServerManager.getInstancia().init();
         int id = 1;
         try {
             while (isRunning) {

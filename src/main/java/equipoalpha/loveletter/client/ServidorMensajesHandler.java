@@ -1,5 +1,5 @@
 package equipoalpha.loveletter.client;
 
-public class ClientNetworkHandler {
+public class ServidorMensajesHandler {
     // handler de los mensajes del servidor
 }

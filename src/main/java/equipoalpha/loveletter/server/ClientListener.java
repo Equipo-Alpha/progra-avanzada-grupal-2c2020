@@ -32,7 +32,7 @@ public class ClientListener extends Thread {
             while ((input = entrada.readLine()) != null) {
                 Gson gson = new Gson();
                 MensajeNetwork mensaje = gson.fromJson(input, MensajeNetwork.class);
-                msm.procesar(mensaje.getTipo(), this.jugador, mensaje);
+                msm.procesar(mensaje.getTipoComando(), this.jugador, mensaje);
             }
         } catch (IOException ex) {
             if (!this.isInterrupted()) {
