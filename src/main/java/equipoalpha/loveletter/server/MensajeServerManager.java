@@ -18,10 +18,26 @@ public class MensajeServerManager {
     }
 
     private void init() {
-        // registar los handlers para cada mensaje
-        // posiblemente esten en JugadorComandoHandler
         JugadorComandoHandler handlers = new JugadorComandoHandler();
-        registrar(ComandoTipo.Conectarse, handlers::onNuevoNombre);
+
+        registrar(ComandoTipo.Conectarse,               handlers::onNuevoNombre);
+        registrar(ComandoTipo.SalaSync,                 handlers::onReqSala);
+        registrar(ComandoTipo.UnirseSala,               handlers::onUnirseSala);
+        registrar(ComandoTipo.CrearSala,                handlers::onCrearSala);
+        registrar(ComandoTipo.AgregarBot,               handlers::onAgregarBot);
+        registrar(ComandoTipo.ConfigurarSala,           handlers::onConfigurarSala);
+        registrar(ComandoTipo.PartidaEmpezada,          handlers::onPartidaEmpezada);
+        registrar(ComandoTipo.ConfirmarInicio,          handlers::onConfirmarInicio);
+        registrar(ComandoTipo.CancelarInicio,           handlers::onCancelarInicio);
+        registrar(ComandoTipo.SalirSala,                handlers::onSalirSala);
+        registrar(ComandoTipo.DescartarCarta1,          handlers::onDescartarCarta1);
+        registrar(ComandoTipo.DescartarCarta2,          handlers::onDescartarCarta2);
+        registrar(ComandoTipo.ElegirJugador,            handlers::onElegirJugador);
+        registrar(ComandoTipo.AdivinarCarta,            handlers::onAdivinarCarta);
+        registrar(ComandoTipo.TerminarDeVer,            handlers::onTerminarDeVer);
+        registrar(ComandoTipo.Continuar,                handlers::onContinuar);
+        registrar(ComandoTipo.ConfirmarVolverAJugar,    handlers::onConfirmarVolverAJugar);
+        registrar(ComandoTipo.CancelarVolverJugar,      handlers::onCancelarVolverJugar);
     }
 
     private void registrar(ComandoTipo tipo, Comando handler) {

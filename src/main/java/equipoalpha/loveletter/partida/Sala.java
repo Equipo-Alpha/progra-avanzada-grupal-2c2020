@@ -4,6 +4,7 @@ import equipoalpha.loveletter.LoveLetter;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.eventos.*;
+import equipoalpha.loveletter.server.JugadorServer;
 import equipoalpha.loveletter.util.Tickable;
 
 import java.util.ArrayList;
@@ -11,17 +12,18 @@ import java.util.ArrayList;
 public class Sala implements Tickable {
     public final String nombre;
     public final EventosPartidaManager eventos;
-    public Jugador creador;
-    public ArrayList<Jugador> jugadores;
+    public JugadorServer creador;
+    public ArrayList<JugadorServer> jugadores;
     public Partida partida;
     private Integer cantSimbolosAfecto;
-    private Jugador jugadorMano;
+    private JugadorServer jugadorMano;
     /**
      * Determina si la partida debe terminar si el creador la abandona, por defecto true
      */
     private Boolean creadorNull = true;
+    public boolean tieneBot = false;
 
-    public Sala(String nombre, Jugador creador) {
+    public Sala(String nombre, JugadorServer creador) {
         this.nombre = nombre;
         this.creador = creador;
         this.creador.salaActual = this;
@@ -54,7 +56,7 @@ public class Sala implements Tickable {
         return jugadorMano;
     }
 
-    public void setJugadorMano(Jugador jugadorMano) {
+    public void setJugadorMano(JugadorServer jugadorMano) {
         if (!this.jugadores.contains(jugadorMano)) {
             return;
         }
@@ -74,7 +76,7 @@ public class Sala implements Tickable {
      *
      * @return false cuando ya hay 4 jugadores en la sala
      */
-    public boolean agregarJugador(Jugador jugadorAAgregar) {
+    public boolean agregarJugador(JugadorServer jugadorAAgregar) {
         if (this.jugadores.size() < 4 && !this.jugadores.contains(jugadorAAgregar)) {
             this.jugadores.add(jugadorAAgregar);
             jugadorAAgregar.salaActual = this;
@@ -83,7 +85,7 @@ public class Sala implements Tickable {
         return false;
     }
 
-    public void eliminarJugador(Jugador jugadorAEliminar) {
+    public void eliminarJugador(JugadorServer jugadorAEliminar) {
         if (this.partida != null && this.partida.rondaActual.jugadoresEnLaRonda.contains(jugadorAEliminar)) {
             if (jugadorAEliminar.getEstado().getEstadoActual() != EstadosJugador.ESPERANDO)
                 this.partida.rondaActual.eliminarJugadorEnTurno(jugadorAEliminar);
@@ -108,8 +110,8 @@ public class Sala implements Tickable {
     public void tick() {
         if (this.creador == null) {
             // TODO para cuando sea server avisarle a cada jugador porque termino la partida
-            ArrayList<Jugador> nJugadores = new ArrayList<>(this.jugadores);
-            nJugadores.forEach(Jugador::terminarAcciones);
+            ArrayList<JugadorServer> nJugadores = new ArrayList<>(this.jugadores);
+            nJugadores.forEach(JugadorServer::terminarAcciones);
             nJugadores.forEach(this::eliminarJugador);
             nJugadores.clear();
         }

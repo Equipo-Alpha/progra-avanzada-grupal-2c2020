@@ -2,79 +2,84 @@ package equipoalpha.loveletter.client;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.common.ComandoTipo;
+import equipoalpha.loveletter.common.PartidaInfo;
+import equipoalpha.loveletter.common.SalaInfo;
+import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
+import equipoalpha.loveletter.pantalla.Imagenes;
 import equipoalpha.loveletter.partida.Sala;
 
+import javax.swing.ImageIcon;
+
 public class JugadorCliente extends Jugador {
+
+    private SalaInfo salaActual;
+    private PartidaInfo partidaActual;
+    private EstadosJugador estadoActual;
+    public ImageIcon icono;
+
     // el jugador cliente, manda comandos y mensajes al servidor
-    public JugadorCliente() {
-        super("temp");
+    public JugadorCliente(String nombre) {
+        super(nombre);
+        this.icono = Imagenes.iconoPrincipe;
+        this.iconoNombre = "principe";
     }
 
     //estos metodos hay que eliminarlos despues de jugador asi no son overrides
-    @Override
-    public Sala crearSala(String nombre) {
-        return super.crearSala(nombre);
+    public void crearSala(String nombre) {
+
     }
 
-    @Override
-    public boolean unirseASala(Sala sala) {
-        return super.unirseASala(sala);
+    public void unirseASala(Sala sala) {
+
     }
 
-    @Override
     public void iniciarPartida() {
-        super.iniciarPartida();
+
     }
 
-    @Override
     public void confirmarInicio() {
-        super.confirmarInicio();
+
     }
 
-    @Override
     public void cancelarInicio() {
-        super.cancelarInicio();
+
     }
 
-    @Override
-    public boolean descartarCarta1() {
+    public void descartarCarta1() {
         Gson gson = new Gson();
         JsonObject json = new JsonObject();
-        json.add("CartaDescartada", gson.toJsonTree(carta1, Carta.class));
+        json.add("CartaDescartada", gson.toJsonTree(carta1.getTipo()));
         Cliente.getINSTANCE().send(ComandoTipo.DescartarCarta1, json);
-        return true;
     }
 
-    @Override
-    public boolean descartarCarta2() {
+    public void descartarCarta2() {
         Gson gson = new Gson();
         JsonObject json = new JsonObject();
-        json.add("CartaDescartada", gson.toJsonTree(carta2, Carta.class));
+        json.add("CartaDescartada", gson.toJsonTree(carta2.getTipo()));
         Cliente.getINSTANCE().send(ComandoTipo.DescartarCarta2, json);
-        return true;
     }
 
-    @Override
     public void elegirJugador(Jugador jugador) {
 
     }
 
-    @Override
     public void elegirCarta(CartaTipo cartaAdivinada) {
-        super.elegirCarta(cartaAdivinada);
+
     }
 
-    @Override
     public void verCarta(Jugador jugador) {
-        super.verCarta(jugador);
+
+    }
+
+    public void terminarDeVer() {
+
     }
 
     @Override
-    public void terminarDeVer() {
-        super.terminarDeVer();
+    public void salirSala() {
+
     }
 }

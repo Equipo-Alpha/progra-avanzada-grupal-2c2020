@@ -1,7 +1,9 @@
 package equipoalpha.loveletter.server;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import equipoalpha.loveletter.common.MensajeNetwork;
+import equipoalpha.loveletter.common.MensajeTipo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,7 +23,7 @@ public class ClientListener extends Thread {
         this.entrada = entrada;
         this.salida = salida;
         this.id = id;
-        this.jugador = new JugadorServer(socket, id);
+        this.jugador = new JugadorServer(this, id);
         this.msm = MensajeServerManager.getInstancia();
     }
 
@@ -39,5 +41,9 @@ public class ClientListener extends Thread {
                 System.out.println("Se desconecto incorrectamente el cliente " + this.id);
             }
         }
+    }
+
+    public void send(MensajeTipo tipo, JsonObject objeto) {
+        salida.println((new Gson()).toJson(new MensajeNetwork(tipo, objeto)));
     }
 }

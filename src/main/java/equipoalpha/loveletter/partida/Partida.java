@@ -2,6 +2,7 @@ package equipoalpha.loveletter.partida;
 
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
+import equipoalpha.loveletter.server.JugadorServer;
 
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ public class Partida {
      * Conjunto de jugadores, se necesitan 2-4 para empezar la partida. El creador
      * de la partida se agrega por defecto.
      */
-    public ArrayList<Jugador> jugadores;
+    public ArrayList<JugadorServer> jugadores;
     /**
      * Si la partida empezo, es la ronda en la que actualmente se esta jugando
      */
@@ -34,13 +35,13 @@ public class Partida {
      * por el creador. Para las demas rondas se elige al ganador de la ronda
      * anterior. En el caso de terminarse la partida este jugador seria el ganador.
      */
-    protected Jugador jugadorMano;
+    protected JugadorServer jugadorMano;
 
-    public Partida(ArrayList<Jugador> jugadores, Jugador jugadorMano, int cantSimbolosAfecto) {
+    public Partida(ArrayList<JugadorServer> jugadores, JugadorServer jugadorMano, int cantSimbolosAfecto) {
         this.jugadores = jugadores;
         this.jugadorMano = jugadorMano;
         this.cantSimbolosAfecto = cantSimbolosAfecto;
-        for (Jugador j : this.jugadores) {
+        for (JugadorServer j : this.jugadores) {
             j.partidaJugando = this;
         }
     }
@@ -49,7 +50,7 @@ public class Partida {
         this.partidaEnCurso = true;
         this.ronda = 0;
 
-        for (Jugador jugador : jugadores) {
+        for (JugadorServer jugador : jugadores) {
             jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
             jugador.cantSimbolosAfecto = 0;
             jugador.estaProtegido = false;
@@ -67,7 +68,7 @@ public class Partida {
      *
      * @param ganadorRonda jugador que gano la ronda anterior
      */
-    public void onNuevaRonda(Jugador ganadorRonda) {
+    public void onNuevaRonda(JugadorServer ganadorRonda) {
         this.jugadorMano = ganadorRonda; // el que gano la anterior ronda es la nueva mano
 
         if (partidaTerminada()) {
@@ -84,7 +85,7 @@ public class Partida {
      *
      * @param ganadorPartida el ganador de la partida
      */
-    private void onFinalizarPartida(Jugador ganadorPartida) {
+    private void onFinalizarPartida(JugadorServer ganadorPartida) {
         this.partidaEnCurso = false;
         System.out.println("El ganador de la partida es: " + ganadorPartida);
     }
@@ -98,14 +99,14 @@ public class Partida {
     public boolean partidaTerminada() {
         if (this.jugadores.size() < 2)
             return true;
-        for (Jugador jugador : this.jugadores) {
+        for (JugadorServer jugador : this.jugadores) {
             if (jugador.cantSimbolosAfecto == this.cantSimbolosAfecto)
                 return true;
         }
         return false;
     }
 
-    public Jugador getJugadorMano() {
+    public JugadorServer getJugadorMano() {
         return jugadorMano;
     }
 }

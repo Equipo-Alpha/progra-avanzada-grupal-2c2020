@@ -15,6 +15,7 @@ public class Cliente {
     private final String ip;
     private final int port;
     private Socket socketCliente;
+    private JugadorCliente jugadorCliente;
     private PrintWriter output;
     private BufferedReader input;
 
@@ -43,6 +44,10 @@ public class Cliente {
 
     public void send(ComandoTipo tipo, JsonObject objeto) {
         output.println((new Gson()).toJson(new MensajeNetwork(tipo, objeto)));
+    }
+
+    public JugadorCliente getJugadorCliente() {
+        return jugadorCliente;
     }
 
     public BufferedReader getInput() {

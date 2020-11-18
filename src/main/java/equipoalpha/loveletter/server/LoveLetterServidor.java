@@ -1,5 +1,7 @@
 package equipoalpha.loveletter.server;
 
+import equipoalpha.loveletter.partida.Sala;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,12 +13,14 @@ public class LoveLetterServidor extends Thread{
     private final int port;
     private ServerSocket serverSocket;
     private final List<ClientListener> jugadores;
+    private final ArrayList<Sala> salas;
     private boolean isRunning;
 
     public LoveLetterServidor(int port) {
         this.port = port;
         INSTANCE = this;
         this.jugadores = new ArrayList<>();
+        this.salas = new ArrayList<>();
     }
 
     public static LoveLetterServidor getINSTANCE() {
@@ -69,4 +73,24 @@ public class LoveLetterServidor extends Thread{
         }
     }
 
+    public void agregarSala(Sala sala) {
+        this.salas.add(sala);
+    }
+
+    public Sala getSalaPorNombre(String nombre) {
+        for (Sala sala : salas) {
+            if (sala.nombre.equals(nombre)) {
+                return sala;
+            }
+        }
+        return null;
+    }
+
+    public void eliminarSala(Sala sala) {
+        this.salas.remove(sala);
+    }
+
+    public ArrayList<Sala> getSalas() {
+        return salas;
+    }
 }

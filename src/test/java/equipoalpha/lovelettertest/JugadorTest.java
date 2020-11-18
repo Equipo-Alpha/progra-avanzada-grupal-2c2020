@@ -11,28 +11,28 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class JugadorTest {
-    private Jugador jugador;
-    private Jugador jugador2;
+    private JugadorImplTest jugador;
+    private JugadorImplTest jugador2;
     private Sala sala;
 
     @Before
     public void setUp() {
-        this.jugador = new Jugador("TesterDeJava");
-        this.jugador2 = new Jugador("dummy");
+        this.jugador = new JugadorImplTest("TesterDeJava");
+        this.jugador2 = new JugadorImplTest("dummy");
 
-        this.sala = jugador.crearSala("test");
+        this.sala = jugador.crearSalaImpl("test");
     }
 
     @Test
     public void crearSala() {
-        Assert.assertNull(jugador.crearSala("test"));
-        Assert.assertNotNull(jugador2.crearSala("test"));
+        Assert.assertNull(jugador.crearSalaImpl("test"));
+        Assert.assertNotNull(jugador2.crearSalaImpl("test"));
     }
 
     @Test
     public void unirseASala() {
-        Assert.assertFalse(jugador.unirseASala(sala));
-        Assert.assertTrue(jugador2.unirseASala(sala));
+        Assert.assertFalse(jugador.unirseASalaImpl(sala));
+        Assert.assertTrue(jugador2.unirseASalaImpl(sala));
     }
 
     @Test
@@ -103,13 +103,13 @@ public class JugadorTest {
     @Test
     public void descartarCarta1() {
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
-        Assert.assertFalse(jugador.descartarCarta1());
+        Assert.assertFalse(jugador.descartarCarta1Impl());
     }
 
     @Test
     public void descartarCarta2() {
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
-        Assert.assertFalse(jugador.descartarCarta2());
+        Assert.assertFalse(jugador.descartarCarta2Impl());
     }
 
     @Test

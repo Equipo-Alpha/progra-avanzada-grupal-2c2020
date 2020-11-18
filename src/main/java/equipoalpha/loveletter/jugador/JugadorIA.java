@@ -3,6 +3,7 @@ package equipoalpha.loveletter.jugador;
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.pantalla.Imagenes;
+import equipoalpha.loveletter.server.JugadorServer;
 import equipoalpha.loveletter.util.Tickable;
 import equipoalpha.loveletter.util.excepcion.JugadorNoValido;
 
@@ -10,15 +11,21 @@ import java.util.*;
 
 import static java.lang.System.exit;
 
-public class JugadorIA extends Jugador implements Tickable {
+public class JugadorIA extends JugadorServer implements Runnable {
     private final Map<CartaTipo, Integer> cartasDescartadas = new HashMap<>();
-    private final Map<Jugador, CartaTipo> cartasConocidas = new HashMap<>();
+    private final Map<JugadorServer, CartaTipo> cartasConocidas = new HashMap<>();
     private final Random random = new Random();
-    private int tickcount = 200; // espera 100 ticks para jugar
+    private int tickcount = 200; // espera 200 ticks para jugar
+    private Thread thread;
+    private boolean running = false;
 
     public JugadorIA(String nombre) {
-        super(nombre);
-        this.icono = Imagenes.iconoBot;
+        super(null, -2);
+        this.nombre = nombre;
+        this.iconoNombre = "bot";
+        this.thread = new Thread(this);
+        this.thread.start();
+        this.running = true;
     }
 
     @Override
@@ -129,8 +136,8 @@ public class JugadorIA extends Jugador implements Tickable {
         descartarCarta2();
     }
 
-    private Jugador elegirJugadorIA() {
-        ArrayList<Jugador> disponibles = new ArrayList<>(rondaJugando.jugadoresEnLaRonda);
+    private JugadorServer elegirJugadorIA() {
+        ArrayList<JugadorServer> disponibles = new ArrayList<>(rondaJugando.jugadoresEnLaRonda);
 
         if (facade.getCartaDescartada().getTipo() != CartaTipo.PRINCIPE)
             disponibles.remove(this); //si no es principe me remuevo
@@ -138,7 +145,7 @@ public class JugadorIA extends Jugador implements Tickable {
         disponibles.removeIf(protegidos -> protegidos.estaProtegido); //si el jugador esta protegido lo remuevo.
         if (disponibles.isEmpty()) return null; // si no queda nadie, no eligo a nadie.
 
-        Jugador jugador; // jugador a elegir
+        JugadorServer jugador; // jugador a elegir
         switch (facade.getCartaDescartada().getTipo()) {
             case GUARDIA:
             case PRINCIPE:
@@ -148,7 +155,7 @@ public class JugadorIA extends Jugador implements Tickable {
                 else return jugador;
 
             case SACERDOTE:
-                for (Jugador jugadorS : disponibles)
+                for (JugadorServer jugadorS : disponibles)
                     if (!cartasConocidas.containsKey(jugadorS))
                         return jugadorS;
 
@@ -186,7 +193,7 @@ public class JugadorIA extends Jugador implements Tickable {
         return adivinada;
     }
 
-    private Jugador elegirJugadorRandom(List<Jugador> disponibles) {
+    private JugadorServer elegirJugadorRandom(List<JugadorServer> disponibles) {
         int nmroRandom = random.nextInt(disponibles.size());
         return disponibles.get(nmroRandom);
     }
@@ -195,9 +202,9 @@ public class JugadorIA extends Jugador implements Tickable {
         return !cartasConocidas.isEmpty();
     }
 
-    private Jugador menorCartaConocida(List<Jugador> lista) {
-        Jugador menor = null;
-        for (Jugador jugador : cartasConocidas.keySet()) {
+    private JugadorServer menorCartaConocida(List<JugadorServer> lista) {
+        JugadorServer menor = null;
+        for (JugadorServer jugador : cartasConocidas.keySet()) {
             if (!lista.contains(jugador)) continue;
             if (menor == null) menor = jugador;
             if (cartasConocidas.get(jugador).fuerza < cartasConocidas.get(menor).fuerza)
@@ -208,7 +215,7 @@ public class JugadorIA extends Jugador implements Tickable {
 
     private int menorCartaConocida() {
         int menor = 100;
-        for (Jugador jugador : cartasConocidas.keySet()) {
+        for (JugadorServer jugador : cartasConocidas.keySet()) {
             if (cartasConocidas.containsKey(jugador) && cartasConocidas.get(jugador).fuerza < menor
                     && !jugador.estaProtegido) {
                 menor = cartasConocidas.get(jugador).fuerza;
@@ -217,9 +224,9 @@ public class JugadorIA extends Jugador implements Tickable {
         return menor;
     }
 
-    private Jugador mayorCartaConocida(List<Jugador> lista) {
-        Jugador mayor = null;
-        for (Jugador jugador : cartasConocidas.keySet()) {
+    private JugadorServer mayorCartaConocida(List<JugadorServer> lista) {
+        JugadorServer mayor = null;
+        for (JugadorServer jugador : cartasConocidas.keySet()) {
             if (!lista.contains(jugador)) continue;
             if (mayor == null) mayor = jugador;
             if (cartasConocidas.getOrDefault(jugador, CartaTipo.GUARDIA).fuerza > cartasConocidas.getOrDefault(mayor, CartaTipo.GUARDIA).fuerza)
@@ -230,7 +237,7 @@ public class JugadorIA extends Jugador implements Tickable {
 
     private int mayorCartaConocida() {
         int mayor = 0;
-        for (Jugador jugador : cartasConocidas.keySet()) {
+        for (JugadorServer jugador : cartasConocidas.keySet()) {
             if (cartasConocidas.containsKey(jugador) && cartasConocidas.get(jugador).fuerza > mayor
                     && !jugador.estaProtegido) {
                 mayor = cartasConocidas.get(jugador).fuerza;
@@ -239,8 +246,7 @@ public class JugadorIA extends Jugador implements Tickable {
         return mayor;
     }
 
-    @Override
-    public void verCarta(Jugador jugador) {
+    public void verCarta(JugadorServer jugador) {
         cartasConocidas.put(jugador, jugador.carta1.getTipo());
         rondaJugando.onFinalizarDescarte(this);
     }
@@ -257,7 +263,7 @@ public class JugadorIA extends Jugador implements Tickable {
         cartasDescartadas.put(carta1.getTipo(), 1);
     }
 
-    public void finTurno(Jugador jugador, Carta carta) {
+    public void finTurno(JugadorServer jugador, Carta carta) {
         if (jugador.equals(this)) return;
         if (carta == null) return;
 
@@ -272,6 +278,16 @@ public class JugadorIA extends Jugador implements Tickable {
     }
 
     @Override
+    public void salirSala() {
+        super.salirSala();
+        try {
+            this.running = false;
+            this.thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void tick() {
         if (this.getEstado().getEstadoActual() == null) return;
 
@@ -301,6 +317,25 @@ public class JugadorIA extends Jugador implements Tickable {
             if (--tickcount <= 0) {
                 tickcount = 200;
                 onAdivinarCarta();
+            }
+        }
+    }
+
+    @Override
+    public void run() {
+        final int SECOND = 1000;
+        final int TICKS_PER_SECOND = 20;
+        final int SKIP_TICKS = SECOND / TICKS_PER_SECOND;
+        long next_game_tick = System.currentTimeMillis();
+        while(this.running) {
+            if (System.currentTimeMillis() > next_game_tick) {
+                next_game_tick += SKIP_TICKS;
+                tick();
+            }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
