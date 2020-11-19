@@ -226,7 +226,7 @@ public class CartaTest {
     public void testElegirseASiMismo() throws JugadorException {
         jugador1.onComienzoTurno(new Carta(CartaTipo.GUARDIA));
         jugador1.descartarCarta2Impl();
-        jugador1.elegirJugador(jugador1);
+        jugador1.elegirJugadorImpl(jugador1);
     }
 
     @Test
@@ -242,6 +242,6 @@ public class CartaTest {
         jugador1.onComienzoTurno(new Carta(CartaTipo.GUARDIA));
         jugador1.descartarCarta2Impl();
         jugador2.estaProtegido = true;
-        jugador1.elegirJugador(jugador2);
+        jugador1.elegirJugadorImpl(jugador2);
     }
 }

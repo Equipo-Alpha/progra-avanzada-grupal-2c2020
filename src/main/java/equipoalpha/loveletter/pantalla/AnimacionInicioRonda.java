@@ -1,6 +1,6 @@
 package equipoalpha.loveletter.pantalla;
 
-import equipoalpha.loveletter.LoveLetter;
+import equipoalpha.loveletter.client.LoveLetter;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Sala;
 
@@ -128,7 +128,7 @@ public class AnimacionInicioRonda {
         }
 
         if (dibujandoJ)
-            g2.drawImage(LoveLetter.getInstance().getJugador().carta1.getImagen(), null, 380, 500);
+            g2.drawImage(LoveLetter.getInstance().getCliente().getJugadorCliente().carta1.getImagen(), null, 380, 500);
         if (dibujandoJ1)
             g2.drawImage(Imagenes.reversoPeq, null, 10, 250);
         if (dibujandoJ2)

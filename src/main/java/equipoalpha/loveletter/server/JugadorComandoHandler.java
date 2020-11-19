@@ -20,6 +20,7 @@ public class JugadorComandoHandler {
         JsonObject json = mensaje.getMensaje();
         String nombre = JsonUtils.getString(json, "nombre");
         jugadorServer.setNombre(nombre);
+        jugadorServer.getListener().setName(nombre);
         jugadorServer.sincronizar(); // se sincroniza
         JsonObject respuesta = new JsonObject();
         respuesta.addProperty("tipo", true); // lo setteo correctamente
@@ -102,6 +103,7 @@ public class JugadorComandoHandler {
         else {
             Optional<JugadorServer> bot = jugadorServer.salaActual.jugadores.stream().filter(js -> js instanceof JugadorIA).findFirst();
             bot.ifPresent(JugadorServer::salirSala); // si el bot ya esta que salga de la sala
+            jugadorServer.salaActual.tieneBot = false;
             for (JugadorServer jugadores : jugadorServer.salaActual.jugadores) {
                 jugadores.sincronizarSala();
             }

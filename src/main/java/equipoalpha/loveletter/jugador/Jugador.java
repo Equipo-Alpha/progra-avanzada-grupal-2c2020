@@ -5,11 +5,9 @@ import com.google.gson.JsonObject;
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.common.SyncInfo;
-import equipoalpha.loveletter.partida.Sala;
 import equipoalpha.loveletter.util.JsonUtils;
 
 public abstract class Jugador implements SyncInfo {
-
     /**
      * Nombre del jugador
      */
@@ -29,8 +27,6 @@ public abstract class Jugador implements SyncInfo {
 
     public abstract void crearSala(String nombre);
 
-    public abstract void unirseASala(Sala sala);
-
     public abstract void iniciarPartida();
 
     public abstract void confirmarInicio();
@@ -41,11 +37,7 @@ public abstract class Jugador implements SyncInfo {
 
     public abstract void descartarCarta2();
 
-    public abstract void elegirJugador(Jugador jugador);
-
     public abstract void elegirCarta(CartaTipo cartaAdivinada);
-
-    public abstract void verCarta(Jugador jugador);
 
     public abstract void terminarDeVer();
 

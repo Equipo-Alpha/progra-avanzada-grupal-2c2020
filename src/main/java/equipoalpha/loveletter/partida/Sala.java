@@ -1,15 +1,14 @@
 package equipoalpha.loveletter.partida;
 
-import equipoalpha.loveletter.LoveLetter;
+import equipoalpha.loveletter.client.LoveLetter;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.eventos.*;
 import equipoalpha.loveletter.server.JugadorServer;
-import equipoalpha.loveletter.util.Tickable;
 
 import java.util.ArrayList;
 
-public class Sala implements Tickable {
+public class Sala {
     public final String nombre;
     public final EventosPartidaManager eventos;
     public JugadorServer creador;
@@ -34,8 +33,6 @@ public class Sala implements Tickable {
         EventoObservado viendoCarta = new ViendoCartaEvento(this);
         this.eventos.registrar(EventosPartida.PEDIRCONFIRMACION, confirmarInicio);
         this.eventos.registrar(EventosPartida.VIENDOCARTA, viendoCarta);
-        if (LoveLetter.handler != null) // malditos tests
-            registrar();
     }
 
     public void crearPartida() {
@@ -103,10 +100,10 @@ public class Sala implements Tickable {
             if (!this.creadorNull) {
                 this.creador = this.jugadores.get(0);
             }
+            tick();
         }
     }
 
-    @Override
     public void tick() {
         if (this.creador == null) {
             // TODO para cuando sea server avisarle a cada jugador porque termino la partida

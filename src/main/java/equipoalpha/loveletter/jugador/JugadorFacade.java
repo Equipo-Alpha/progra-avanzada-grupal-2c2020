@@ -20,7 +20,7 @@ public class JugadorFacade {
     private Carta cartaViendo;
 
     public JugadorFacade(JugadorServer jugador) {
-        this.estadoActual = null;
+        this.estadoActual = EstadosJugador.ESPERANDO;
         this.jugador = jugador;
     }
 

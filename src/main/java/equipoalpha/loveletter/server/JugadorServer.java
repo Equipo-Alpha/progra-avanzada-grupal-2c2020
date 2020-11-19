@@ -78,7 +78,6 @@ public class JugadorServer extends Jugador {
         sincronizar();
     }
 
-    @Override
     public void unirseASala(Sala sala) {
         if (this.salaActual != null)
             return;
@@ -139,7 +138,6 @@ public class JugadorServer extends Jugador {
         }
     }
 
-    @Override
     public void elegirJugador(Jugador jugador) {
         if (this.facade.getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR) {
             this.facade.jugadorElegido((JugadorServer)jugador);

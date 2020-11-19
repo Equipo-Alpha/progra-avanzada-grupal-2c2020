@@ -1,21 +1,21 @@
-package equipoalpha.loveletter;
+package equipoalpha.loveletter.client;
 
-import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.pantalla.Imagenes;
 import equipoalpha.loveletter.pantalla.Ventana;
 import equipoalpha.loveletter.util.Handler;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 public class LoveLetter implements Runnable {
     public static final boolean DEBUGGING = true;
     private static final LoveLetter instance = new LoveLetter();
     public static ClassLoader classLoader = LoveLetter.class.getClassLoader();
     public static Handler handler = Handler.getInstance();
-    public Ventana ventana;
+    protected Ventana ventana;
     public final int WIDTH = 1024, HEIGHT = 768;
     public int fps = 0;
-    private Jugador jugador;
+    private Cliente cliente;
+    protected ServidorListener listener;
     private Thread thread;
     private boolean running = false;
 
@@ -24,6 +24,7 @@ public class LoveLetter implements Runnable {
     public static void main(String[] args) {
         Imagenes.init();
         LoveLetter game = LoveLetter.getInstance();
+        game.cliente = new Cliente("localhost", 20000);
         game.start();
         SwingUtilities.invokeLater(() -> game.ventana = new Ventana());
         game.run();
@@ -51,19 +52,12 @@ public class LoveLetter implements Runnable {
     @Override
     public void run() {
         final int SECOND = 1000;
-        final int TICKS_PER_SECOND = 20;
-        final int SKIP_TICKS = SECOND / TICKS_PER_SECOND;
         final int FRAMES_PER_SECOND = 60;
         final int SKIP_FRAMES = SECOND / FRAMES_PER_SECOND;
-        long next_game_tick = System.currentTimeMillis();
         long next_game_frame = System.currentTimeMillis();
         long next_frame_calc = System.currentTimeMillis();
         int frames = 0;
         while (this.running) {
-            if (System.currentTimeMillis() > next_game_tick) {
-                next_game_tick += SKIP_TICKS;
-                tick();
-            }
             if (System.currentTimeMillis() > next_game_frame) {
                 frames++;
                 next_game_frame += SKIP_FRAMES;
@@ -82,15 +76,19 @@ public class LoveLetter implements Runnable {
         handler.render();
     }
 
-    private void tick() {
-        handler.tick();
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public Jugador getJugador() {
-        return jugador;
+    public Ventana getVentana() {
+        return ventana;
     }
 
-    public void setJugador(Jugador jugador) {
-        this.jugador = jugador;
+    public ServidorListener getListener() {
+        return listener;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 }

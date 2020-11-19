@@ -137,11 +137,11 @@ public class JugadorTest {
         jugador.getEstado().cartaDescartada(new Carta(CartaTipo.GUARDIA));
 
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
-        jugador.elegirJugador(jugador2);
+        jugador.elegirJugadorImpl(jugador2);
         Assert.assertNull(jugador.getEstado().getJugadorElegido());
 
         jugador.getEstado().setEstadoActual(EstadosJugador.ELIGIENDOJUGADOR);
-        jugador.elegirJugador(jugador2);
+        jugador.elegirJugadorImpl(jugador2);
         Assert.assertEquals(jugador2, jugador.getEstado().getJugadorElegido());
     }
 

@@ -28,6 +28,7 @@ public class SalaInfo implements SyncInfo{
 
     @Override
     public void deserializarData(JsonObject salaData) {
+        this.jugadores.clear();
         this.nombre = JsonUtils.getString(salaData, "nombre");
         this.creador = new Gson().fromJson(salaData.get("creador"), PlayerDummy.class);
         this.jugadores = new Gson().fromJson(salaData.get("jugadores"), new TypeToken<ArrayList<PlayerDummy>>(){}.getType());

@@ -25,6 +25,7 @@ public class ClientListener extends Thread {
         this.id = id;
         this.jugador = new JugadorServer(this, id);
         this.msm = MensajeServerManager.getInstancia();
+        this.setName(jugador.nombre);
     }
 
     @Override

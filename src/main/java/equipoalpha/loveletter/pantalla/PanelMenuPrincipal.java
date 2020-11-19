@@ -1,6 +1,6 @@
 package equipoalpha.loveletter.pantalla;
 
-import equipoalpha.loveletter.LoveLetter;
+import equipoalpha.loveletter.client.LoveLetter;
 import equipoalpha.loveletter.util.Drawable;
 
 import javax.swing.*;
@@ -149,7 +149,7 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
             }
         });
 
-        buttonCrearSala.addActionListener(actionEvent -> moviendoCentro = true);
+        buttonCrearSala.addActionListener(actionEvent -> loveletter.getCliente().getJugadorCliente().crearSala(""));
 
         buttonSalir.addActionListener(actionEvent -> exit(0));
 
@@ -183,7 +183,7 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
             g2.setFont(new Font("Arial", Font.BOLD, 40));
             g2.drawString("LOVE LETTER", 370, 100);
             g2.setFont(new Font("Arial", Font.BOLD, 24));
-            g2.drawString("Bienvenido " + loveletter.getJugador(), 25, 700);
+            g2.drawString("Bienvenido " + loveletter.getCliente().getJugadorCliente(), 25, 700);
 
             buttonConfigurar.setBounds(360, 280, 300, 64);
             buttonCrearSala.setBounds(360, 380, 300, 64);
@@ -276,15 +276,19 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         else {
             moviendoCentro = false;
             centroX = (loveletter.WIDTH / 2) - 200;
-            parent.onCrearSala(this);
+            parent.onCrearSala();
         }
     }
 
     private void cambiarConfiguracion(String nombre, String icono) {
-        loveletter.getJugador().nombre = nombre;
+        loveletter.getCliente().getJugadorCliente().nombre = nombre;
         if (icono.equals("Principe"))
-            loveletter.getJugador().icono = Imagenes.iconoPrincipe;
+            loveletter.getCliente().getJugadorCliente().icono = Imagenes.iconoPrincipe;
         else
-            loveletter.getJugador().icono = Imagenes.iconoPrincesa;
+            loveletter.getCliente().getJugadorCliente().icono = Imagenes.iconoPrincesa;
+    }
+
+    public void setMoviendoCentro(boolean moviendoCentro) {
+        this.moviendoCentro = moviendoCentro;
     }
 }

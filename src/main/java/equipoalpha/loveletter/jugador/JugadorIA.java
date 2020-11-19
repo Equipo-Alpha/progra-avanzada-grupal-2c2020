@@ -288,6 +288,15 @@ public class JugadorIA extends JugadorServer implements Runnable {
         }
     }
 
+    @Override
+    public void sincronizar() {}
+
+    @Override
+    public void sincronizarPartida() {}
+
+    @Override
+    public void sincronizarSala() {}
+
     public void tick() {
         if (this.getEstado().getEstadoActual() == null) return;
 

@@ -1,12 +1,13 @@
 package equipoalpha.loveletter.partida.eventos;
 
-import equipoalpha.loveletter.LoveLetter;
+import com.google.gson.JsonObject;
+import equipoalpha.loveletter.client.LoveLetter;
+import equipoalpha.loveletter.common.MensajeTipo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
-import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.jugador.JugadorIA;
-import equipoalpha.loveletter.partida.Partida;
 import equipoalpha.loveletter.partida.Sala;
 import equipoalpha.loveletter.server.JugadorServer;
+import equipoalpha.loveletter.server.LoveLetterServidor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +34,19 @@ public class ConfirmarInicioEvento implements EventoObservado {
     public void removerObservador(JugadorServer jugador) {
         observadores.remove(jugador);
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
+        jugador.sincronizar();
         if (observadores.isEmpty()) {
             sala.crearPartida();
-            if(LoveLetter.getInstance().ventana == null) {
+            if(LoveLetterServidor.getINSTANCE() == null) {
                 sala.partida.initPartida();
                 return;
             }
-            LoveLetter.getInstance().ventana.onPartidaEmpezada();
+            sala.partida.initPartida();
+            for (JugadorServer j : sala.jugadores) {
+                j.getListener().send(MensajeTipo.PartidaEmpezada, new JsonObject());
+                j.sincronizarPartida();
+            }
+            sala.partida.rondaActual.initTurnos();
         }
     }
 
@@ -47,6 +54,7 @@ public class ConfirmarInicioEvento implements EventoObservado {
     public void cancelar() {
         for (JugadorServer jugador : observadores) {
             jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
+            jugador.sincronizar();
         }
         this.observadores = null;
     }

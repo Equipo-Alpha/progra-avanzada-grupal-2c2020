@@ -17,8 +17,14 @@ public class PartidaInfo implements SyncInfo {
     public ArrayList<PlayerDummy> jugadoresEnLaRonda;
     public PlayerDummy jugadorEnTurno;
     public HashMap<PlayerDummy, ArrayList<Carta>> mapaCartasDescartadas;
-    public int mazo; // cantidad de cartas del mazo
-    public boolean cartaEliminada; // si la carta eliminada esta disponible
+    public int mazo = 0; // cantidad de cartas del mazo
+    public boolean cartaEliminada = false; // si la carta eliminada esta disponible
+
+    public PartidaInfo() {
+        this.ordenReparto = new LinkedList<>();
+        this.jugadoresEnLaRonda = new ArrayList<>();
+        this.mapaCartasDescartadas = new HashMap<>();
+    }
 
     @Override
     public void serializarData(JsonObject partidaData) {

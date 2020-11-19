@@ -1,6 +1,8 @@
 package equipoalpha.loveletter.server;
 
 import equipoalpha.loveletter.partida.Sala;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -15,6 +17,7 @@ public class LoveLetterServidor extends Thread{
     private final List<ClientListener> jugadores;
     private final ArrayList<Sala> salas;
     private boolean isRunning;
+    public static Logger log = LogManager.getLogger("LoveLeter Servidor");
 
     public LoveLetterServidor(int port) {
         this.port = port;
@@ -29,6 +32,7 @@ public class LoveLetterServidor extends Thread{
 
     public static void main(String[] args) {
         LoveLetterServidor server = new LoveLetterServidor(20000);
+        server.setName("Servidor");
         server.start();
     }
 
@@ -41,12 +45,12 @@ public class LoveLetterServidor extends Thread{
             System.exit(0);
         }
         this.isRunning = true;
-        //MensajeServerManager.getInstancia().init();
         int id = 1;
+        log.info("Servidor iniciado!");
         try {
             while (isRunning) {
                 Socket clienteSocket = serverSocket.accept();
-                System.out.println("Se conecto un nuevo cliente: " + clienteSocket);
+                log.info("Se conecto un nuevo cliente: " + clienteSocket);
 
                 PrintWriter salida = new PrintWriter(clienteSocket.getOutputStream(), true);
                 BufferedReader entrada = new BufferedReader(new InputStreamReader(clienteSocket.getInputStream()));
@@ -54,7 +58,7 @@ public class LoveLetterServidor extends Thread{
                 ClientListener clienteListener = new ClientListener(clienteSocket, entrada, salida, id++);
                 clienteListener.start();
                 this.jugadores.add(clienteListener);
-                System.out.println("Cliente agregado correctamente");
+                log.info("Cliente agregado correctamente");
             }
         } catch (IOException e) {
             e.printStackTrace();

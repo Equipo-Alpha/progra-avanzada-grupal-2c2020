@@ -16,45 +16,11 @@ import javax.swing.ImageIcon;
 
 public class JugadorImplTest extends JugadorServer {
 
-    protected final JugadorFacade facade;
-    /**
-     * Nombre del jugador
-     */
-    public String nombre;
-    /**
-     * La mano del jugador carta1 es la carta que siempre tiene en la mano carta2 es
-     * la carta que roba del mazo
-     */
-    public Carta carta1;
-    public Carta carta2;
-    /**
-     * La sala en la que actualmente esta
-     */
-    public Sala salaActual;
-    /**
-     * La partida en la que actualmente esta jugando
-     */
-    public Partida partidaJugando;
-    /**
-     * La ronda en la que actualmente esta jugando
-     */
-    public Ronda rondaJugando;
-    /**
-     * Determina si el jugador esta o no protegido por haber descartado una mucama
-     */
-    public boolean estaProtegido;
-
-    /**
-     * Cantidad de simbolos de afecto que tiene el jugador
-     */
-    public int cantSimbolosAfecto;
-
     public ImageIcon icono;
 
     public JugadorImplTest(String nombre) {
         super(null, -1);
         this.nombre = nombre;
-        this.facade = new JugadorFacade(this);
         this.icono = Imagenes.iconoPrincipe;
     }
 
@@ -137,20 +103,15 @@ public class JugadorImplTest extends JugadorServer {
             this.facade.setEstadoActual(EstadosJugador.DESCARTANDO);
     }
 
-    /**
-     * LLamado por el jugador cuando elige a otro para el evento
-     *
-     * @param jugador jugador elegido para el evento
-     * @throws JugadorNoValido
-     */
-    public void elegirJugador(JugadorImplTest jugador) throws JugadorNoValido {
+    public void elegirJugadorImpl(JugadorImplTest jugador) throws JugadorNoValido {
         if (this.facade.getCartaDescartada().getTipo() != CartaTipo.PRINCIPE && jugador.equals(this))
             throw new JugadorNoValido();
 
         if (jugador.estaProtegido)
             throw new JugadorNoValido();
 
-        this.facade.jugadorElegido(jugador);
+        if (this.facade.getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR)
+            this.facade.jugadorElegido(jugador);
     }
 
     /**
@@ -160,7 +121,8 @@ public class JugadorImplTest extends JugadorServer {
      * @param cartaAdivinada la carta que adivina/elige
      */
     public void elegirCarta(CartaTipo cartaAdivinada) {
-        this.facade.cartaAdivinada(cartaAdivinada);
+        if (this.facade.getEstadoActual() == EstadosJugador.ADIVINANDOCARTA)
+            this.facade.cartaAdivinada(cartaAdivinada);
     }
 
     /**

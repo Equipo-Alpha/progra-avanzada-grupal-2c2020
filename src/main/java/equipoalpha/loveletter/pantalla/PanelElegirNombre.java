@@ -1,6 +1,7 @@
 package equipoalpha.loveletter.pantalla;
 
-import equipoalpha.loveletter.LoveLetter;
+import equipoalpha.loveletter.client.Cliente;
+import equipoalpha.loveletter.client.LoveLetter;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.util.Drawable;
 
@@ -10,14 +11,12 @@ import java.util.List;
 
 public class PanelElegirNombre extends JPanel implements Drawable {
     private static final long serialVersionUID = 2L;
-    private final Ventana parent;
     private final LoveLetter loveletter;
     private final JButton button;
     private final JLabel textoValido;
     private final JTextField textField;
 
-    public PanelElegirNombre(Ventana ventana) {
-        parent = ventana;
+    public PanelElegirNombre() {
         setSize(1024, 768);
         loveletter = LoveLetter.getInstance();
 
@@ -37,7 +36,7 @@ public class PanelElegirNombre extends JPanel implements Drawable {
                 textoValido.setVisible(true);
             } else {
                 textoValido.setVisible(false);
-                crearJugador(textField.getText(), this);
+                crearJugador(textField.getText());
             }
         });
 
@@ -86,25 +85,8 @@ public class PanelElegirNombre extends JPanel implements Drawable {
         return new Dimension(1024, 768);
     }
 
-    private void crearJugador(String nombre, PanelElegirNombre panel) {
-        SwingWorker<Boolean, Jugador> worker = new SwingWorker<Boolean, Jugador>() {
-            @Override
-            protected Boolean doInBackground() throws Exception {
-                Jugador jugador = new Jugador(nombre);
-                publish(jugador);
-                return true;
-            }
-
-            @Override
-            protected void process(List<Jugador> list) {
-                loveletter.setJugador(list.remove(0));
-            }
-
-            @Override
-            protected void done() {
-                parent.onLogin(panel);
-            }
-        };
-        worker.execute();
+    private void crearJugador(String nombre) {
+        Cliente cliente = LoveLetter.getInstance().getCliente();
+        cliente.connect(nombre);
     }
 }

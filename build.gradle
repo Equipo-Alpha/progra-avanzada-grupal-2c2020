@@ -30,12 +30,19 @@ dependencies {
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.0'
 }
 
-jar {
+shadowJar {
     manifest {
-        attributes 'Main-Class': 'equipoalpha.loveletter.LoveLetter'
+        attributes 'Main-Class': 'equipoalpha.loveletter.client.LoveLetter'
     }
     archiveBaseName.set('EquipoAlpha-LoveLetter')
-    archiveClassifier.set('')
+    archiveClassifier.set('Cliente')
+    archiveVersion.set('')
+
+    manifest {
+        attributes 'Main-Class': 'equipoalpha.loveletter.server.LoveLetterServidor'
+    }
+    archiveBaseName.set('EquipoAlpha-LoveLetter')
+    archiveClassifier.set('Servidor')
     archiveVersion.set('')
 }
 
@@ -45,6 +52,18 @@ test {
 
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude:  [
+                    'equipoalpha/loveletter/pantalla/**',
+                    'equipoalpha/loveletter/common/**',
+                    'equipoalpha/loveletter/client/**',
+                    'equipoalpha/loveletter/server/**',
+                    'equipoalpha/loveletter/util/**',
+                    'equipoalpha/loveletter/jugador/JugadorIA.class'
+            ])
+        }))
+    }
     reports {
         xml.enabled false
         csv.enabled false
@@ -56,8 +75,3 @@ jacoco {
     toolVersion = "0.8.6"
     reportsDir = file("$buildDir/JacocoReportDir")
 }
-
-//task runGame (type: JavaExec) {
-//    classpath sourceSets.main.runtimeClasspath
-//    main = "equipoalpha.loveletter.LoveLetter"
-//}
