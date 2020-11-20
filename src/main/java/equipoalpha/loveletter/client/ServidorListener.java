@@ -20,6 +20,7 @@ public class ServidorListener extends Thread {
             while ((input = inputClient.readLine()) != null) {
                 Gson gson = new Gson();
                 MensajeNetwork mensaje = gson.fromJson(input, MensajeNetwork.class);
+                System.out.println(mensaje.getTipoMensaje());
                 cnh.procesar(mensaje.getTipoMensaje(), mensaje);
             }
         } catch (Exception ex) {

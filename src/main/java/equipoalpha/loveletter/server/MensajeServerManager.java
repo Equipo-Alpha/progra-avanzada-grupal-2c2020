@@ -35,7 +35,8 @@ public class MensajeServerManager {
         registrar(ComandoTipo.ElegirJugador,            handlers::onElegirJugador);
         registrar(ComandoTipo.AdivinarCarta,            handlers::onAdivinarCarta);
         registrar(ComandoTipo.TerminarDeVer,            handlers::onTerminarDeVer);
-        registrar(ComandoTipo.Continuar,                handlers::onContinuar);
+        registrar(ComandoTipo.ContinuarComienzo,        handlers::onContinuarComienzo);
+        registrar(ComandoTipo.ContinuarFin,             handlers::onContinuarFin);
         registrar(ComandoTipo.ConfirmarVolverAJugar,    handlers::onConfirmarVolverAJugar);
         registrar(ComandoTipo.CancelarVolverJugar,      handlers::onCancelarVolverJugar);
     }

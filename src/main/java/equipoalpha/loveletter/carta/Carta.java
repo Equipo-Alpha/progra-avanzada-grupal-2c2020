@@ -34,6 +34,7 @@ public class Carta implements Comparable<Carta> {
                 if (ronda.puedeElegir(jugador, this.tipo)) {
                     jugador.getEstado().setEstadoActual(EstadosJugador.ELIGIENDOJUGADOR);
                     agregarAlMapa(ronda, jugador, this);
+                    ronda.actualizarJugadores();
                     return;
                 }
         }

@@ -2,6 +2,7 @@ package equipoalpha.loveletter.client;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.common.ComandoTipo;
 import equipoalpha.loveletter.common.PartidaInfo;
@@ -9,6 +10,7 @@ import equipoalpha.loveletter.common.SalaInfo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.pantalla.Imagenes;
+import equipoalpha.loveletter.util.JsonUtils;
 
 import javax.swing.ImageIcon;
 
@@ -18,6 +20,8 @@ public class JugadorCliente extends Jugador {
     private final PartidaInfo partidaActual;
     private final Cliente cliente;
     public ImageIcon icono;
+    public boolean elegirseASiMismo;
+    public Carta cartaViendo;
     private EstadosJugador estadoActual;
 
     // el jugador cliente, manda comandos y mensajes al servidor
@@ -81,10 +85,15 @@ public class JugadorCliente extends Jugador {
         Gson gson = new Gson();
         JsonObject json = new JsonObject();
         json.add("CartaAdivinada", gson.toJsonTree(cartaAdivinada));
+        this.cliente.send(ComandoTipo.AdivinarCarta, json);
     }
 
     public void terminarDeVer() {
         this.cliente.send(ComandoTipo.TerminarDeVer, new JsonObject());
+    }
+
+    public void animacionInicioTerminada() {
+        this.cliente.send(ComandoTipo.ContinuarComienzo, new JsonObject());
     }
 
     @Override
@@ -98,6 +107,12 @@ public class JugadorCliente extends Jugador {
     public void deserializarData(JsonObject object) {
         super.deserializarData(object);
         this.estadoActual = new Gson().fromJson(object.get("estado"), EstadosJugador.class);
+        if (object.has("elegirseASiMismo")) {
+            this.elegirseASiMismo = JsonUtils.getBoolean(object, "elegirseASiMismo");
+        }
+        if (object.has("cartaViendo")) {
+            this.cartaViendo = new Gson().fromJson(object.get("cartaViendo"), Carta.class);
+        }
     }
 
     public EstadosJugador getEstado() {

@@ -46,5 +46,6 @@ public class ClientListener extends Thread {
 
     public void send(MensajeTipo tipo, JsonObject objeto) {
         salida.println((new Gson()).toJson(new MensajeNetwork(tipo, objeto)));
+        salida.flush();
     }
 }

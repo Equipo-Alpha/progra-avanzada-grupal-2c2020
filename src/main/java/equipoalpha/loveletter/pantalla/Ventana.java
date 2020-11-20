@@ -1,6 +1,8 @@
 package equipoalpha.loveletter.pantalla;
 
+import com.google.gson.JsonObject;
 import equipoalpha.loveletter.client.LoveLetter;
+import equipoalpha.loveletter.common.ComandoTipo;
 import equipoalpha.loveletter.util.Drawable;
 
 import javax.swing.*;
@@ -75,7 +77,7 @@ public class Ventana {
     }
 
     public void onPartidaEmpezada() {
-        PanelPartida panelPartida = new PanelPartida(this);
+        PanelPartida panelPartida = new PanelPartida();
         ventana.add(panelPartida);
         ventana.pack();
         ((JPanel) this.panelActual).setVisible(false);
@@ -84,17 +86,21 @@ public class Ventana {
         panelPartida.setVisible(true);
     }
 
+    public void onRondaEmpezada() {
+        ((PanelPartida) this.panelActual).animandoAIR = true;
+    }
+
     public void onPartidaTerminadaMsg() {
         int seleccion = JOptionPane.showConfirmDialog(this.ventana,
                 "La partida termino, el ganador es: " +
-                        LoveLetter.getInstance().getCliente().getJugadorCliente().getPartidaActual().jugadorEnTurno +
+                        LoveLetter.getInstance().getCliente().getJugadorCliente().getPartidaActual().jugadorEnTurno.nombre +
                         ".\n¿Volver a jugar?",
                 "Partida terminada",
                 JOptionPane.YES_NO_OPTION);
         if (seleccion == JOptionPane.YES_OPTION) {
-
+            LoveLetter.getInstance().getCliente().send(ComandoTipo.ConfirmarVolverAJugar, new JsonObject());
         } else {
-            onPartidaTerminada();
+            LoveLetter.getInstance().getCliente().send(ComandoTipo.CancelarVolverJugar, new JsonObject());
         }
     }
 

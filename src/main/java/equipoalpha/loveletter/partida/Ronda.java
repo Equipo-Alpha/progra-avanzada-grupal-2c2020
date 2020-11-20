@@ -5,7 +5,9 @@ import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.jugador.JugadorIA;
+import equipoalpha.loveletter.partida.eventos.EventosPartida;
 import equipoalpha.loveletter.server.JugadorServer;
+import equipoalpha.loveletter.server.LoveLetterServidor;
 
 import java.util.*;
 
@@ -27,7 +29,6 @@ public class Ronda {
      * Carta que se elimina al principio de la ronda
      */
     public Carta cartaEliminada;
-    public boolean turnosIniciados;
     public LinkedList<JugadorServer> ordenReparto;
     /**
      * Conjunto de 16 cartas al empezar, termina la ronda si se vacia
@@ -75,13 +76,14 @@ public class Ronda {
         }
 
         System.out.println("Empezando Ronda");
-
-        turnosIniciados = false;
+        if (LoveLetterServidor.getINSTANCE() == null) return;
+        actualizarJugadores();
+        partida.jugadorMano.salaActual.eventos.ejecutar(EventosPartida.COMIENZORONDA, this.jugadoresEnLaRonda);
     }
 
     public void initTurnos() {
-        turnosIniciados = true;
         jugadorEnTurno.onComienzoTurno(darCarta());
+        actualizarJugadores();
     }
 
     private void initMazo() {
@@ -193,9 +195,7 @@ public class Ronda {
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
         jugador.getEstado().resetElecciones();
 
-        for (JugadorServer j : this.partida.jugadores) {
-            j.sincronizarPartida();
-        }
+        actualizarJugadores();
 
         if (rondaTerminada()) {
             onRondaTerminada();
@@ -215,8 +215,13 @@ public class Ronda {
         } while (!jugadoresEnLaRonda.contains(jugadorEnTurno));
 
         jugadorEnTurno.onComienzoTurno(darCarta());
+        actualizarJugadores();
+    }
+
+    public void actualizarJugadores() {
         for (JugadorServer j : this.partida.jugadores) {
             j.sincronizarPartida();
+            j.sincronizarSala();
         }
     }
 

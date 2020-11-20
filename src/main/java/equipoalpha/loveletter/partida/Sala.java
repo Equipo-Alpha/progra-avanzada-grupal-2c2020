@@ -1,6 +1,5 @@
 package equipoalpha.loveletter.partida;
 
-import equipoalpha.loveletter.client.LoveLetter;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.eventos.*;
@@ -14,13 +13,13 @@ public class Sala {
     public JugadorServer creador;
     public ArrayList<JugadorServer> jugadores;
     public Partida partida;
+    public boolean tieneBot = false;
     private Integer cantSimbolosAfecto;
     private JugadorServer jugadorMano;
     /**
      * Determina si la partida debe terminar si el creador la abandona, por defecto true
      */
     private Boolean creadorNull = true;
-    public boolean tieneBot = false;
 
     public Sala(String nombre, JugadorServer creador) {
         this.nombre = nombre;
@@ -31,8 +30,12 @@ public class Sala {
         this.eventos = new EventosPartidaManager();
         EventoObservado confirmarInicio = new ConfirmarInicioEvento(this);
         EventoObservado viendoCarta = new ViendoCartaEvento(this);
+        EventoObservado comienzoRonda = new ComienzoRondaEvento(this);
+        EventoObservado finPartida = new FinPartidaEvento(this);
         this.eventos.registrar(EventosPartida.PEDIRCONFIRMACION, confirmarInicio);
         this.eventos.registrar(EventosPartida.VIENDOCARTA, viendoCarta);
+        this.eventos.registrar(EventosPartida.COMIENZORONDA, comienzoRonda);
+        this.eventos.registrar(EventosPartida.FINPARTIDA, finPartida);
     }
 
     public void crearPartida() {

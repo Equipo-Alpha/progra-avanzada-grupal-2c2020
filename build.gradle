@@ -31,19 +31,27 @@ dependencies {
 }
 
 shadowJar {
+    mergeServiceFiles()
+}
+
+task clienteJar (type: Jar, dependsOn: shadowJar) {
     manifest {
         attributes 'Main-Class': 'equipoalpha.loveletter.client.LoveLetter'
     }
     archiveBaseName.set('EquipoAlpha-LoveLetter')
     archiveClassifier.set('Cliente')
     archiveVersion.set('')
+    from zipTree(shadowJar.archiveFile)
+}
 
+task servidorJar(type: Jar, dependsOn: shadowJar) {
     manifest {
         attributes 'Main-Class': 'equipoalpha.loveletter.server.LoveLetterServidor'
     }
     archiveBaseName.set('EquipoAlpha-LoveLetter')
     archiveClassifier.set('Servidor')
     archiveVersion.set('')
+    from zipTree(shadowJar.archiveFile)
 }
 
 test {

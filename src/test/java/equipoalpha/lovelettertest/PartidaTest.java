@@ -27,6 +27,7 @@ public class PartidaTest {
         sala.crearPartida();
         this.partida = sala.partida;
         partida.initPartida();
+        partida.onNuevaRonda(partida.getJugadorMano());
     }
 
     @Test

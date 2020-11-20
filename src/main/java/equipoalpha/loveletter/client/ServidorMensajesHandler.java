@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import equipoalpha.loveletter.common.MensajeNetwork;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.pantalla.PanelMenuPrincipal;
+import equipoalpha.loveletter.pantalla.PanelPartida;
 import equipoalpha.loveletter.util.JsonUtils;
 
 public class ServidorMensajesHandler {
@@ -15,11 +16,17 @@ public class ServidorMensajesHandler {
 
     public void onSincJugador(MensajeNetwork mensaje) {
         JsonObject data = mensaje.getMensaje();
+        EstadosJugador before = LoveLetter.getInstance().getCliente().getJugadorCliente().getEstado();
         LoveLetter.getInstance().getCliente().getJugadorCliente().deserializarData(data);
         // puede que el estado del jugador haya cambiado
+        if (before == LoveLetter.getInstance().getCliente().getJugadorCliente().getEstado()) return;
         if (LoveLetter.getInstance().getCliente().getJugadorCliente().getEstado()
                 == EstadosJugador.CONFIRMANDOINICIO) {
             LoveLetter.getInstance().ventana.onConfirmarInicio();
+        }
+        if (LoveLetter.getInstance().getCliente().getJugadorCliente().getEstado()
+                == EstadosJugador.ELIGIENDOJUGADOR) {
+            ((PanelPartida) LoveLetter.getInstance().ventana.getPanelActual()).actualizarJugadores();
         }
     }
 
@@ -38,7 +45,7 @@ public class ServidorMensajesHandler {
     }
 
     public void onRondaEmpezada(MensajeNetwork mensaje) {
-
+        LoveLetter.getInstance().ventana.onRondaEmpezada();
     }
 
     public void onRondaTerminada(MensajeNetwork mensaje) {
@@ -64,6 +71,10 @@ public class ServidorMensajesHandler {
                     ((PanelMenuPrincipal) LoveLetter.getInstance().ventana.getPanelActual()).setMoviendoCentro(true);
                 }
                 break;
+            case 4:
+                if (JsonUtils.getBoolean(json, "tipo")) {
+                    LoveLetter.getInstance().ventana.onPartidaTerminada();
+                }
             default:
         }
     }

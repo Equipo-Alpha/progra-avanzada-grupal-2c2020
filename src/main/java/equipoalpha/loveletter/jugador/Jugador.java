@@ -48,7 +48,7 @@ public abstract class Jugador implements SyncInfo {
         if (carta1 != null)
             object.add("carta1", (new Gson().toJsonTree(carta1)));
         if (carta2 != null)
-            object.add("carta2", (new Gson().toJsonTree(carta1)));
+            object.add("carta2", (new Gson().toJsonTree(carta2)));
     }
 
     @Override
@@ -56,7 +56,7 @@ public abstract class Jugador implements SyncInfo {
         this.nombre = JsonUtils.getString(object, "nombre");
         this.iconoNombre = JsonUtils.getString(object, "icono");
 
-        if (JsonUtils.hasElement(object,"carta1"))
+        if (JsonUtils.hasElement(object, "carta1"))
             this.carta1 = new Gson().fromJson(object.get("carta1"), Carta.class);
         else
             this.carta1 = null;

@@ -1,5 +1,6 @@
 package equipoalpha.loveletter.server;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
@@ -15,23 +16,20 @@ import equipoalpha.loveletter.partida.Ronda;
 import equipoalpha.loveletter.partida.Sala;
 import equipoalpha.loveletter.partida.eventos.EventosPartida;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 public class JugadorServer extends Jugador {
     // el jugador, pero del lado del servidor
     // este es el que tiene el facade y procesa los comandos del jugador cliente
+    protected final JugadorFacade facade;
     private final ClientListener listener;
     private final Integer id;
-    protected final JugadorFacade facade;
+    private final PlayerDummy sincHelper;
+    private final SalaInfo salaActualInfo;
+    private final PartidaInfo partidaActualInfo;
     public Sala salaActual;
     public Partida partidaJugando;
     public Ronda rondaJugando;
     public boolean estaProtegido;
     public int cantSimbolosAfecto;
-    private final PlayerDummy sincHelper;
-    private final SalaInfo salaActualInfo;
-    private final PartidaInfo partidaActualInfo;
 
     public JugadorServer(ClientListener listener, int id) {
         super("tesmp");
@@ -47,7 +45,7 @@ public class JugadorServer extends Jugador {
         return id;
     }
 
-    public void setNombre(String nombre){
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
@@ -100,9 +98,8 @@ public class JugadorServer extends Jugador {
     public void confirmarInicio() {
         if (this.facade.getEstadoActual() == EstadosJugador.CONFIRMANDOINICIO) {
             this.salaActual.eventos.removerObservador(EventosPartida.PEDIRCONFIRMACION, this);
-            sincronizar();
+            //sincronizar();
         }
-
     }
 
     @Override
@@ -140,7 +137,7 @@ public class JugadorServer extends Jugador {
 
     public void elegirJugador(Jugador jugador) {
         if (this.facade.getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR) {
-            this.facade.jugadorElegido((JugadorServer)jugador);
+            this.facade.jugadorElegido((JugadorServer) jugador);
             sincronizar();// sincronizar
         }
     }
@@ -190,6 +187,13 @@ public class JugadorServer extends Jugador {
         JsonObject serverData = new JsonObject();
         this.serializarData(serverData);
         serverData.addProperty("estado", this.facade.getEstadoActual().toString());
+        if (this.getEstado().getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR) {
+            serverData.addProperty("elegirseASiMismo",
+                    this.getEstado().getCartaDescartada().getTipo() == CartaTipo.PRINCIPE);
+        }
+        if (this.getEstado().getEstadoActual() == EstadosJugador.VIENDOCARTA) {
+            serverData.add("cartaViendo", (new Gson().toJsonTree(this.getEstado().getCartaViendo(), Carta.class)));
+        }
         this.listener.send(MensajeTipo.SincJugador, serverData);
     }
 
@@ -201,6 +205,7 @@ public class JugadorServer extends Jugador {
     }
 
     private void actualizarPartida() {
+        this.partidaActualInfo.ronda = this.partidaJugando.ronda;
         this.partidaActualInfo.cartaEliminada = this.partidaJugando.rondaActual.cartaEliminada != null;
         this.partidaActualInfo.mazo = this.partidaJugando.rondaActual.cantCartas();
         this.partidaActualInfo.mapaCartasDescartadas.clear();
@@ -216,6 +221,7 @@ public class JugadorServer extends Jugador {
         this.partidaJugando.rondaActual.ordenReparto.forEach(jugadorServer -> {
             this.partidaActualInfo.ordenReparto.add(jugadorServer.sincHelper);
         });
+        this.partidaActualInfo.jugadorEnTurno = this.partidaJugando.getJugadorMano().sincHelper;
     }
 
     public void sincronizarSala() {
@@ -236,9 +242,10 @@ public class JugadorServer extends Jugador {
         this.sincHelper.cantSimbolos = this.cantSimbolosAfecto;
         this.sincHelper.nombre = this.nombre;
         this.sincHelper.icono = this.iconoNombre;
-        this.sincHelper.estaEnLaRonda = rondaJugando == null;
-        this.sincHelper.tieneCarta1 = carta1 == null;
-        this.sincHelper.tieneCarta2 = carta2 == null;
+        this.sincHelper.estaEnLaRonda = rondaJugando != null;
+        this.sincHelper.tieneCarta1 = carta1 != null;
+        this.sincHelper.tieneCarta2 = carta2 != null;
+        this.sincHelper.estaProtegido = this.estaProtegido;
     }
 
     public ClientListener getListener() {

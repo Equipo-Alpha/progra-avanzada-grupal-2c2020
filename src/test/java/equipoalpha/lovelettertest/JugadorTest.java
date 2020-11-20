@@ -134,6 +134,7 @@ public class JugadorTest {
         sala.setCantSimbolosAfecto(5);
         sala.crearPartida();
         sala.partida.initPartida();
+        sala.partida.onNuevaRonda(sala.partida.getJugadorMano());
         jugador.getEstado().cartaDescartada(new Carta(CartaTipo.GUARDIA));
 
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);

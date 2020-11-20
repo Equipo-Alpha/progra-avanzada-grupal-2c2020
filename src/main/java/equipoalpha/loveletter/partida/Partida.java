@@ -1,8 +1,9 @@
 package equipoalpha.loveletter.partida;
 
 import equipoalpha.loveletter.jugador.EstadosJugador;
-import equipoalpha.loveletter.jugador.Jugador;
+import equipoalpha.loveletter.partida.eventos.EventosPartida;
 import equipoalpha.loveletter.server.JugadorServer;
+import equipoalpha.loveletter.server.LoveLetterServidor;
 
 import java.util.ArrayList;
 
@@ -59,7 +60,6 @@ public class Partida {
         System.out.println("Empezando Partida");
 
         this.rondaActual = new Ronda(this);
-        onNuevaRonda(this.jugadorMano);
     }
 
     /**
@@ -88,6 +88,8 @@ public class Partida {
     private void onFinalizarPartida(JugadorServer ganadorPartida) {
         this.partidaEnCurso = false;
         System.out.println("El ganador de la partida es: " + ganadorPartida);
+        if (LoveLetterServidor.getINSTANCE() == null) return;
+        ganadorPartida.salaActual.eventos.ejecutar(EventosPartida.FINPARTIDA, this.jugadores);
     }
 
     /**

@@ -30,6 +30,7 @@ public class JugadorFacade {
 
     public void setEstadoActual(EstadosJugador estadoActual) {
         this.estadoActual = estadoActual;
+        jugador.sincronizar();
     }
 
     public void cartaDescartada(Carta cartaDescartada) {
@@ -65,7 +66,7 @@ public class JugadorFacade {
         return cartaDescartada;
     }
 
-    public Jugador getJugadorElegido() {
+    public JugadorServer getJugadorElegido() {
         return jugadorElegido;
     }
 

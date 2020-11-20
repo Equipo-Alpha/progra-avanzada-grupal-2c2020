@@ -1,6 +1,7 @@
 package equipoalpha.loveletter.common;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import equipoalpha.loveletter.carta.Carta;
@@ -32,7 +33,9 @@ public class PartidaInfo implements SyncInfo {
         partidaData.add("jugadorEnTurno", new Gson().toJsonTree(jugadorEnTurno, PlayerDummy.class));
         partidaData.add("ordenReparto", new Gson().toJsonTree(ordenReparto, new TypeToken<LinkedList<PlayerDummy>>() {}.getType()));
         partidaData.add("jugadoresEnLaRonda", new Gson().toJsonTree(jugadoresEnLaRonda, new TypeToken<ArrayList<PlayerDummy>>() {}.getType()));
-        partidaData.add("mapaCartasDescartadas", new Gson().toJsonTree(mapaCartasDescartadas, new TypeToken<HashMap<PlayerDummy, ArrayList<Carta>>>() {}.getType()));
+        GsonBuilder builder = new GsonBuilder();
+        builder.enableComplexMapKeySerialization();
+        partidaData.add("mapaCartasDescartadas", builder.create().toJsonTree(mapaCartasDescartadas, new TypeToken<HashMap<PlayerDummy, ArrayList<Carta>>>() {}.getType()));
         partidaData.addProperty("mazo", mazo);
         partidaData.addProperty("cartaEliminada", cartaEliminada);
     }

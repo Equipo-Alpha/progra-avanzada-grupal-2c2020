@@ -8,6 +8,7 @@ import equipoalpha.loveletter.common.MensajeNetwork;
 import equipoalpha.loveletter.common.MensajeTipo;
 import equipoalpha.loveletter.jugador.JugadorIA;
 import equipoalpha.loveletter.partida.Sala;
+import equipoalpha.loveletter.partida.eventos.EventosPartida;
 import equipoalpha.loveletter.util.JsonUtils;
 
 import java.util.Optional;
@@ -99,8 +100,7 @@ public class JugadorComandoHandler {
             for (JugadorServer jugadores : jugadorServer.salaActual.jugadores) {
                 jugadores.sincronizarSala();
             }
-        }
-        else {
+        } else {
             Optional<JugadorServer> bot = jugadorServer.salaActual.jugadores.stream().filter(js -> js instanceof JugadorIA).findFirst();
             bot.ifPresent(JugadorServer::salirSala); // si el bot ya esta que salga de la sala
             jugadorServer.salaActual.tieneBot = false;
@@ -134,7 +134,7 @@ public class JugadorComandoHandler {
 
     public void onConfirmarInicio(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         JsonObject objMensaje = mensaje.getMensaje();
-        if(!JsonUtils.hasElement(objMensaje, "check"))
+        if (!JsonUtils.hasElement(objMensaje, "check"))
             return;
 
         if (JsonUtils.getBoolean(objMensaje, "check")) {
@@ -144,7 +144,7 @@ public class JugadorComandoHandler {
 
     public void onCancelarInicio(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         JsonObject objMensaje = mensaje.getMensaje();
-        if(!JsonUtils.hasElement(objMensaje, "check"))
+        if (!JsonUtils.hasElement(objMensaje, "check"))
             return;
 
         if (JsonUtils.getBoolean(objMensaje, "check")) {
@@ -154,7 +154,7 @@ public class JugadorComandoHandler {
 
     public void onSalirSala(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         JsonObject objMensaje = mensaje.getMensaje();
-        if(!JsonUtils.hasElement(objMensaje, "check"))
+        if (!JsonUtils.hasElement(objMensaje, "check"))
             return;
 
         if (JsonUtils.getBoolean(objMensaje, "check")) {
@@ -165,7 +165,7 @@ public class JugadorComandoHandler {
     // --- handlers de la partida
     public void onDescartarCarta1(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         JsonObject objMensaje = mensaje.getMensaje();
-        if(!JsonUtils.hasElement(objMensaje, "CartaDescartada"))
+        if (!JsonUtils.hasElement(objMensaje, "CartaDescartada"))
             return; // mensaje invalido
 
         //JsonObject cartaTipo = JsonUtils.getObject(objMensaje, "CartaDescartada");
@@ -179,7 +179,7 @@ public class JugadorComandoHandler {
 
     public void onDescartarCarta2(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         JsonObject objMensaje = mensaje.getMensaje();
-        if(!JsonUtils.hasElement(objMensaje, "CartaDescartada"))
+        if (!JsonUtils.hasElement(objMensaje, "CartaDescartada"))
             return; // mensaje invalido
 
         CartaTipo descarte = (new Gson()).fromJson(objMensaje.get("CartaDescartada"), CartaTipo.class);
@@ -191,7 +191,7 @@ public class JugadorComandoHandler {
 
     public void onElegirJugador(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         JsonObject objMensaje = mensaje.getMensaje();
-        if(!JsonUtils.hasElement(objMensaje, "JugadorElegido"))
+        if (!JsonUtils.hasElement(objMensaje, "JugadorElegido"))
             return; // mensaje invalido
 
         String nombre = JsonUtils.getString(objMensaje, "JugadorElegido");
@@ -209,7 +209,7 @@ public class JugadorComandoHandler {
 
     public void onAdivinarCarta(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         JsonObject objMensaje = mensaje.getMensaje();
-        if(!JsonUtils.hasElement(objMensaje, "CartaAdivinada"))
+        if (!JsonUtils.hasElement(objMensaje, "CartaAdivinada"))
             return; // mensaje invalido
 
         CartaTipo cartaAdivinada = (new Gson()).fromJson(objMensaje.get("CartaAdivinada"), CartaTipo.class);
@@ -221,17 +221,25 @@ public class JugadorComandoHandler {
         jugadorServer.terminarDeVer();
     }
 
-    public void onContinuar(JugadorServer jugadorServer, MensajeNetwork mensaje) {
+    public void onContinuarComienzo(JugadorServer jugadorServer, MensajeNetwork mensaje) {
+        // al comenzar la ronda avisa que esta listo para jugar
+        // ver EventoObservado
+        jugadorServer.salaActual.eventos.removerObservador(EventosPartida.COMIENZORONDA, jugadorServer);
+    }
+
+    public void onContinuarFin(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         // al finalizar la ronda clickea en continuar para seguir
         // ver EventoObservado
     }
 
     public void onConfirmarVolverAJugar(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         // ver EventoObservado
+        jugadorServer.salaActual.eventos.removerObservador(EventosPartida.FINPARTIDA, jugadorServer);
     }
 
     public void onCancelarVolverJugar(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         // ver EventoObservado
+        jugadorServer.salaActual.eventos.cancelarEvento(EventosPartida.FINPARTIDA);
     }
 
 }

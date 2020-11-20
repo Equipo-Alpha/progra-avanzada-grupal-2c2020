@@ -2,13 +2,14 @@ package equipoalpha.loveletter.jugador;
 
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
-import equipoalpha.loveletter.pantalla.Imagenes;
 import equipoalpha.loveletter.server.JugadorServer;
-import equipoalpha.loveletter.util.Tickable;
 import equipoalpha.loveletter.util.excepcion.JugadorNoValido;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.List;
 import static java.lang.System.exit;
 
 public class JugadorIA extends JugadorServer implements Runnable {
@@ -174,7 +175,7 @@ public class JugadorIA extends JugadorServer implements Runnable {
     }
 
     private CartaTipo adivinarCarta() {
-        Jugador jugadorElegido = facade.getJugadorElegido();
+        JugadorServer jugadorElegido = facade.getJugadorElegido();
         CartaTipo carta = cartasConocidas.getOrDefault(jugadorElegido, null);
         if (carta != null) {
             if (carta != CartaTipo.GUARDIA) return carta;
@@ -246,8 +247,9 @@ public class JugadorIA extends JugadorServer implements Runnable {
         return mayor;
     }
 
-    public void verCarta(JugadorServer jugador) {
-        cartasConocidas.put(jugador, jugador.carta1.getTipo());
+    @Override
+    public void verCarta(Jugador jugador) {
+        cartasConocidas.put((JugadorServer) jugador, jugador.carta1.getTipo());
         rondaJugando.onFinalizarDescarte(this);
     }
 
@@ -289,13 +291,16 @@ public class JugadorIA extends JugadorServer implements Runnable {
     }
 
     @Override
-    public void sincronizar() {}
+    public void sincronizar() {
+    }
 
     @Override
-    public void sincronizarPartida() {}
+    public void sincronizarPartida() {
+    }
 
     @Override
-    public void sincronizarSala() {}
+    public void sincronizarSala() {
+    }
 
     public void tick() {
         if (this.getEstado().getEstadoActual() == null) return;
@@ -336,7 +341,7 @@ public class JugadorIA extends JugadorServer implements Runnable {
         final int TICKS_PER_SECOND = 20;
         final int SKIP_TICKS = SECOND / TICKS_PER_SECOND;
         long next_game_tick = System.currentTimeMillis();
-        while(this.running) {
+        while (this.running) {
             if (System.currentTimeMillis() > next_game_tick) {
                 next_game_tick += SKIP_TICKS;
                 tick();

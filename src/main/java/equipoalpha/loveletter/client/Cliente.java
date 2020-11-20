@@ -42,6 +42,7 @@ public class Cliente {
 
     public void send(ComandoTipo tipo, JsonObject objeto) {
         output.println((new Gson()).toJson(new MensajeNetwork(tipo, objeto)));
+        output.flush();
     }
 
     public JugadorCliente getJugadorCliente() {
