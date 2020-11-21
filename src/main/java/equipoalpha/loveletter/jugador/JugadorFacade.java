@@ -2,41 +2,26 @@ package equipoalpha.loveletter.jugador;
 
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
-import equipoalpha.loveletter.jugador.eventos.Evento;
-import equipoalpha.loveletter.jugador.eventos.EventosJugador;
-import equipoalpha.loveletter.jugador.eventos.EventosJugadorManager;
 import equipoalpha.loveletter.partida.eventos.EventosPartida;
+import equipoalpha.loveletter.server.JugadorServer;
 
 public class JugadorFacade {
-
     /**
      * el jugador al que pertenece esta instancia
      */
-    private final Jugador jugador;
-    private final EventosJugadorManager evento;
+    private final JugadorServer jugador;
     /**
      * estado actual del jugador
      */
     private EstadosJugador estadoActual;
     private Carta cartaDescartada;
-    private Jugador jugadorElegido;
+    private JugadorServer jugadorElegido;
     private CartaTipo cartaAdivinada;
     private Carta cartaViendo;
 
-    public JugadorFacade(Jugador jugador) {
-        this.estadoActual = null;
+    public JugadorFacade(JugadorServer jugador) {
+        this.estadoActual = EstadosJugador.ESPERANDO;
         this.jugador = jugador;
-
-        this.evento = new EventosJugadorManager();
-        EventosJugador eventos = new EventosJugador();
-
-        Evento cartaDescartada = eventos::onCartaDescartada;
-        Evento jugadorElegido = eventos::onJugadorElegido;
-        Evento cartaAdivinada = eventos::onCartaAdivinada;
-
-        evento.registrar(EventosJugador.Nombre.CARTADESCARTADA, cartaDescartada);
-        evento.registrar(EventosJugador.Nombre.JUGADORELEGIDO, jugadorElegido);
-        evento.registrar(EventosJugador.Nombre.CARTAADIVINADA, cartaAdivinada);
     }
 
     public EstadosJugador getEstadoActual() {
@@ -45,25 +30,23 @@ public class JugadorFacade {
 
     public void setEstadoActual(EstadosJugador estadoActual) {
         this.estadoActual = estadoActual;
+        jugador.sincronizar();
     }
 
     public void cartaDescartada(Carta cartaDescartada) {
         this.cartaDescartada = cartaDescartada;
-        ejecutar(EventosJugador.Nombre.CARTADESCARTADA);
+        this.cartaDescartada.descartar(this.jugador);
     }
 
-    public void jugadorElegido(Jugador jugadorElegido) {
-        if (this.estadoActual == EstadosJugador.ELIGIENDOJUGADOR) {
-            this.jugadorElegido = jugadorElegido;
-            ejecutar(EventosJugador.Nombre.JUGADORELEGIDO);
-        }
+    public void jugadorElegido(JugadorServer jugadorElegido) {
+        this.jugadorElegido = jugadorElegido;
+        this.cartaDescartada.jugadorElegido(this.jugador, this.jugadorElegido);
     }
 
     public void cartaAdivinada(CartaTipo cartaAdivinada) {
-        if (this.estadoActual == EstadosJugador.ADIVINANDOCARTA && cartaAdivinada != CartaTipo.GUARDIA) {
-            this.cartaAdivinada = cartaAdivinada;
-            ejecutar(EventosJugador.Nombre.CARTAADIVINADA);
-        }
+        this.cartaAdivinada = cartaAdivinada;
+        this.cartaDescartada.cartaAdivinada(this.jugador, this.jugadorElegido, this.cartaAdivinada);
+
     }
 
     public void viendoCarta(Carta carta) {
@@ -72,19 +55,18 @@ public class JugadorFacade {
     }
 
     public void terminarDeVer() {
-        if (this.estadoActual == EstadosJugador.VIENDOCARTA) {
-            if (cartaDescartada == null || cartaDescartada.getTipo() == CartaTipo.BARON)
-                jugador.salaActual.eventos.removerObservador(EventosPartida.VIENDOCARTA, jugador);
-            else
-                this.jugador.rondaJugando.onFinalizarDescarte(this.jugador);
-        }
+        if (cartaDescartada == null || cartaDescartada.getTipo() == CartaTipo.BARON)
+            jugador.salaActual.eventos.removerObservador(EventosPartida.VIENDOCARTA, jugador);
+        else
+            this.jugador.rondaJugando.onFinalizarDescarte(this.jugador);
+
     }
 
     public Carta getCartaDescartada() {
         return cartaDescartada;
     }
 
-    public Jugador getJugadorElegido() {
+    public JugadorServer getJugadorElegido() {
         return jugadorElegido;
     }
 
@@ -107,7 +89,4 @@ public class JugadorFacade {
         return jugador;
     }
 
-    public void ejecutar(EventosJugador.Nombre nombre) {
-        this.evento.ejecutar(nombre, this.jugador);
-    }
 }

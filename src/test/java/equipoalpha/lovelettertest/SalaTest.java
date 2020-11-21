@@ -1,26 +1,25 @@
 package equipoalpha.lovelettertest;
 
-import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Sala;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
 public class SalaTest {
 
-    private Jugador jugador1;
-    private Jugador jugador2;
-    private Jugador jugador3;
+    private JugadorImplTest jugador1;
+    private JugadorImplTest jugador2;
+    private JugadorImplTest jugador3;
     private Sala sala;
 
     @Before
-    public void setUp(){
-        jugador1 = new Jugador("TesterDeJava");
-        jugador2 = new Jugador("TesterDeJS");
-        jugador3 = new Jugador("TesterDeC");
-        sala = jugador1.crearSala("test");
+    public void setUp() {
+        jugador1 = new JugadorImplTest("TesterDeJava");
+        jugador2 = new JugadorImplTest("TesterDeJS");
+        jugador3 = new JugadorImplTest("TesterDeC");
+        sala = jugador1.crearSalaImpl("test");
     }
 
     @Test
@@ -38,7 +37,7 @@ public class SalaTest {
 
     @Test
     public void setJugadorMano() {
-        Jugador jugador4 = new Jugador("TesterDeAlfombras");
+        JugadorImplTest jugador4 = new JugadorImplTest("TesterDeAlfombras");
 
         sala.setJugadorMano(jugador4);
         Assert.assertNull(sala.getJugadorMano());

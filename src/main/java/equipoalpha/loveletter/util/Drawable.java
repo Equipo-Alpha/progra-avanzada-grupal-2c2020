@@ -1,6 +1,6 @@
 package equipoalpha.loveletter.util;
 
-import equipoalpha.loveletter.LoveLetter;
+import equipoalpha.loveletter.client.LoveLetter;
 
 public interface Drawable {
     void render();

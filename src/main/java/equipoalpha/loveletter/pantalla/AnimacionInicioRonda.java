@@ -1,14 +1,15 @@
 package equipoalpha.loveletter.pantalla;
 
-import equipoalpha.loveletter.LoveLetter;
-import equipoalpha.loveletter.jugador.Jugador;
-import equipoalpha.loveletter.partida.Sala;
+import equipoalpha.loveletter.client.LoveLetter;
+import equipoalpha.loveletter.common.PartidaInfo;
+import equipoalpha.loveletter.common.PlayerDummy;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 public class AnimacionInicioRonda {
-    private final Sala sala;
+    private final PartidaInfo partida;
+    private final PanelPartida panel;
     private boolean animandoCartaDescartada = true, animacionCartaIsFinished = false, animacionCartaStarted = false;
     private boolean animandoJ = false, animacionIsFinihedJ = false, animacionStartedJ = false;
     private boolean animandoJ1 = false, animacionIsFinihedJ1 = false, animacionStartedJ1 = false;
@@ -17,10 +18,12 @@ public class AnimacionInicioRonda {
     private boolean dibujandoJ = false, dibujandoJ1 = false, dibujandoJ2 = false, dibujandoJ3 = false;
     private boolean iniciado = false;
     private float xIni, yIni;
-    private ArrayList<Jugador> ordenJugadores;
+    private ArrayList<PlayerDummy> ordenJugadores;
+    private ArrayList<PlayerDummy> jugadoresRonda;
 
-    public AnimacionInicioRonda(Sala sala) {
-        this.sala = sala;
+    public AnimacionInicioRonda(PartidaInfo partida, PanelPartida panel) {
+        this.partida = partida;
+        this.panel = panel;
     }
 
     public void animar(Graphics2D g2) {
@@ -128,7 +131,7 @@ public class AnimacionInicioRonda {
         }
 
         if (dibujandoJ)
-            g2.drawImage(LoveLetter.getInstance().getJugador().carta1.getImagen(), null, 380, 500);
+            g2.drawImage(LoveLetter.getInstance().getCliente().getJugadorCliente().carta1.getImagen(), null, 380, 500);
         if (dibujandoJ1)
             g2.drawImage(Imagenes.reversoPeq, null, 10, 250);
         if (dibujandoJ2)
@@ -142,29 +145,34 @@ public class AnimacionInicioRonda {
             reset();
             return;
         }
-        Jugador jugador = ordenJugadores.remove(0);
-        int index = sala.partida.jugadores.indexOf(jugador);
+        PlayerDummy jugador = ordenJugadores.remove(0);
+        if (jugador.nombre.equals(LoveLetter.getInstance().getCliente().getJugadorCliente().nombre)) {
+            animandoJ = true;
+            return;
+        }
+        int index = this.jugadoresRonda.indexOf(this.panel.getDummyPorNombrePartida(jugador.nombre));
         switch (index) {
             case 0:
-                animandoJ = true;
-                break;
-            case 1:
                 animandoJ1 = true;
                 break;
-            case 2:
+            case 1:
                 animandoJ2 = true;
                 break;
-            case 3:
+            case 2:
                 animandoJ3 = true;
                 break;
+            default:
+                reset();
         }
     }
 
     private void iniciar() {
         this.iniciado = true;
-        if (sala.partida.rondaActual.ordenReparto == null)
+        if (partida.ordenReparto == null)
             return;
-        this.ordenJugadores = new ArrayList<>(sala.partida.rondaActual.ordenReparto);
+        this.ordenJugadores = new ArrayList<>(partida.ordenReparto);
+        this.jugadoresRonda = new ArrayList<>(partida.jugadoresEnLaRonda);
+        this.jugadoresRonda.remove(this.panel.getDummyPorNombrePartida(LoveLetter.getInstance().getCliente().getJugadorCliente().nombre));
     }
 
     private void reset() {
@@ -188,6 +196,7 @@ public class AnimacionInicioRonda {
         dibujandoJ1 = false;
         dibujandoJ2 = false;
         dibujandoJ3 = false;
-        sala.partida.rondaActual.initTurnos();
+        this.panel.animandoAIR = false;
+        LoveLetter.getInstance().getCliente().getJugadorCliente().animacionInicioTerminada();
     }
 }

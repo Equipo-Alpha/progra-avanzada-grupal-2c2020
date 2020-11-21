@@ -1,27 +1,28 @@
 package equipoalpha.loveletter.partida;
 
-import equipoalpha.loveletter.LoveLetter;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.eventos.*;
-import equipoalpha.loveletter.util.Tickable;
+import equipoalpha.loveletter.server.JugadorServer;
+import equipoalpha.loveletter.server.LoveLetterServidor;
 
 import java.util.ArrayList;
 
-public class Sala implements Tickable {
+public class Sala {
     public final String nombre;
     public final EventosPartidaManager eventos;
-    public Jugador creador;
-    public ArrayList<Jugador> jugadores;
+    public JugadorServer creador;
+    public ArrayList<JugadorServer> jugadores;
     public Partida partida;
+    public boolean tieneBot = false;
     private Integer cantSimbolosAfecto;
-    private Jugador jugadorMano;
+    private JugadorServer jugadorMano;
     /**
      * Determina si la partida debe terminar si el creador la abandona, por defecto true
      */
     private Boolean creadorNull = true;
 
-    public Sala(String nombre, Jugador creador) {
+    public Sala(String nombre, JugadorServer creador) {
         this.nombre = nombre;
         this.creador = creador;
         this.creador.salaActual = this;
@@ -30,10 +31,12 @@ public class Sala implements Tickable {
         this.eventos = new EventosPartidaManager();
         EventoObservado confirmarInicio = new ConfirmarInicioEvento(this);
         EventoObservado viendoCarta = new ViendoCartaEvento(this);
+        EventoObservado comienzoRonda = new ComienzoRondaEvento(this);
+        EventoObservado finPartida = new FinPartidaEvento(this);
         this.eventos.registrar(EventosPartida.PEDIRCONFIRMACION, confirmarInicio);
         this.eventos.registrar(EventosPartida.VIENDOCARTA, viendoCarta);
-        if (LoveLetter.handler != null) // malditos tests
-            registrar();
+        this.eventos.registrar(EventosPartida.COMIENZORONDA, comienzoRonda);
+        this.eventos.registrar(EventosPartida.FINPARTIDA, finPartida);
     }
 
     public void crearPartida() {
@@ -54,7 +57,7 @@ public class Sala implements Tickable {
         return jugadorMano;
     }
 
-    public void setJugadorMano(Jugador jugadorMano) {
+    public void setJugadorMano(JugadorServer jugadorMano) {
         if (!this.jugadores.contains(jugadorMano)) {
             return;
         }
@@ -74,8 +77,8 @@ public class Sala implements Tickable {
      *
      * @return false cuando ya hay 4 jugadores en la sala
      */
-    public boolean agregarJugador(Jugador jugadorAAgregar) {
-        if (this.jugadores.size() < 4 && !this.jugadores.contains(jugadorAAgregar)) {
+    public boolean agregarJugador(JugadorServer jugadorAAgregar) {
+        if (this.partida == null && this.jugadores.size() < 4 && !this.jugadores.contains(jugadorAAgregar)) {
             this.jugadores.add(jugadorAAgregar);
             jugadorAAgregar.salaActual = this;
             return true;
@@ -83,32 +86,45 @@ public class Sala implements Tickable {
         return false;
     }
 
-    public void eliminarJugador(Jugador jugadorAEliminar) {
+    public void eliminarJugador(JugadorServer jugadorAEliminar) {
+        jugadorAEliminar.partidaJugando = null;
+        jugadorAEliminar.salaActual = null;
+        this.jugadores.remove(jugadorAEliminar);
         if (this.partida != null && this.partida.rondaActual.jugadoresEnLaRonda.contains(jugadorAEliminar)) {
             if (jugadorAEliminar.getEstado().getEstadoActual() != EstadosJugador.ESPERANDO)
                 this.partida.rondaActual.eliminarJugadorEnTurno(jugadorAEliminar);
             else
                 this.partida.rondaActual.eliminarJugador(jugadorAEliminar);
+            this.partida.rondaActual.ordenReparto.remove(jugadorAEliminar);
         }
-        this.jugadores.remove(jugadorAEliminar);
-        jugadorAEliminar.partidaJugando = null;
-        jugadorAEliminar.salaActual = null;
+        if (this.partida == null && this.jugadorMano != null && this.jugadorMano.equals(jugadorAEliminar)) {
+            this.jugadorMano = null;
+        }
         if (this.creador == jugadorAEliminar) {
             this.creador = null;
             if (!this.creadorNull) {
                 this.creador = this.jugadores.get(0);
             }
         }
+        for (JugadorServer j : this.jugadores) {
+            j.sincronizarSala();
+        }
+        if (this.jugadores.isEmpty() && LoveLetterServidor.getINSTANCE() != null) {
+            LoveLetterServidor.getINSTANCE().eliminarSala(this);
+            return;
+        }
+        tick();
     }
 
-    @Override
     public void tick() {
         if (this.creador == null) {
             // TODO para cuando sea server avisarle a cada jugador porque termino la partida
-            ArrayList<Jugador> nJugadores = new ArrayList<>(this.jugadores);
-            nJugadores.forEach(Jugador::terminarAcciones);
+            ArrayList<JugadorServer> nJugadores = new ArrayList<>(this.jugadores);
+            nJugadores.forEach(JugadorServer::terminarAcciones);
             nJugadores.forEach(this::eliminarJugador);
             nJugadores.clear();
+            if(LoveLetterServidor.getINSTANCE() != null)
+                LoveLetterServidor.getINSTANCE().eliminarSala(this);
         }
     }
 }

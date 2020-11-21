@@ -1,9 +1,10 @@
 package equipoalpha.lovelettertest;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
-import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Sala;
 import equipoalpha.loveletter.util.excepcion.JugadorNoValido;
 import org.junit.Assert;
@@ -11,28 +12,28 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class JugadorTest {
-    private Jugador jugador;
-    private Jugador jugador2;
+    private JugadorImplTest jugador;
+    private JugadorImplTest jugador2;
     private Sala sala;
 
     @Before
     public void setUp() {
-        this.jugador = new Jugador("TesterDeJava");
-        this.jugador2 = new Jugador("dummy");
+        this.jugador = new JugadorImplTest("TesterDeJava");
+        this.jugador2 = new JugadorImplTest("dummy");
 
-        this.sala = jugador.crearSala("test");
+        this.sala = jugador.crearSalaImpl("test");
     }
 
     @Test
     public void crearSala() {
-        Assert.assertNull(jugador.crearSala("test"));
-        Assert.assertNotNull(jugador2.crearSala("test"));
+        Assert.assertNull(jugador.crearSalaImpl("test"));
+        Assert.assertNotNull(jugador2.crearSalaImpl("test"));
     }
 
     @Test
     public void unirseASala() {
-        Assert.assertFalse(jugador.unirseASala(sala));
-        Assert.assertTrue(jugador2.unirseASala(sala));
+        Assert.assertFalse(jugador.unirseASalaImpl(sala));
+        Assert.assertTrue(jugador2.unirseASalaImpl(sala));
     }
 
     @Test
@@ -103,13 +104,13 @@ public class JugadorTest {
     @Test
     public void descartarCarta1() {
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
-        Assert.assertFalse(jugador.descartarCarta1());
+        Assert.assertFalse(jugador.descartarCarta1Impl());
     }
 
     @Test
     public void descartarCarta2() {
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
-        Assert.assertFalse(jugador.descartarCarta2());
+        Assert.assertFalse(jugador.descartarCarta2Impl());
     }
 
     @Test
@@ -134,14 +135,15 @@ public class JugadorTest {
         sala.setCantSimbolosAfecto(5);
         sala.crearPartida();
         sala.partida.initPartida();
+        sala.partida.onNuevaRonda(sala.partida.getJugadorMano());
         jugador.getEstado().cartaDescartada(new Carta(CartaTipo.GUARDIA));
 
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
-        jugador.elegirJugador(jugador2);
+        jugador.elegirJugadorImpl(jugador2);
         Assert.assertNull(jugador.getEstado().getJugadorElegido());
 
         jugador.getEstado().setEstadoActual(EstadosJugador.ELIGIENDOJUGADOR);
-        jugador.elegirJugador(jugador2);
+        jugador.elegirJugadorImpl(jugador2);
         Assert.assertEquals(jugador2, jugador.getEstado().getJugadorElegido());
     }
 
@@ -196,5 +198,31 @@ public class JugadorTest {
         jugador.terminarAcciones();
         Assert.assertNull(jugador.getEstado().getCartaViendo());
         Assert.assertNotEquals(EstadosJugador.VIENDOCARTA, jugador.getEstado().getEstadoActual());
+    }
+
+    @Test
+    public void serializarData() {
+        jugador.carta1 = new Carta(CartaTipo.GUARDIA);
+        jugador.carta2 = new Carta(CartaTipo.CONDESA);
+        JsonObject json = new JsonObject();
+        jugador.serializarData(json);
+        Carta carta1 = new Gson().fromJson(json.get("carta1"), Carta.class);
+        Assert.assertEquals(CartaTipo.GUARDIA, carta1.getTipo());
+        Carta carta2 = new Gson().fromJson(json.get("carta2"), Carta.class);
+        Assert.assertEquals(CartaTipo.CONDESA, carta2.getTipo());
+    }
+
+    @Test
+    public void deserializarData() {
+        JsonObject json = new JsonObject();
+        json.add("carta1", (new Gson().toJsonTree(new Carta(CartaTipo.REY))));
+        json.add("carta2", (new Gson().toJsonTree(new Carta(CartaTipo.PRINCESA))));
+        json.addProperty("nombre", "jsonTest");
+        json.addProperty("icono", "iconoTest");
+        jugador.deserializarData(json);
+        Assert.assertEquals(CartaTipo.REY, jugador.carta1.getTipo());
+        Assert.assertEquals(CartaTipo.PRINCESA, jugador.carta2.getTipo());
+        Assert.assertEquals("jsonTest", jugador.nombre);
+        Assert.assertEquals("iconoTest", jugador.iconoNombre);
     }
 }

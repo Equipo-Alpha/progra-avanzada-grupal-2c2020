@@ -1,13 +1,13 @@
 package equipoalpha.loveletter.partida.eventos;
 
-import equipoalpha.loveletter.jugador.Jugador;
+import equipoalpha.loveletter.server.JugadorServer;
 
 import java.util.List;
 
 public interface EventoObservado {
-    void notificar(List<Jugador> observadores);
+    void notificar(List<JugadorServer> observadores);
 
-    void removerObservador(Jugador jugador);
+    void removerObservador(JugadorServer jugador);
 
     void cancelar();
 }

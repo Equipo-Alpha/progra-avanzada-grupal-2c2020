@@ -24,17 +24,34 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.0'
 }
 
-jar {
+shadowJar {
+    mergeServiceFiles()
+}
+
+task clienteJar (type: Jar, dependsOn: shadowJar) {
     manifest {
-        attributes 'Main-Class': 'equipoalpha.loveletter.LoveLetter'
+        attributes 'Main-Class': 'equipoalpha.loveletter.client.LoveLetter'
     }
     archiveBaseName.set('EquipoAlpha-LoveLetter')
-    archiveClassifier.set('')
+    archiveClassifier.set('Cliente')
     archiveVersion.set('')
+    from zipTree(shadowJar.archiveFile)
+}
+
+task servidorJar(type: Jar, dependsOn: shadowJar) {
+    manifest {
+        attributes 'Main-Class': 'equipoalpha.loveletter.server.LoveLetterServidor'
+    }
+    archiveBaseName.set('EquipoAlpha-LoveLetter')
+    archiveClassifier.set('Servidor')
+    archiveVersion.set('')
+    from zipTree(shadowJar.archiveFile)
 }
 
 test {
@@ -43,6 +60,18 @@ test {
 
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude:  [
+                    'equipoalpha/loveletter/pantalla/**',
+                    'equipoalpha/loveletter/common/**',
+                    'equipoalpha/loveletter/client/**',
+                    'equipoalpha/loveletter/server/**',
+                    'equipoalpha/loveletter/util/**',
+                    'equipoalpha/loveletter/jugador/JugadorIA.class'
+            ])
+        }))
+    }
     reports {
         xml.enabled false
         csv.enabled false
@@ -51,6 +80,6 @@ jacocoTestReport {
 }
 
 jacoco {
-    toolVersion = "0.8.5"
+    toolVersion = "0.8.6"
     reportsDir = file("$buildDir/JacocoReportDir")
 }

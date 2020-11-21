@@ -1,9 +1,9 @@
 package equipoalpha.loveletter.carta;
 
 import equipoalpha.loveletter.jugador.EstadosJugador;
-import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Ronda;
 import equipoalpha.loveletter.partida.eventos.EventosPartida;
+import equipoalpha.loveletter.server.JugadorServer;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class Carta implements Comparable<Carta> {
     /**
      * @param jugador jugador que la descarto
      */
-    public void descartar(Jugador jugador) {
+    public void descartar(JugadorServer jugador) {
         Ronda ronda = jugador.partidaJugando.rondaActual;
         System.out.println(jugador + " descarta " + this);
         switch (tipo) {
@@ -34,6 +34,7 @@ public class Carta implements Comparable<Carta> {
                 if (ronda.puedeElegir(jugador, this.tipo)) {
                     jugador.getEstado().setEstadoActual(EstadosJugador.ELIGIENDOJUGADOR);
                     agregarAlMapa(ronda, jugador, this);
+                    ronda.actualizarJugadores();
                     return;
                 }
         }
@@ -42,7 +43,7 @@ public class Carta implements Comparable<Carta> {
         ronda.onFinalizarDescarte(jugador);
     }
 
-    public void jugadorElegido(Jugador jugadorQueDescarto, Jugador jugadorElegido) {
+    public void jugadorElegido(JugadorServer jugadorQueDescarto, JugadorServer jugadorElegido) {
         Ronda ronda = jugadorQueDescarto.partidaJugando.rondaActual;
         System.out.println(jugadorQueDescarto + " elige al jugador " + jugadorElegido);
         switch (tipo) {
@@ -50,7 +51,7 @@ public class Carta implements Comparable<Carta> {
                 jugadorQueDescarto.verCarta(jugadorElegido);
                 return;
             case BARON:
-                ArrayList<Jugador> jugadores = new ArrayList<>();
+                ArrayList<JugadorServer> jugadores = new ArrayList<>();
                 jugadores.add(jugadorQueDescarto);
                 jugadores.add(jugadorElegido);
                 jugadorQueDescarto.salaActual.eventos.ejecutar(EventosPartida.VIENDOCARTA, jugadores);
@@ -77,7 +78,7 @@ public class Carta implements Comparable<Carta> {
         ronda.onFinalizarDescarte(jugadorQueDescarto);
     }
 
-    public void cartaAdivinada(Jugador jugadorQueDescarto, Jugador jugadorElegido, CartaTipo cartaAdivinada) {
+    public void cartaAdivinada(JugadorServer jugadorQueDescarto, JugadorServer jugadorElegido, CartaTipo cartaAdivinada) {
         System.out.println(jugadorQueDescarto + " intenta adivinar con " + cartaAdivinada.nombre);
         if (tipo == CartaTipo.GUARDIA)
             if (jugadorElegido.tieneCarta(cartaAdivinada)) {
@@ -88,7 +89,7 @@ public class Carta implements Comparable<Carta> {
         jugadorQueDescarto.rondaJugando.onFinalizarDescarte(jugadorQueDescarto);
     }
 
-    private void agregarAlMapa(Ronda ronda, Jugador jugador, Carta carta) {
+    private void agregarAlMapa(Ronda ronda, JugadorServer jugador, Carta carta) {
         ronda.mapaCartasDescartadas.get(jugador).add(carta);
     }
 

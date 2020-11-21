@@ -1,6 +1,6 @@
 package equipoalpha.loveletter.pantalla;
 
-import equipoalpha.loveletter.LoveLetter;
+import equipoalpha.loveletter.client.LoveLetter;
 import equipoalpha.loveletter.util.Drawable;
 
 import javax.swing.*;
@@ -21,6 +21,7 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
     private final JLabel labelIcono;
     private final JComboBox<String> comboBoxIcono;
     private final JButton botonAceptar;
+    private final JButton buttonUnirseSala;
     private final JButton buttonCrearSala;
     private final JButton buttonConfigurar;
     private final JButton buttonSalir;
@@ -36,9 +37,9 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
     private float sizeX = 0, sizeY = 0;
     private int centroX;
 
-    public PanelMenuPrincipal(Ventana ventana) {
-        parent = ventana;
+    public PanelMenuPrincipal() {
         loveletter = LoveLetter.getInstance();
+        parent = loveletter.getVentana();
         equipo = new JPanel();
         equipo.setBackground(new Color(78, 73, 73, 225));
         add(equipo);
@@ -106,6 +107,7 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
 
         isExpanding = isMaxSize = isMinSize = isAchicandose = moviendoCentro = false;
         centroX = (loveletter.WIDTH / 2) - 200;
+        buttonUnirseSala = new JButton("Buscar salas");
         buttonCrearSala = new JButton("Crear sala");
         buttonConfigurar = new JButton("Configuración");
         buttonSalir = new JButton("Salir");
@@ -114,12 +116,18 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         buttonCrearSala.setFont(buttonFont);
         buttonConfigurar.setFont(buttonFont);
         buttonSalir.setFont(buttonFont);
+        buttonUnirseSala.setFont(buttonFont);
         buttonFont = new Font("Arial", Font.PLAIN, 14);
         buttonEquipo.setFont(buttonFont);
+        add(buttonUnirseSala);
         add(buttonCrearSala);
         add(buttonConfigurar);
         add(buttonSalir);
         add(buttonEquipo);
+
+        buttonUnirseSala.addActionListener(actionEvent -> {
+            loveletter.getCliente().getJugadorCliente().buscarSalas();
+        });
 
         buttonConfigurar.addActionListener(actionEvent -> {
             panelConfiguracion.setVisible(true);
@@ -145,11 +153,12 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
             } else {
                 isMaxSize = false;
                 isExpanding = false;
+                equipo.setVisible(true);
                 isAchicandose = true;
             }
         });
 
-        buttonCrearSala.addActionListener(actionEvent -> moviendoCentro = true);
+        buttonCrearSala.addActionListener(actionEvent -> loveletter.getCliente().getJugadorCliente().crearSala(""));
 
         buttonSalir.addActionListener(actionEvent -> exit(0));
 
@@ -183,17 +192,18 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
             g2.setFont(new Font("Arial", Font.BOLD, 40));
             g2.drawString("LOVE LETTER", 370, 100);
             g2.setFont(new Font("Arial", Font.BOLD, 24));
-            g2.drawString("Bienvenido " + loveletter.getJugador(), 25, 700);
+            g2.drawString("Bienvenido " + loveletter.getCliente().getJugadorCliente(), 25, 700);
 
-            buttonConfigurar.setBounds(360, 280, 300, 64);
-            buttonCrearSala.setBounds(360, 380, 300, 64);
-            buttonSalir.setBounds(360, 480, 300, 64);
+            buttonUnirseSala.setBounds(360, 250, 300, 64);
+            buttonCrearSala.setBounds(360, 350, 300, 64);
+            buttonConfigurar.setBounds(360, 450, 300, 64);
+            buttonSalir.setBounds(360, 550, 300, 64);
         }
         buttonEquipo.setBounds(900, 10, 100, 32);
 
         if (isExpanding) expandirEquipo();
-        if (isMaxSize) equipo.setBounds(800, 42, 200, 250);
         if (isAchicandose) achicarEquipo();
+        if (isMaxSize) equipo.setBounds(800, 42, 200, 250);
         if (isMinSize) equipo.setVisible(false);
 
         if (sizeX > 120) {
@@ -243,11 +253,12 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
 
     private void expandirEquipo() {
         if (sizeX < 200 && sizeY < 250) {
-            sizeX += 5;
-            sizeY += 6.25;
+            sizeX += 2;
+            sizeY += 2.5;
         } else {
             sizeX = 200;
             sizeY = 250;
+            isExpanding = false;
             isMaxSize = true;
             return;
         }
@@ -256,11 +267,12 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
 
     private void achicarEquipo() {
         if (sizeX > 2 && sizeY > 2) {
-            sizeX -= 1;
-            sizeY -= 1.25;
+            sizeX -= 2;
+            sizeY -= 2.5;
         } else {
             sizeX = 0;
             sizeY = 0;
+            isAchicandose = false;
             isMinSize = true;
             return;
         }
@@ -270,21 +282,25 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
     private void moverCentro(Graphics2D g2) {
         Color color = new Color(0, 0, 0, 185);
         g2.setColor(color);
-        centroX -= 8;
+        centroX -= 5;
         if (centroX > 10)
             g2.fillRect(centroX, 0, 400, loveletter.HEIGHT);
         else {
             moviendoCentro = false;
             centroX = (loveletter.WIDTH / 2) - 200;
-            parent.onCrearSala(this);
+            parent.onCrearSala();
         }
     }
 
     private void cambiarConfiguracion(String nombre, String icono) {
-        loveletter.getJugador().nombre = nombre;
+        loveletter.getCliente().getJugadorCliente().nombre = nombre;
         if (icono.equals("Principe"))
-            loveletter.getJugador().icono = Imagenes.iconoPrincipe;
+            loveletter.getCliente().getJugadorCliente().icono = Imagenes.iconoPrincipe;
         else
-            loveletter.getJugador().icono = Imagenes.iconoPrincesa;
+            loveletter.getCliente().getJugadorCliente().icono = Imagenes.iconoPrincesa;
+    }
+
+    public void setMoviendoCentro(boolean moviendoCentro) {
+        this.moviendoCentro = moviendoCentro;
     }
 }

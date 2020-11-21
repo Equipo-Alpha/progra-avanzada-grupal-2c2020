@@ -1,85 +1,150 @@
 package equipoalpha.loveletter.pantalla;
 
-import equipoalpha.loveletter.LoveLetter;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import equipoalpha.loveletter.client.LoveLetter;
+import equipoalpha.loveletter.common.ComandoTipo;
 import equipoalpha.loveletter.util.Drawable;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Ventana {
-    JFrame ventana;
-    private PanelSala panelSala;
+    private final JFrame ventana;
+    private Drawable panelActual;
 
     public Ventana() {
-        ventana = new JFrame("Love Letter");
-        ventana.setSize(1024, 768);
-        ventana.setPreferredSize(new Dimension(1024, 768));
-        PanelElegirNombre panelElegirNombre = new PanelElegirNombre(this);
-        ventana.add(panelElegirNombre);
-        ventana.pack();
-        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setLocationRelativeTo(null);
-        ventana.setResizable(false);
-        ventana.setVisible(true);
+        this.ventana = new JFrame("Love Letter");
+        this.ventana.setSize(1024, 768);
+        this.ventana.setPreferredSize(new Dimension(1024, 768));
+        PanelElegirNombre panelElegirNombre = new PanelElegirNombre();
+        this.ventana.add(panelElegirNombre);
+        this.panelActual = panelElegirNombre;
+        this.ventana.pack();
+        this.ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.ventana.setLocationRelativeTo(null);
+        this.ventana.setResizable(false);
+        this.ventana.setVisible(true);
         panelElegirNombre.setVisible(true);
-        ventana.setFocusable(true);
-        ventana.requestFocusInWindow();
+        this.ventana.setFocusable(true);
+        this.ventana.requestFocusInWindow();
     }
 
-    public void onLogin(PanelElegirNombre panelAnterior) {
-        PanelMenuPrincipal panelMenuPrincipal = new PanelMenuPrincipal(this);
-        ventana.add(panelMenuPrincipal);
-        ventana.pack();
-        panelAnterior.setVisible(false);
-        LoveLetter.handler.removeDrawableObject(panelAnterior);
+    public void onLogin() {
+        PanelMenuPrincipal panelMenuPrincipal = new PanelMenuPrincipal();
+        this.ventana.add(panelMenuPrincipal);
+        this.ventana.pack();
+        ((JPanel) this.panelActual).setVisible(false);
+        LoveLetter.handler.removeDrawableObject(panelActual);
+        this.panelActual = panelMenuPrincipal;
         panelMenuPrincipal.setVisible(true);
     }
 
-    public void onCrearSala(PanelMenuPrincipal panelAnterior) {
-        this.panelSala = new PanelSala(this);
-        ventana.add(panelSala);
-        ventana.pack();
-        panelAnterior.setVisible(false);
-        LoveLetter.handler.removeDrawableObject(panelAnterior);
+    public void onBuscarSalas(JsonArray array) {
+        PanelUnirseSala panelUnirseSala = new PanelUnirseSala(array);
+        this.ventana.add(panelUnirseSala);
+        this.ventana.pack();
+        ((JPanel) this.panelActual).setVisible(false);
+        LoveLetter.handler.removeDrawableObject(panelActual);
+        this.panelActual = panelUnirseSala;
+        panelUnirseSala.setVisible(true);
+    }
+
+    public void onActualizarSalas(JsonArray array) {
+        if (panelActual instanceof PanelUnirseSala) {
+            ((PanelUnirseSala) panelActual).actualizarSalas(array);
+        } else onBuscarSalas(array);
+    }
+
+    public void onSalaInvalida() {
+        JOptionPane.showConfirmDialog(this.ventana, // o this.panelActual
+                "La sala seleccionada es invalida o ya no esta disponible." +
+                        ".\nPor favor, seleccione otra.",
+                "Sala invalida",
+                JOptionPane.DEFAULT_OPTION);
+    }
+
+    public void onCrearSala() {
+        PanelSala panelSala = new PanelSala();
+        this.ventana.add(panelSala);
+        this.ventana.pack();
+        ((JPanel) this.panelActual).setVisible(false);
+        LoveLetter.handler.removeDrawableObject(this.panelActual);
+        this.panelActual = panelSala;
         panelSala.setVisible(true);
     }
 
-    public void onSalirSala(Drawable panelAnterior) {
+    public void onSalirSala() {
         Container container = ventana.getContentPane();
         for (Component component : container.getComponents()) {
             if (component instanceof PanelMenuPrincipal) {
-                ((JPanel) panelAnterior).setVisible(false);
-                LoveLetter.handler.removeDrawableObject(panelAnterior);
+                ((JPanel) this.panelActual).setVisible(false);
+                LoveLetter.handler.removeDrawableObject(this.panelActual);
                 component.setVisible(true);
+                this.panelActual = (Drawable) component;
                 LoveLetter.handler.addDrawableObject((Drawable) component);
                 return;
             }
         }
     }
-    public void onPartidaEmpezada() {
-        onPartidaEmpezada(panelSala);
+
+    public void onConfirmarInicio() {
+        int seleccion = JOptionPane.showConfirmDialog(this.ventana, // o this.panelActual
+                "El creador selecciono para empezar la partida" +
+                        ".\n¿Estas listo?",
+                "Partida empezando",
+                JOptionPane.YES_NO_OPTION);
+        if (seleccion == JOptionPane.YES_OPTION) {
+            LoveLetter.getInstance().getCliente().getJugadorCliente().confirmarInicio();
+        } else {
+            LoveLetter.getInstance().getCliente().getJugadorCliente().cancelarInicio();
+        }
     }
 
-    public void onPartidaEmpezada(PanelSala panelAnterior) {
-        PanelPartida panelPartida = new PanelPartida(this, panelAnterior.getSala());
+    public void onPartidaEmpezada() {
+        PanelPartida panelPartida = new PanelPartida();
         ventana.add(panelPartida);
         ventana.pack();
-        panelAnterior.setVisible(false);
-        LoveLetter.handler.removeDrawableObject(panelAnterior);
+        ((JPanel) this.panelActual).setVisible(false);
+        LoveLetter.handler.removeDrawableObject(this.panelActual);
+        this.panelActual = panelPartida;
         panelPartida.setVisible(true);
-        panelPartida.getSala().partida.initPartida();
     }
 
-    public void onPartidaTerminada(PanelPartida panelAnterior) {
+    public void onRondaEmpezada() {
+        ((PanelPartida) this.panelActual).animandoAIR = true;
+    }
+
+    public void onPartidaTerminadaMsg() {
+        //if (!(this.panelActual instanceof PanelPartida)) return;
+        int seleccion = JOptionPane.showConfirmDialog(this.ventana,
+                "La partida termino, el ganador es: " +
+                        LoveLetter.getInstance().getCliente().getJugadorCliente().getPartidaActual().jugadorEnTurno.nombre +
+                        ".\n¿Volver a jugar?",
+                "Partida terminada",
+                JOptionPane.YES_NO_OPTION);
+        if (seleccion == JOptionPane.YES_OPTION) {
+            LoveLetter.getInstance().getCliente().send(ComandoTipo.ConfirmarVolverAJugar, new JsonObject());
+        } else {
+            LoveLetter.getInstance().getCliente().send(ComandoTipo.CancelarVolverJugar, new JsonObject());
+        }
+    }
+
+    public void onPartidaTerminada() {
         Container container = ventana.getContentPane();
         for (Component component : container.getComponents()) {
             if (component instanceof PanelSala) {
-                panelAnterior.setVisible(false);
-                LoveLetter.handler.removeDrawableObject(panelAnterior);
+                ((JPanel) this.panelActual).setVisible(false);
+                LoveLetter.handler.removeDrawableObject(this.panelActual);
                 component.setVisible(true);
+                this.panelActual = (Drawable) component;
                 LoveLetter.handler.addDrawableObject((Drawable) component);
                 return;
             }
         }
+    }
+
+    public Drawable getPanelActual() {
+        return panelActual;
     }
 }

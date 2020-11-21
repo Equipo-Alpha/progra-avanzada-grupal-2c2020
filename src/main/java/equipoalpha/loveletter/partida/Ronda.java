@@ -5,6 +5,9 @@ import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.jugador.JugadorIA;
+import equipoalpha.loveletter.partida.eventos.EventosPartida;
+import equipoalpha.loveletter.server.JugadorServer;
+import equipoalpha.loveletter.server.LoveLetterServidor;
 
 import java.util.*;
 
@@ -16,18 +19,17 @@ public class Ronda {
     /**
      * Jugadores que estan jugando en la ronda actual y no han sido eliminados.
      */
-    public ArrayList<Jugador> jugadoresEnLaRonda;
-    public Jugador jugadorEnTurno;
+    public ArrayList<JugadorServer> jugadoresEnLaRonda;
+    public JugadorServer jugadorEnTurno;
     /**
      * Mapa de las cartas que descarto cada jugador durante la ronda.
      */
-    public Map<Jugador, ArrayList<Carta>> mapaCartasDescartadas;
+    public Map<JugadorServer, ArrayList<Carta>> mapaCartasDescartadas;
     /**
      * Carta que se elimina al principio de la ronda
      */
     public Carta cartaEliminada;
-    public boolean turnosIniciados;
-    public LinkedList<Jugador> ordenReparto;
+    public LinkedList<JugadorServer> ordenReparto;
     /**
      * Conjunto de 16 cartas al empezar, termina la ronda si se vacia
      */
@@ -40,14 +42,14 @@ public class Ronda {
     public void initRonda() {
         initMazo();
 
-        this.jugadoresEnLaRonda = new ArrayList<>();
+        this.jugadoresEnLaRonda = new ArrayList<>(this.partida.jugadores);
         this.mapaCartasDescartadas = new HashMap<>();
         this.ordenReparto = new LinkedList<>();
 
         jugadorEnTurno = partida.jugadorMano;
 
-        ListIterator<Jugador> iterador = partida.jugadores.listIterator();
-        Jugador jugadorIterando = iterador.next();
+        ListIterator<JugadorServer> iterador = partida.jugadores.listIterator();
+        JugadorServer jugadorIterando = iterador.next();
         while (jugadorIterando != jugadorEnTurno) {
             jugadorIterando = iterador.next();
         }
@@ -61,10 +63,9 @@ public class Ronda {
 
         // ---------Repartir Cartas--------------\\
         cartaEliminada = mazo.remove();
-        for (Jugador jugador : ordenReparto) {
+        for (JugadorServer jugador : ordenReparto) {
             jugador.carta1 = mazo.remove();
             jugador.rondaJugando = this;
-            jugadoresEnLaRonda.add(jugador);
             jugador.getEstado().resetElecciones();
             mapaCartasDescartadas.put(jugador, new ArrayList<>());
             jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
@@ -74,13 +75,14 @@ public class Ronda {
         }
 
         System.out.println("Empezando Ronda");
-
-        turnosIniciados = false;
+        if (LoveLetterServidor.getINSTANCE() == null) return;
+        actualizarJugadores();
+        partida.jugadorMano.salaActual.eventos.ejecutar(EventosPartida.COMIENZORONDA, this.jugadoresEnLaRonda);
     }
 
     public void initTurnos() {
-        turnosIniciados = true;
         jugadorEnTurno.onComienzoTurno(darCarta());
+        actualizarJugadores();
     }
 
     private void initMazo() {
@@ -96,13 +98,13 @@ public class Ronda {
     }
 
     private void onRondaTerminada() {
-        Jugador jugadorGanador = determinarGanador();
+        JugadorServer jugadorGanador = determinarGanador();
         jugadorGanador.cantSimbolosAfecto++;
         System.out.println("El ganador de la ronda es: " + jugadorGanador);
         partida.onNuevaRonda(jugadorGanador);
     }
 
-    private Jugador determinarGanador() {
+    private JugadorServer determinarGanador() {
 
         // Si solo queda 1 devuelve a ese jugador
         if (jugadoresEnLaRonda.size() == 1)
@@ -116,8 +118,8 @@ public class Ronda {
                 mayor = jugador.getFuerzaCarta();
         }
 
-        ArrayList<Jugador> jugadorCartaMasFuerte = new ArrayList<>();
-        for (Jugador jugador : jugadoresEnLaRonda) {
+        ArrayList<JugadorServer> jugadorCartaMasFuerte = new ArrayList<>();
+        for (JugadorServer jugador : jugadoresEnLaRonda) {
             if (jugador.getFuerzaCarta() == mayor)
                 jugadorCartaMasFuerte.add(jugador);
         }
@@ -127,10 +129,10 @@ public class Ronda {
             return jugadorCartaMasFuerte.get(0);
 
         int cantCartas = 0;
-        Jugador jugadorMasCartasDescartadas = null;
+        JugadorServer jugadorMasCartasDescartadas = null;
 
         // Si hay empate, gana el jugador que haya descartado mas cartas en la ronda
-        for (Jugador jugador : jugadorCartaMasFuerte) {
+        for (JugadorServer jugador : jugadorCartaMasFuerte) {
             if (mapaCartasDescartadas.get(jugador).size() > cantCartas) {
                 cantCartas = mapaCartasDescartadas.get(jugador).size();
                 jugadorMasCartasDescartadas = jugador;
@@ -149,7 +151,8 @@ public class Ronda {
         return cartaEliminada;
     }
 
-    public void eliminarJugador(Jugador jugador) {
+    public void eliminarJugador(JugadorServer jugador) {
+        actualizarJugadores();
         mapaCartasDescartadas.get(jugador).add(jugador.carta1);
         for (Jugador j : this.jugadoresEnLaRonda)
             if (j instanceof JugadorIA)
@@ -168,12 +171,12 @@ public class Ronda {
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
     }
 
-    public void eliminarJugadorEnTurno(Jugador jugador) {
+    public void eliminarJugadorEnTurno(JugadorServer jugador) {
         eliminarJugador(jugador);
         onFinalizarDescarte(jugador);
     }
 
-    public void determinarCartaMayor(Jugador jugador1, Jugador jugador2) {
+    public void determinarCartaMayor(JugadorServer jugador1, JugadorServer jugador2) {
         if (jugador1.carta1.getTipo().fuerza > jugador2.carta1.getTipo().fuerza) {
             eliminarJugador(jugador2);
             return;
@@ -182,7 +185,7 @@ public class Ronda {
             eliminarJugador(jugador1);
     }
 
-    public void onFinalizarDescarte(Jugador jugador) {
+    public void onFinalizarDescarte(JugadorServer jugador) {
         for (Jugador jugador1 : jugadoresEnLaRonda) {
             if (jugador1 instanceof JugadorIA) {
                 ((JugadorIA) jugador1).finTurno(jugador, jugador.getEstado().getCartaDescartada());
@@ -192,24 +195,34 @@ public class Ronda {
         jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
         jugador.getEstado().resetElecciones();
 
+        actualizarJugadores();
+
         if (rondaTerminada()) {
             onRondaTerminada();
             return;
         }
 
-        ListIterator<Jugador> iterador = partida.jugadores.listIterator();
-        Jugador jugadorIterando = iterador.next();
+        ListIterator<JugadorServer> iterador = this.ordenReparto.listIterator();
+        JugadorServer jugadorIterando = iterador.next();
         while (jugadorIterando != jugadorEnTurno) {
             jugadorIterando = iterador.next();
         }
         do {
             if (!iterador.hasNext()) {
-                iterador = partida.jugadores.listIterator();
+                iterador = this.ordenReparto.listIterator();
             }
             jugadorEnTurno = iterador.next();
         } while (!jugadoresEnLaRonda.contains(jugadorEnTurno));
 
         jugadorEnTurno.onComienzoTurno(darCarta());
+        actualizarJugadores();
+    }
+
+    public void actualizarJugadores() {
+        for (JugadorServer j : this.partida.jugadores) {
+            j.sincronizarPartida();
+            j.sincronizarSala();
+        }
     }
 
     /**
@@ -219,11 +232,11 @@ public class Ronda {
      * @param carta   la carta que descarto el jugador
      * @return false si no hay jugador disponible para elegir
      */
-    public boolean puedeElegir(Jugador jugador, CartaTipo carta) {
+    public boolean puedeElegir(JugadorServer jugador, CartaTipo carta) {
         ArrayList<Jugador> jugadores = new ArrayList<>(jugadoresEnLaRonda);
         if (carta != CartaTipo.PRINCIPE) jugadores.remove(jugador);
         int cant = 0;
-        for (Jugador j : jugadoresEnLaRonda) {
+        for (JugadorServer j : jugadoresEnLaRonda) {
             if (j.estaProtegido) cant++;
         }
         return jugadores.size() != cant;

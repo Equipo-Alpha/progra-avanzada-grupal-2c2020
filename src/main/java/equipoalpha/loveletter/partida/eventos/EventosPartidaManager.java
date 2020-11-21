@@ -1,6 +1,7 @@
 package equipoalpha.loveletter.partida.eventos;
 
 import equipoalpha.loveletter.jugador.Jugador;
+import equipoalpha.loveletter.server.JugadorServer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +13,7 @@ public class EventosPartidaManager {
         mapaEvento.put(nombre, evento);
     }
 
-    public void ejecutar(EventosPartida nombre, List<Jugador> jugadores) {
+    public void ejecutar(EventosPartida nombre, List<JugadorServer> jugadores) {
         EventoObservado evento = mapaEvento.get(nombre);
         if (evento == null) {
             throw new IllegalStateException("No se registro el evento");
@@ -21,7 +22,7 @@ public class EventosPartidaManager {
         evento.notificar(jugadores);
     }
 
-    public void removerObservador(EventosPartida nombre, Jugador jugador) {
+    public void removerObservador(EventosPartida nombre, JugadorServer jugador) {
         EventoObservado evento = mapaEvento.get(nombre);
         if (evento == null) {
             throw new IllegalStateException("No se registro el evento");

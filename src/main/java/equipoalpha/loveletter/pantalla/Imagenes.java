@@ -1,6 +1,6 @@
 package equipoalpha.loveletter.pantalla;
 
-import equipoalpha.loveletter.LoveLetter;
+import equipoalpha.loveletter.client.LoveLetter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -28,26 +28,39 @@ public class Imagenes {
 
     public static void init() {
         try {
-            background = ImageIO.read(LoveLetter.classLoader.getResource("cards.png"));
-            iconoBot.setImage(ImageIO.read(LoveLetter.classLoader.getResource("bot.png")));
-            backgroundPartida = ImageIO.read(LoveLetter.classLoader.getResource("background.png"));
-            iconoSuma.setImage(ImageIO.read(LoveLetter.classLoader.getResource("plus.png")));
-            iconoPrincipe.setImage(ImageIO.read(LoveLetter.classLoader.getResource("principeIcono.png")));
-            iconoPrincesa.setImage(ImageIO.read(LoveLetter.classLoader.getResource("princesaIcono.png")));
+            background = ImageIO.read(LoveLetter.classLoader.getResource("assets/cards.png"));
+            iconoBot.setImage(ImageIO.read(LoveLetter.classLoader.getResource("assets/bot.png")));
+            backgroundPartida = ImageIO.read(LoveLetter.classLoader.getResource("assets/background.png"));
+            iconoSuma.setImage(ImageIO.read(LoveLetter.classLoader.getResource("assets/plus.png")));
+            iconoPrincipe.setImage(ImageIO.read(LoveLetter.classLoader.getResource("assets/principeIcono.png")));
+            iconoPrincesa.setImage(ImageIO.read(LoveLetter.classLoader.getResource("assets/princesaIcono.png")));
 
             /// cartas
-            guardia = ImageIO.read(LoveLetter.classLoader.getResource("guardia.png"));
-            sacerdote = ImageIO.read(LoveLetter.classLoader.getResource("sacerdote.png"));
-            baron = ImageIO.read(LoveLetter.classLoader.getResource("baron.png"));
-            mucama = ImageIO.read(LoveLetter.classLoader.getResource("mucama.png"));
-            principe = ImageIO.read(LoveLetter.classLoader.getResource("principe.png"));
-            rey = ImageIO.read(LoveLetter.classLoader.getResource("rey.png"));
-            condesa = ImageIO.read(LoveLetter.classLoader.getResource("condesa.png"));
-            princesa = ImageIO.read(LoveLetter.classLoader.getResource("princesa.png"));
-            reverso = ImageIO.read(LoveLetter.classLoader.getResource("reverso.png"));
-            reversoPeq = ImageIO.read(LoveLetter.classLoader.getResource("reversoPeq.png"));
+            guardia = ImageIO.read(LoveLetter.classLoader.getResource("assets/guardia.png"));
+            sacerdote = ImageIO.read(LoveLetter.classLoader.getResource("assets/sacerdote.png"));
+            baron = ImageIO.read(LoveLetter.classLoader.getResource("assets/baron.png"));
+            mucama = ImageIO.read(LoveLetter.classLoader.getResource("assets/mucama.png"));
+            principe = ImageIO.read(LoveLetter.classLoader.getResource("assets/principe.png"));
+            rey = ImageIO.read(LoveLetter.classLoader.getResource("assets/rey.png"));
+            condesa = ImageIO.read(LoveLetter.classLoader.getResource("assets/condesa.png"));
+            princesa = ImageIO.read(LoveLetter.classLoader.getResource("assets/princesa.png"));
+            reverso = ImageIO.read(LoveLetter.classLoader.getResource("assets/reverso.png"));
+            reversoPeq = ImageIO.read(LoveLetter.classLoader.getResource("assets/reversoPeq.png"));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static ImageIcon getIconoPorNombre(String nombre) {
+        switch (nombre) {
+            case "bot":
+                return iconoBot;
+            case "principe":
+                return iconoPrincipe;
+            case "princesa":
+                return iconoPrincesa;
+            default:
+                return null;
         }
     }
 }

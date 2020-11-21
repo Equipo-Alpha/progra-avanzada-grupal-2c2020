@@ -1,6 +1,10 @@
 package equipoalpha.loveletter.pantalla;
 
-import equipoalpha.loveletter.LoveLetter;
+import com.google.gson.JsonObject;
+import equipoalpha.loveletter.client.JugadorCliente;
+import equipoalpha.loveletter.client.LoveLetter;
+import equipoalpha.loveletter.common.ComandoTipo;
+import equipoalpha.loveletter.common.PlayerDummy;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.jugador.JugadorIA;
 import equipoalpha.loveletter.partida.Sala;
@@ -8,40 +12,36 @@ import equipoalpha.loveletter.util.Drawable;
 
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
+import javax.swing.plaf.basic.BasicTableUI;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class PanelSala extends JPanel implements Drawable {
     private static final long serialVersionUID = 4L;
-    private final Sala sala;
-    private final Ventana parent;
     private final LoveLetter loveletter;
+    private final JugadorCliente cliente;
     private final JButton botonJugador;
     private final JButton botonSetCondiciones;
     private final JPanel panelSetCondiciones;
     private final JTextArea labelSimbolos;
     private final JComboBox<Integer> simbolosAfecto = new JComboBox<>();
     private final JTextArea labelJugadorMano;
-    private final JComboBox<Jugador> jugadorMano = new JComboBox<>();
+    private final JComboBox<String> jugadorMano = new JComboBox<>();
     private final JTextArea labelCreadorNull;
     private final JComboBox<Boolean> creadorNull = new JComboBox<>();
     private final JButton aceptarConfiguracion;
     private final JButton botonEmpezarPartida;
-    private final JButton botonAgregarBot1;
-    private final JButton botonAgregarBot2;
-    private final JButton botonAgregarBot3;
+    private final JButton botonAgregarBot;
+    private boolean botAgregado = false;
+    private final JButton botonJugador1;
+    private final JButton botonJugador2;
+    private final JButton botonJugador3;
     private final JButton botonSalir;
-    private final JugadorIA bot1 = new JugadorIA("SrBot1");
-    private final JugadorIA bot2 = new JugadorIA("SrBot2");
-    private final JugadorIA bot3 = new JugadorIA("SrBot3");
-    boolean bot1Agregado = false;
-    boolean bot2Agregado = false;
-    boolean bot3Agregado = false;
 
-    public PanelSala(Ventana ventana) {
+    public PanelSala() {
         this.loveletter = LoveLetter.getInstance();
-        this.sala = new Sala("test", loveletter.getJugador());
-        this.parent = ventana;
+        this.cliente = LoveLetter.getInstance().getCliente().getJugadorCliente();
 
         botonSetCondiciones = new JButton("Configurar");
         botonEmpezarPartida = new JButton("Empezar");
@@ -49,23 +49,21 @@ public class PanelSala extends JPanel implements Drawable {
         botonSalir = new JButton("Salir de la Sala");
         aceptarConfiguracion = new JButton("Aceptar");
         botonJugador = new JButton();
-        botonJugador.setIcon(loveletter.getJugador().icono);
-        botonAgregarBot1 = new JButton();
-        botonAgregarBot2 = new JButton();
-        botonAgregarBot3 = new JButton();
-        botonAgregarBot1.setIcon(Imagenes.iconoSuma);
-        botonAgregarBot1.setOpaque(true);
-        botonAgregarBot1.setBackground(new Color(255, 255, 255, 0));
-        botonAgregarBot2.setIcon(Imagenes.iconoSuma);
-        botonAgregarBot2.setOpaque(true);
-        botonAgregarBot2.setBackground(new Color(255, 255, 255, 0));
-        botonAgregarBot3.setIcon(Imagenes.iconoSuma);
-        botonAgregarBot3.setOpaque(true);
-        botonAgregarBot3.setBackground(new Color(255, 255, 255, 0));
+        botonJugador1 = new JButton();
+        botonJugador2 = new JButton();
+        botonJugador3 = new JButton();
+        botonAgregarBot = new JButton("Agregar Bot");
+        botonJugador1.setOpaque(true);
+        botonJugador1.setBackground(new Color(255, 255, 255, 0));
+        botonJugador2.setOpaque(true);
+        botonJugador2.setBackground(new Color(255, 255, 255, 0));
+        botonJugador3.setOpaque(true);
+        botonJugador3.setBackground(new Color(255, 255, 255, 0));
         Font buttonFont = new Font("Arial", Font.BOLD, 22);
         botonSetCondiciones.setFont(buttonFont);
         botonEmpezarPartida.setFont(buttonFont);
         aceptarConfiguracion.setFont(buttonFont);
+        botonAgregarBot.setFont(buttonFont);
         botonSalir.setFont(buttonFont);
         panelSetCondiciones = new JPanel();
         panelSetCondiciones.setVisible(false);
@@ -105,65 +103,36 @@ public class PanelSala extends JPanel implements Drawable {
         botonSetCondiciones.addActionListener(actionEvent -> {
             panelSetCondiciones.setVisible(true);
             jugadorMano.removeAllItems();
-            for (Jugador jugador : sala.jugadores) {
-                jugadorMano.addItem(jugador);
+            for (PlayerDummy jugador : cliente.getSalaActual().jugadores) {
+                jugadorMano.addItem(jugador.nombre);
             }
             panelSetCondiciones.requestFocusInWindow();
         });
-        botonAgregarBot1.addActionListener(actionEvent -> {
-            if (bot1Agregado) {
-                sala.eliminarJugador(bot1);
-                LoveLetter.handler.removeTickableObject(bot1);
-                bot1Agregado = false;
-                botonAgregarBot1.setIcon(Imagenes.iconoSuma);
-            } else {
-                sala.agregarJugador(bot1);
-                bot1.registrar();
-                bot1Agregado = true;
-                botonAgregarBot1.setIcon(Imagenes.iconoBot);
-            }
+        botonJugador1.addActionListener(actionEvent -> {
+            // datos del jugador
         });
-        botonAgregarBot2.addActionListener(actionEvent -> {
-            if (bot2Agregado) {
-                sala.eliminarJugador(bot2);
-                LoveLetter.handler.removeTickableObject(bot2);
-                bot2Agregado = false;
-                botonAgregarBot2.setIcon(Imagenes.iconoSuma);
-            } else {
-                sala.agregarJugador(bot2);
-                bot2.registrar();
-                bot2Agregado = true;
-                botonAgregarBot2.setIcon(Imagenes.iconoBot);
-            }
+        botonJugador2.addActionListener(actionEvent -> {
+
         });
-        botonAgregarBot3.addActionListener(actionEvent -> {
-            if (bot3Agregado) {
-                sala.eliminarJugador(bot3);
-                LoveLetter.handler.removeTickableObject(bot3);
-                bot3Agregado = false;
-                botonAgregarBot3.setIcon(Imagenes.iconoSuma);
-            } else {
-                sala.agregarJugador(bot3);
-                bot3.registrar();
-                bot3Agregado = true;
-                botonAgregarBot3.setIcon(Imagenes.iconoBot);
-            }
+        botonJugador3.addActionListener(actionEvent -> {
+
         });
         botonSalir.addActionListener(actionEvent -> {
-            loveletter.getJugador().salirSala();
-            parent.onSalirSala(this);
+            cliente.salirSala();
+            LoveLetter.getInstance().getVentana().onSalirSala();
         });
         botonEmpezarPartida.addActionListener(actionEvent -> {
-            loveletter.getJugador().iniciarPartida();
-            int seleccion = JOptionPane.showConfirmDialog(this,
-                    "El creador selecciono para empezar la partida" +
-                            ".\n¿Estas listo?",
-                    "Partida empezando",
-                    JOptionPane.YES_NO_OPTION);
-            if (seleccion == JOptionPane.YES_OPTION) {
-                this.loveletter.getJugador().confirmarInicio();
-            } else {
-                this.loveletter.getJugador().cancelarInicio();
+            loveletter.getCliente().getJugadorCliente().iniciarPartida();
+        });
+        botonAgregarBot.addActionListener(actionEvent -> {
+            loveletter.getCliente().send(ComandoTipo.AgregarBot, new JsonObject());
+            if (!botAgregado) {
+                botAgregado = true;
+                botonAgregarBot.setText("Eliminar Bot");
+            }
+            else {
+                botAgregado = false;
+                botonAgregarBot.setText("Agregar Bot");
             }
         });
 
@@ -177,10 +146,11 @@ public class PanelSala extends JPanel implements Drawable {
         add(botonSetCondiciones);
         add(botonEmpezarPartida);
         add(panelSetCondiciones);
+        add(botonAgregarBot);
         add(botonJugador);
-        add(botonAgregarBot1);
-        add(botonAgregarBot2);
-        add(botonAgregarBot3);
+        add(botonJugador1);
+        add(botonJugador2);
+        add(botonJugador3);
         add(botonSalir);
         registrar();
     }
@@ -195,22 +165,33 @@ public class PanelSala extends JPanel implements Drawable {
         g2.setColor(color);
         g2.fillRect(0, 0, 300, loveletter.HEIGHT);
 
+        g2.setColor(Color.WHITE);
+        g2.setFont(new Font("Arial", Font.BOLD, 40));
+        g2.drawString("" + cliente.getSalaActual().nombre, 25, 100);
+        g2.setFont(new Font("Arial", Font.PLAIN, 22));
+        g2.drawString("Cantidad de Jugadores: " + cliente.getSalaActual().jugadores.size(), 25, 140);
+
         if (panelSetCondiciones.isVisible()) {
             botonJugador.setEnabled(false);
-            botonAgregarBot2.setEnabled(false);
+            botonJugador1.setEnabled(false);
+            botonJugador2.setEnabled(false);
+            botonJugador3.setEnabled(false);
         } else {
             botonJugador.setEnabled(true);
-            botonAgregarBot2.setEnabled(true);
+            botonJugador1.setEnabled(true);
+            botonJugador2.setEnabled(true);
+            botonJugador3.setEnabled(true);
         }
 
         botonJugador.setBounds(420, 120, 150, 150);
-        botonAgregarBot1.setBounds(700, 120, 150, 150);
-        botonAgregarBot2.setBounds(420, 330, 150, 150);
-        botonAgregarBot3.setBounds(700, 330, 150, 150);
+        botonJugador1.setBounds(700, 120, 150, 150);
+        botonJugador2.setBounds(420, 330, 150, 150);
+        botonJugador3.setBounds(700, 330, 150, 150);
 
         botonSetCondiciones.setBounds(50, 200, 200, 50);
         botonEmpezarPartida.setBounds(50, 260, 200, 50);
-        botonSalir.setBounds(50, 320, 200, 50);
+        botonAgregarBot.setBounds(50, 320,200,50);
+        botonSalir.setBounds(50, 600, 200, 50);
 
         labelSimbolos.setBounds(30, 31, 150, 50);
         simbolosAfecto.setBounds(200, 30, 150, 50);
@@ -220,23 +201,56 @@ public class PanelSala extends JPanel implements Drawable {
         creadorNull.setBounds(200, 230, 150, 50);
         aceptarConfiguracion.setBounds(100, 330, 200, 50);
         panelSetCondiciones.setBounds(300, 150, 400, 400);
+        botonJugador.setVisible(false);
+        botonJugador1.setVisible(false);
+        botonJugador2.setVisible(false);
+        botonJugador3.setVisible(false);
+
+        ArrayList<PlayerDummy> jugs = new ArrayList<>(cliente.getSalaActual().jugadores);
+        int index = 0;
+        for(PlayerDummy dummy : jugs) {
+            switch(index) {
+                case 0:
+                    botonJugador.setIcon(Imagenes.getIconoPorNombre(dummy.icono));
+                    botonJugador.setVisible(true);
+                    break;
+                case 1:
+                    botonJugador1.setIcon(Imagenes.getIconoPorNombre(dummy.icono));
+                    botonJugador1.setVisible(true);
+                    break;
+                case 2:
+                    botonJugador2.setIcon(Imagenes.getIconoPorNombre(dummy.icono));
+                    botonJugador2.setVisible(true);
+                    break;
+                case 3:
+                    botonJugador3.setIcon(Imagenes.getIconoPorNombre(dummy.icono));
+                    botonJugador3.setVisible(true);
+            }
+            index++;
+        }
+        if (!cliente.getSalaActual().creador.nombre.equals(cliente.nombre)) {
+            botonSetCondiciones.setVisible(false);
+            botonEmpezarPartida.setVisible(false);
+            botonAgregarBot.setVisible(false);
+        } else {
+            botonSetCondiciones.setVisible(true);
+            botonEmpezarPartida.setVisible(true);
+            botonAgregarBot.setVisible(true);
+        }
     }
 
     @Override
     public void render() {
         this.repaint();
 
-        botonEmpezarPartida.setEnabled(sala.isConfigurada() && sala.jugadores.size() > 1);
+        botonEmpezarPartida.setEnabled(cliente.getSalaActual().isConfigurada && cliente.getSalaActual().jugadores.size() > 1);
     }
 
-    private void guardarConfiguraciones(Integer simbolos, Jugador mano, Boolean creadorNull) {
-        sala.setCantSimbolosAfecto(simbolos);
-        sala.setJugadorMano(mano);
-        sala.setCreadorNull(creadorNull);
-    }
-
-    public Sala getSala() {
-        return sala;
+    private void guardarConfiguraciones(Integer simbolos, String mano, Boolean creadorNull) {
+        JsonObject json = new JsonObject();
+        json.addProperty("simbolos", simbolos);
+        json.addProperty("jugadorMano", mano);
+        this.loveletter.getCliente().send(ComandoTipo.ConfigurarSala, json);
     }
 
 }
