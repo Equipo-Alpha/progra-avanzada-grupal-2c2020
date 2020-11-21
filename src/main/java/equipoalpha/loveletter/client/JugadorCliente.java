@@ -39,6 +39,10 @@ public class JugadorCliente extends Jugador {
         this.cliente.send(ComandoTipo.CrearSala, new JsonObject());
     }
 
+    public void buscarSalas() {
+        this.cliente.send(ComandoTipo.SalaSync, new JsonObject());
+    }
+
     public void unirseASala(String nombre) {
         JsonObject json = new JsonObject();
         json.addProperty("nombre", nombre);

@@ -1,17 +1,23 @@
 package equipoalpha.loveletter.client;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import equipoalpha.loveletter.common.MensajeNetwork;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.pantalla.PanelMenuPrincipal;
 import equipoalpha.loveletter.pantalla.PanelPartida;
+import equipoalpha.loveletter.pantalla.PanelUnirseSala;
 import equipoalpha.loveletter.util.JsonUtils;
 
 public class ServidorMensajesHandler {
     // handlers de los mensajes del servidor
 
     public void onListaSala(MensajeNetwork mensaje) {
-
+        JsonObject json = mensaje.getMensaje();
+        JsonArray array = JsonUtils.getArray(json, "lista");
+        if (LoveLetter.getInstance().ventana.getPanelActual() instanceof PanelMenuPrincipal) {
+            LoveLetter.getInstance().ventana.onBuscarSalas(array);
+        } else LoveLetter.getInstance().ventana.onActualizarSalas(array);
     }
 
     public void onSincJugador(MensajeNetwork mensaje) {
@@ -66,6 +72,12 @@ public class ServidorMensajesHandler {
                 }
                 break;
             case 2:
+                if (!JsonUtils.getBoolean(json, "tipo")) {
+                    LoveLetter.getInstance().ventana.onSalaInvalida();
+                } else {
+                    ((PanelUnirseSala) LoveLetter.getInstance().ventana.getPanelActual()).setMoviendoCentro(true);
+                }
+                break;
             case 3:
                 if (JsonUtils.getBoolean(json, "tipo")) {
                     ((PanelMenuPrincipal) LoveLetter.getInstance().ventana.getPanelActual()).setMoviendoCentro(true);

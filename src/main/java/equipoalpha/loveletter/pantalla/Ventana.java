@@ -1,5 +1,6 @@
 package equipoalpha.loveletter.pantalla;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import equipoalpha.loveletter.client.LoveLetter;
 import equipoalpha.loveletter.common.ComandoTipo;
@@ -30,13 +31,37 @@ public class Ventana {
     }
 
     public void onLogin() {
-        PanelMenuPrincipal panelMenuPrincipal = new PanelMenuPrincipal(this);
+        PanelMenuPrincipal panelMenuPrincipal = new PanelMenuPrincipal();
         this.ventana.add(panelMenuPrincipal);
         this.ventana.pack();
         ((JPanel) this.panelActual).setVisible(false);
         LoveLetter.handler.removeDrawableObject(panelActual);
         this.panelActual = panelMenuPrincipal;
         panelMenuPrincipal.setVisible(true);
+    }
+
+    public void onBuscarSalas(JsonArray array) {
+        PanelUnirseSala panelUnirseSala = new PanelUnirseSala(array);
+        this.ventana.add(panelUnirseSala);
+        this.ventana.pack();
+        ((JPanel) this.panelActual).setVisible(false);
+        LoveLetter.handler.removeDrawableObject(panelActual);
+        this.panelActual = panelUnirseSala;
+        panelUnirseSala.setVisible(true);
+    }
+
+    public void onActualizarSalas(JsonArray array) {
+        if (panelActual instanceof PanelUnirseSala) {
+            ((PanelUnirseSala) panelActual).actualizarSalas(array);
+        } else onBuscarSalas(array);
+    }
+
+    public void onSalaInvalida() {
+        JOptionPane.showConfirmDialog(this.ventana, // o this.panelActual
+                "La sala seleccionada es invalida o ya no esta disponible." +
+                        ".\nPor favor, seleccione otra.",
+                "Sala invalida",
+                JOptionPane.DEFAULT_OPTION);
     }
 
     public void onCrearSala() {
@@ -91,6 +116,7 @@ public class Ventana {
     }
 
     public void onPartidaTerminadaMsg() {
+        //if (!(this.panelActual instanceof PanelPartida)) return;
         int seleccion = JOptionPane.showConfirmDialog(this.ventana,
                 "La partida termino, el ganador es: " +
                         LoveLetter.getInstance().getCliente().getJugadorCliente().getPartidaActual().jugadorEnTurno.nombre +

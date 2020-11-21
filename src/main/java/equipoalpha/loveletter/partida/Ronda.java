@@ -42,7 +42,7 @@ public class Ronda {
     public void initRonda() {
         initMazo();
 
-        this.jugadoresEnLaRonda = new ArrayList<>();
+        this.jugadoresEnLaRonda = new ArrayList<>(this.partida.jugadores);
         this.mapaCartasDescartadas = new HashMap<>();
         this.ordenReparto = new LinkedList<>();
 
@@ -66,7 +66,6 @@ public class Ronda {
         for (JugadorServer jugador : ordenReparto) {
             jugador.carta1 = mazo.remove();
             jugador.rondaJugando = this;
-            jugadoresEnLaRonda.add(jugador);
             jugador.getEstado().resetElecciones();
             mapaCartasDescartadas.put(jugador, new ArrayList<>());
             jugador.getEstado().setEstadoActual(EstadosJugador.ESPERANDO);
@@ -153,6 +152,7 @@ public class Ronda {
     }
 
     public void eliminarJugador(JugadorServer jugador) {
+        actualizarJugadores();
         mapaCartasDescartadas.get(jugador).add(jugador.carta1);
         for (Jugador j : this.jugadoresEnLaRonda)
             if (j instanceof JugadorIA)
@@ -202,14 +202,14 @@ public class Ronda {
             return;
         }
 
-        ListIterator<JugadorServer> iterador = partida.jugadores.listIterator();
+        ListIterator<JugadorServer> iterador = this.ordenReparto.listIterator();
         JugadorServer jugadorIterando = iterador.next();
         while (jugadorIterando != jugadorEnTurno) {
             jugadorIterando = iterador.next();
         }
         do {
             if (!iterador.hasNext()) {
-                iterador = partida.jugadores.listIterator();
+                iterador = this.ordenReparto.listIterator();
             }
             jugadorEnTurno = iterador.next();
         } while (!jugadoresEnLaRonda.contains(jugadorEnTurno));

@@ -191,7 +191,7 @@ public class PanelSala extends JPanel implements Drawable {
         botonSetCondiciones.setBounds(50, 200, 200, 50);
         botonEmpezarPartida.setBounds(50, 260, 200, 50);
         botonAgregarBot.setBounds(50, 320,200,50);
-        botonSalir.setBounds(50, 380, 200, 50);
+        botonSalir.setBounds(50, 600, 200, 50);
 
         labelSimbolos.setBounds(30, 31, 150, 50);
         simbolosAfecto.setBounds(200, 30, 150, 50);
@@ -227,6 +227,15 @@ public class PanelSala extends JPanel implements Drawable {
                     botonJugador3.setVisible(true);
             }
             index++;
+        }
+        if (!cliente.getSalaActual().creador.nombre.equals(cliente.nombre)) {
+            botonSetCondiciones.setVisible(false);
+            botonEmpezarPartida.setVisible(false);
+            botonAgregarBot.setVisible(false);
+        } else {
+            botonSetCondiciones.setVisible(true);
+            botonEmpezarPartida.setVisible(true);
+            botonAgregarBot.setVisible(true);
         }
     }
 

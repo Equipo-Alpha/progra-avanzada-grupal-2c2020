@@ -40,7 +40,13 @@ public class ClientListener extends Thread {
         } catch (IOException ex) {
             if (!this.isInterrupted()) {
                 System.out.println("Se desconecto incorrectamente el cliente " + this.id);
+                if (this.jugador.salaActual != null) {
+                    this.jugador.salirSala();
+                }
             }
+            try {
+                this.join();
+            } catch (InterruptedException ignored) {}
         }
     }
 

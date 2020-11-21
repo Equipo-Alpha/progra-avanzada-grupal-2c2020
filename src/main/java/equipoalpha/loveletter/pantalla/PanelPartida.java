@@ -245,9 +245,11 @@ public class PanelPartida extends JPanel implements Drawable {
         }
 
         if (jugador.getPartidaActual().jugadoresEnLaRonda.contains(getDummyPorNombrePartida(jugadorDummy.nombre))) {
-            botonCarta1.setIcon(new ImageIcon(jugador.carta1.getImagen()));
-            botonCarta1.setVisible(true);
-            botonCarta1.setBounds(380, 500, 150, 210);
+            if (jugador.carta1 != null) {
+                botonCarta1.setIcon(new ImageIcon(jugador.carta1.getImagen()));
+                botonCarta1.setVisible(true);
+                botonCarta1.setBounds(380, 500, 150, 210);
+            }
             if (jugador.carta2 != null) {
                 if (animandoJ) {
                     animacionStartedJ = true;

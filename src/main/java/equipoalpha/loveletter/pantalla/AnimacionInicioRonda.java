@@ -19,6 +19,7 @@ public class AnimacionInicioRonda {
     private boolean iniciado = false;
     private float xIni, yIni;
     private ArrayList<PlayerDummy> ordenJugadores;
+    private ArrayList<PlayerDummy> jugadoresRonda;
 
     public AnimacionInicioRonda(PartidaInfo partida, PanelPartida panel) {
         this.partida = partida;
@@ -145,18 +146,19 @@ public class AnimacionInicioRonda {
             return;
         }
         PlayerDummy jugador = ordenJugadores.remove(0);
-        int index = partida.jugadoresEnLaRonda.indexOf(this.panel.getDummyPorNombrePartida(jugador.nombre));
+        if (jugador.nombre.equals(LoveLetter.getInstance().getCliente().getJugadorCliente().nombre)) {
+            animandoJ = true;
+            return;
+        }
+        int index = this.jugadoresRonda.indexOf(this.panel.getDummyPorNombrePartida(jugador.nombre));
         switch (index) {
             case 0:
-                animandoJ = true;
-                break;
-            case 1:
                 animandoJ1 = true;
                 break;
-            case 2:
+            case 1:
                 animandoJ2 = true;
                 break;
-            case 3:
+            case 2:
                 animandoJ3 = true;
                 break;
             default:
@@ -169,6 +171,8 @@ public class AnimacionInicioRonda {
         if (partida.ordenReparto == null)
             return;
         this.ordenJugadores = new ArrayList<>(partida.ordenReparto);
+        this.jugadoresRonda = new ArrayList<>(partida.jugadoresEnLaRonda);
+        this.jugadoresRonda.remove(this.panel.getDummyPorNombrePartida(LoveLetter.getInstance().getCliente().getJugadorCliente().nombre));
     }
 
     private void reset() {

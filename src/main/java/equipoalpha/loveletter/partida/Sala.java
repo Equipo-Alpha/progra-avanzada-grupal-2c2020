@@ -4,6 +4,7 @@ import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.eventos.*;
 import equipoalpha.loveletter.server.JugadorServer;
+import equipoalpha.loveletter.server.LoveLetterServidor;
 
 import java.util.ArrayList;
 
@@ -77,7 +78,7 @@ public class Sala {
      * @return false cuando ya hay 4 jugadores en la sala
      */
     public boolean agregarJugador(JugadorServer jugadorAAgregar) {
-        if (this.jugadores.size() < 4 && !this.jugadores.contains(jugadorAAgregar)) {
+        if (this.partida == null && this.jugadores.size() < 4 && !this.jugadores.contains(jugadorAAgregar)) {
             this.jugadores.add(jugadorAAgregar);
             jugadorAAgregar.salaActual = this;
             return true;
@@ -86,25 +87,33 @@ public class Sala {
     }
 
     public void eliminarJugador(JugadorServer jugadorAEliminar) {
+        jugadorAEliminar.partidaJugando = null;
+        jugadorAEliminar.salaActual = null;
+        this.jugadores.remove(jugadorAEliminar);
         if (this.partida != null && this.partida.rondaActual.jugadoresEnLaRonda.contains(jugadorAEliminar)) {
             if (jugadorAEliminar.getEstado().getEstadoActual() != EstadosJugador.ESPERANDO)
                 this.partida.rondaActual.eliminarJugadorEnTurno(jugadorAEliminar);
             else
                 this.partida.rondaActual.eliminarJugador(jugadorAEliminar);
+            this.partida.rondaActual.ordenReparto.remove(jugadorAEliminar);
         }
         if (this.partida == null && this.jugadorMano != null && this.jugadorMano.equals(jugadorAEliminar)) {
             this.jugadorMano = null;
         }
-        this.jugadores.remove(jugadorAEliminar);
-        jugadorAEliminar.partidaJugando = null;
-        jugadorAEliminar.salaActual = null;
         if (this.creador == jugadorAEliminar) {
             this.creador = null;
             if (!this.creadorNull) {
                 this.creador = this.jugadores.get(0);
             }
-            tick();
         }
+        for (JugadorServer j : this.jugadores) {
+            j.sincronizarSala();
+        }
+        if (this.jugadores.isEmpty() && LoveLetterServidor.getINSTANCE() != null) {
+            LoveLetterServidor.getINSTANCE().eliminarSala(this);
+            return;
+        }
+        tick();
     }
 
     public void tick() {
@@ -114,6 +123,8 @@ public class Sala {
             nJugadores.forEach(JugadorServer::terminarAcciones);
             nJugadores.forEach(this::eliminarJugador);
             nJugadores.clear();
+            if(LoveLetterServidor.getINSTANCE() != null)
+                LoveLetterServidor.getINSTANCE().eliminarSala(this);
         }
     }
 }
