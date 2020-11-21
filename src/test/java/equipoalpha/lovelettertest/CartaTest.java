@@ -3,7 +3,6 @@ package equipoalpha.lovelettertest;
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
-import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Partida;
 import equipoalpha.loveletter.partida.Sala;
 import equipoalpha.loveletter.util.excepcion.JugadorException;
@@ -20,7 +19,7 @@ public class CartaTest {
     private Partida partida;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         jugador1 = new JugadorImplTest("TesterDeJava");
         jugador2 = new JugadorImplTest("TesterDeJS");
         jugador3 = new JugadorImplTest("TesterDeC");
@@ -39,7 +38,7 @@ public class CartaTest {
     }
 
     @Test
-    public void testGuardiaAdivinaBien() throws JugadorNoValido {
+    public void testGuardiaAdivinaBien() {
         jugador1.onComienzoTurno(new Carta(CartaTipo.GUARDIA));
         jugador1.descartarCarta2Impl();
         jugador1.elegirJugador(jugador2);
@@ -54,7 +53,7 @@ public class CartaTest {
     }
 
     @Test
-    public void testGuardiaAdivinaMal() throws JugadorNoValido {
+    public void testGuardiaAdivinaMal() {
         jugador1.onComienzoTurno(new Carta(CartaTipo.GUARDIA));
         jugador1.descartarCarta2Impl();
         jugador1.elegirJugador(jugador2);
@@ -69,7 +68,7 @@ public class CartaTest {
     }
 
     @Test
-    public void testSacerdote() throws JugadorNoValido {
+    public void testSacerdote() {
         jugador1.onComienzoTurno(new Carta(CartaTipo.SACERDOTE));
         jugador1.descartarCarta2Impl();
         jugador1.elegirJugador(jugador2);
@@ -77,7 +76,7 @@ public class CartaTest {
     }
 
     @Test
-    public void testBaron() throws JugadorNoValido {
+    public void testBaron() {
         jugador1.carta1 = new Carta(CartaTipo.REY);
         jugador2.carta1 = new Carta(CartaTipo.GUARDIA);
         jugador1.onComienzoTurno(new Carta(CartaTipo.BARON));
@@ -89,7 +88,7 @@ public class CartaTest {
     }
 
     @Test
-    public void testBaronGana() throws JugadorNoValido {
+    public void testBaronGana() {
         jugador1.carta1 = new Carta(CartaTipo.REY);
         jugador2.carta1 = new Carta(CartaTipo.GUARDIA);
         jugador1.onComienzoTurno(new Carta(CartaTipo.BARON));
@@ -102,7 +101,7 @@ public class CartaTest {
     }
 
     @Test
-    public void testBaronPierde() throws JugadorNoValido {
+    public void testBaronPierde() {
         jugador1.carta1 = new Carta(CartaTipo.REY);
         jugador2.carta1 = new Carta(CartaTipo.PRINCESA);
         jugador1.onComienzoTurno(new Carta(CartaTipo.BARON));
@@ -123,7 +122,7 @@ public class CartaTest {
     }
 
     @Test
-    public void testPrincipe() throws JugadorNoValido {
+    public void testPrincipe() {
         jugador1.carta1 = new Carta(CartaTipo.GUARDIA); // para que no quede descartando condesa
         jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCIPE));
         jugador1.descartarCarta2Impl();
@@ -136,7 +135,7 @@ public class CartaTest {
     }
 
     @Test
-    public void testPrincipeDescartaPrincesa() throws JugadorNoValido {
+    public void testPrincipeDescartaPrincesa() {
         jugador1.carta1 = new Carta(CartaTipo.GUARDIA); // para que no quede descartando condesa
         jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCIPE));
         jugador1.descartarCarta2Impl();
@@ -147,7 +146,7 @@ public class CartaTest {
     }
 
     @Test
-    public void testPrincipeCartaEliminada() throws JugadorNoValido {
+    public void testPrincipeCartaEliminada() {
         jugador1.carta1 = new Carta(CartaTipo.GUARDIA); // para que no quede descartando condesa
         partida.rondaActual.vaciarMazo();
         jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCIPE));
@@ -159,7 +158,7 @@ public class CartaTest {
     }
 
     @Test
-    public void testRey() throws JugadorException {
+    public void testRey() {
         jugador1.carta1 = new Carta(CartaTipo.GUARDIA);
         jugador2.carta1 = new Carta(CartaTipo.BARON);
 
@@ -231,7 +230,7 @@ public class CartaTest {
     }
 
     @Test
-    public void testElegirseASiMismoPrincipe() throws JugadorException {
+    public void testElegirseASiMismoPrincipe() {
         jugador1.carta1 = new Carta(CartaTipo.GUARDIA);
         jugador1.onComienzoTurno(new Carta(CartaTipo.PRINCIPE));
         jugador1.descartarCarta2Impl();

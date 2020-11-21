@@ -2,7 +2,6 @@ package equipoalpha.lovelettertest;
 
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
-import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Partida;
 import equipoalpha.loveletter.partida.Sala;
 import org.junit.Assert;
@@ -16,7 +15,7 @@ public class PartidaTest {
     private Partida partida;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         jugador1 = new JugadorImplTest("TesterDeJava");
         jugador2 = new JugadorImplTest("TesterDeJS");
         Sala sala = jugador1.crearSalaImpl("test");

@@ -166,23 +166,6 @@ public class JugadorServer extends Jugador {
         sincronizar();// sincronizar
     }
 
-    /**
-     * Generalmente llamado cuando se descarta al guardia
-     *
-     * @param tipo CartaTipo que se busca comprobar que se tenga
-     * @return true cuando tiene ese tipo de carta
-     */
-    public boolean tieneCarta(CartaTipo tipo) {
-        if (carta2 != null) {
-            return (carta1.getTipo() == tipo || carta2.getTipo() == tipo);
-        } else
-            return carta1.getTipo() == tipo;
-    }
-
-    public int getFuerzaCarta() {
-        return carta1.getTipo().fuerza;
-    }
-
     public void sincronizar() {
         JsonObject serverData = new JsonObject();
         this.serializarData(serverData);

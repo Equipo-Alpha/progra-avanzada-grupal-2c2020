@@ -1,9 +1,10 @@
 package equipoalpha.lovelettertest;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
-import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.Sala;
 import equipoalpha.loveletter.util.excepcion.JugadorNoValido;
 import org.junit.Assert;
@@ -197,5 +198,31 @@ public class JugadorTest {
         jugador.terminarAcciones();
         Assert.assertNull(jugador.getEstado().getCartaViendo());
         Assert.assertNotEquals(EstadosJugador.VIENDOCARTA, jugador.getEstado().getEstadoActual());
+    }
+
+    @Test
+    public void serializarData() {
+        jugador.carta1 = new Carta(CartaTipo.GUARDIA);
+        jugador.carta2 = new Carta(CartaTipo.CONDESA);
+        JsonObject json = new JsonObject();
+        jugador.serializarData(json);
+        Carta carta1 = new Gson().fromJson(json.get("carta1"), Carta.class);
+        Assert.assertEquals(CartaTipo.GUARDIA, carta1.getTipo());
+        Carta carta2 = new Gson().fromJson(json.get("carta2"), Carta.class);
+        Assert.assertEquals(CartaTipo.CONDESA, carta2.getTipo());
+    }
+
+    @Test
+    public void deserializarData() {
+        JsonObject json = new JsonObject();
+        json.add("carta1", (new Gson().toJsonTree(new Carta(CartaTipo.REY))));
+        json.add("carta2", (new Gson().toJsonTree(new Carta(CartaTipo.PRINCESA))));
+        json.addProperty("nombre", "jsonTest");
+        json.addProperty("icono", "iconoTest");
+        jugador.deserializarData(json);
+        Assert.assertEquals(CartaTipo.REY, jugador.carta1.getTipo());
+        Assert.assertEquals(CartaTipo.PRINCESA, jugador.carta2.getTipo());
+        Assert.assertEquals("jsonTest", jugador.nombre);
+        Assert.assertEquals("iconoTest", jugador.iconoNombre);
     }
 }

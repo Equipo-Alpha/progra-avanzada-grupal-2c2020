@@ -3,10 +3,7 @@ package equipoalpha.lovelettertest;
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
-import equipoalpha.loveletter.jugador.JugadorFacade;
 import equipoalpha.loveletter.pantalla.Imagenes;
-import equipoalpha.loveletter.partida.Partida;
-import equipoalpha.loveletter.partida.Ronda;
 import equipoalpha.loveletter.partida.Sala;
 import equipoalpha.loveletter.partida.eventos.EventosPartida;
 import equipoalpha.loveletter.server.JugadorServer;
@@ -41,14 +38,6 @@ public class JugadorImplTest extends JugadorServer {
         this.facade.setEstadoActual(EstadosJugador.ESPERANDO);
 
         return sala.agregarJugador(this);
-    }
-
-    public void iniciarPartida() {
-        if (salaActual == null || !salaActual.creador.equals(this) || !salaActual.isConfigurada()) {
-            return;
-        }
-
-        salaActual.eventos.ejecutar(EventosPartida.PEDIRCONFIRMACION, salaActual.jugadores);
     }
 
     public void confirmarInicio() {
@@ -139,39 +128,6 @@ public class JugadorImplTest extends JugadorServer {
         this.facade.terminarDeVer();
     }
 
-    /**
-     * Generalmente llamado cuando se descarta al guardia
-     *
-     * @param tipo CartaTipo que se busca comprobar que se tenga
-     * @return true cuando tiene ese tipo de carta
-     */
-    public boolean tieneCarta(CartaTipo tipo) {
-        if (carta2 != null) {
-            return (carta1.getTipo() == tipo || carta2.getTipo() == tipo);
-        } else
-            return carta1.getTipo() == tipo;
-
-    }
-
-    public int getFuerzaCarta() {
-        return carta1.getTipo().fuerza;
-    }
-
-    public JugadorFacade getEstado() {
-        return facade;
-    }
-
-    public void salirSala() {
-        if (salaActual == null)
-            return;
-        this.salaActual.eliminarJugador(this);
-    }
-
-    public void terminarAcciones() {
-        this.facade.resetElecciones();
-        this.facade.setEstadoActual(EstadosJugador.ESPERANDO);
-    }
-
     @Override
     public void sincronizarPartida() {
     }
@@ -186,11 +142,6 @@ public class JugadorImplTest extends JugadorServer {
 
     @Override
     public void actualizarDummy() {
-    }
-
-    @Override
-    public String toString() {
-        return nombre;
     }
 
 }

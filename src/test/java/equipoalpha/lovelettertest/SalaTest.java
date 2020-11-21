@@ -1,13 +1,11 @@
 package equipoalpha.lovelettertest;
 
-import equipoalpha.loveletter.jugador.Jugador;
-import equipoalpha.loveletter.jugador.JugadorIA;
 import equipoalpha.loveletter.partida.Sala;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
 public class SalaTest {
 
@@ -17,7 +15,7 @@ public class SalaTest {
     private Sala sala;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         jugador1 = new JugadorImplTest("TesterDeJava");
         jugador2 = new JugadorImplTest("TesterDeJS");
         jugador3 = new JugadorImplTest("TesterDeC");
