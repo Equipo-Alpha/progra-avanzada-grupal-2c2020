@@ -242,4 +242,17 @@ public class JugadorComandoHandler {
         jugadorServer.salaActual.eventos.cancelarEvento(EventosPartida.FINPARTIDA);
     }
 
+    public void onMensajeChat(JugadorServer jugadorServer, MensajeNetwork mensajeNetwork) {
+        JsonObject objMensaje = mensajeNetwork.getMensaje();
+        if (!JsonUtils.hasElement(objMensaje, "mensaje"))
+            return; // mensaje invalido
+
+        if (jugadorServer.salaActual == null) {
+            return; // mensaje invalido
+        }
+
+        String mensaje = JsonUtils.getString(objMensaje, "mensaje");
+        jugadorServer.salaActual.chat.nuevoMensaje(jugadorServer, mensaje);
+    }
+
 }

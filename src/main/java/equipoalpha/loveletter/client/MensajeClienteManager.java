@@ -30,6 +30,7 @@ public class MensajeClienteManager {
         registrar(MensajeTipo.SincSala,          handlers::onSincSala);
         registrar(MensajeTipo.RondaEmpezada,     handlers::onRondaEmpezada);
         registrar(MensajeTipo.Confirmacion,      handlers::onConfirmacion);
+        registrar(MensajeTipo.MensajeChat,       handlers::onNuevoMensajeChat);
     }
 
     private void registrar(MensajeTipo tipo, Mensaje handler) {
@@ -39,7 +40,7 @@ public class MensajeClienteManager {
     public void procesar(MensajeTipo tipo, MensajeNetwork mensaje) {
         Mensaje handler = mapaHandlers.get(tipo);
         if (handler == null) {
-            throw new IllegalStateException("No se registro el evento");
+            throw new IllegalStateException("No se registro el mensaje");
         }
         handler.procesar(mensaje);
     }

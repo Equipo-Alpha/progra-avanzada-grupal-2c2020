@@ -11,7 +11,9 @@ import java.awt.*;
 
 public class Ventana {
     private final JFrame ventana;
+    private VentanaChat ventanaChat;
     private Drawable panelActual;
+    private Timer timer;
 
     public Ventana() {
         this.ventana = new JFrame("Love Letter");
@@ -28,6 +30,8 @@ public class Ventana {
         panelElegirNombre.setVisible(true);
         this.ventana.setFocusable(true);
         this.ventana.requestFocusInWindow();
+        this.timer = new Timer(20, LoveLetter.getInstance());
+        timer.start();
     }
 
     public void onLogin() {
@@ -72,6 +76,7 @@ public class Ventana {
         LoveLetter.handler.removeDrawableObject(this.panelActual);
         this.panelActual = panelSala;
         panelSala.setVisible(true);
+        this.ventanaChat = new VentanaChat();
     }
 
     public void onSalirSala() {
@@ -83,6 +88,8 @@ public class Ventana {
                 component.setVisible(true);
                 this.panelActual = (Drawable) component;
                 LoveLetter.handler.addDrawableObject((Drawable) component);
+                this.ventanaChat.ocultar();
+                this.ventanaChat = null;
                 return;
             }
         }
@@ -141,6 +148,18 @@ public class Ventana {
                 LoveLetter.handler.addDrawableObject((Drawable) component);
                 return;
             }
+        }
+    }
+
+    public void cambiarVisibilidadChat() {
+        if (this.ventanaChat != null) {
+            this.ventanaChat.cambiarVisibilidad();
+        }
+    }
+
+    public void onNuevoMensajeChat(String mensaje) {
+        if (this.ventanaChat != null) {
+            this.ventanaChat.agregarMensaje(mensaje);
         }
     }
 

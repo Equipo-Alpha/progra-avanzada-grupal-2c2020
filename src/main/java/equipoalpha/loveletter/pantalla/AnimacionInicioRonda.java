@@ -40,7 +40,7 @@ public class AnimacionInicioRonda {
             yIni = 250;
         }
         if (animacionCartaStarted) {
-            g2.drawImage(Imagenes.reversoPeq, null, (int) (xIni -= 2), (int) (yIni += 1.6));
+            g2.drawImage(Imagenes.reversoPeq, null, (int) (xIni -= 1), (int) (yIni += 0.8));
             if (yIni >= 610 || xIni <= 10) animacionCartaIsFinished = true;
         }
         if (animacionCartaIsFinished) {
@@ -59,7 +59,7 @@ public class AnimacionInicioRonda {
         }
         if (animacionStartedJ) {
             g2.drawImage(Imagenes.reversoPeq, null, 10, 610);
-            g2.drawImage(Imagenes.reversoPeq, null, (int) xIni, (int) (yIni += 2));
+            g2.drawImage(Imagenes.reversoPeq, null, (int) xIni, (int) (yIni += 1));
             if (yIni >= 510) animacionIsFinihedJ = true;
         }
         if (animacionIsFinihedJ) {
@@ -79,7 +79,7 @@ public class AnimacionInicioRonda {
         }
         if (animacionStartedJ1) {
             g2.drawImage(Imagenes.reversoPeq, null, 10, 610);
-            g2.drawImage(Imagenes.reversoPeq, null, (int) (xIni -= 2), (int) (yIni));
+            g2.drawImage(Imagenes.reversoPeq, null, (int) (xIni -= 1), (int) (yIni));
             if (xIni <= 10) animacionIsFinihedJ1 = true;
         }
         if (animacionIsFinihedJ1) {
@@ -99,7 +99,7 @@ public class AnimacionInicioRonda {
         }
         if (animacionStartedJ2) {
             g2.drawImage(Imagenes.reversoPeq, null, 10, 610);
-            g2.drawImage(Imagenes.reversoPeq, null, (int) (xIni), (int) (yIni -= 2));
+            g2.drawImage(Imagenes.reversoPeq, null, (int) (xIni), (int) (yIni -= 1));
             if (yIni <= 10) animacionIsFinihedJ2 = true;
         }
         if (animacionIsFinihedJ2) {
@@ -120,7 +120,7 @@ public class AnimacionInicioRonda {
         }
         if (animacionStartedJ3) {
             g2.drawImage(Imagenes.reversoPeq, null, 10, 610);
-            g2.drawImage(Imagenes.reversoPeq, null, (int) (xIni += 2), (int) (yIni));
+            g2.drawImage(Imagenes.reversoPeq, null, (int) (xIni += 1), (int) (yIni));
             if (xIni >= 925) animacionIsFinihedJ3 = true;
         }
         if (animacionIsFinihedJ3) {

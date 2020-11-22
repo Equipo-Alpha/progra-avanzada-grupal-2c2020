@@ -58,6 +58,12 @@ public class ServidorMensajesHandler {
 
     }
 
+    public void onNuevoMensajeChat(MensajeNetwork mensajeNetwork) {
+        JsonObject json = mensajeNetwork.getMensaje();
+        String mensaje = JsonUtils.getString(json, "mensaje");
+        LoveLetter.getInstance().ventana.onNuevoMensajeChat(mensaje);
+    }
+
     public void onPartidaTerminada(MensajeNetwork mensaje) {
         LoveLetter.getInstance().ventana.onPartidaTerminadaMsg();
     }

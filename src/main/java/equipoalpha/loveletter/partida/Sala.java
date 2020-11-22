@@ -21,6 +21,7 @@ public class Sala {
      * Determina si la partida debe terminar si el creador la abandona, por defecto true
      */
     private Boolean creadorNull = true;
+    public Chat chat;
 
     public Sala(String nombre, JugadorServer creador) {
         this.nombre = nombre;
@@ -28,6 +29,7 @@ public class Sala {
         this.creador.salaActual = this;
         this.jugadores = new ArrayList<>();
         this.jugadores.add(creador);
+        this.chat = new Chat(this.jugadores);
         this.eventos = new EventosPartidaManager();
         EventoObservado confirmarInicio = new ConfirmarInicioEvento(this);
         EventoObservado viendoCarta = new ViendoCartaEvento(this);

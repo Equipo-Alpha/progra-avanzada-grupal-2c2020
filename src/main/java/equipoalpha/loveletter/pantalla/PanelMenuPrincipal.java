@@ -105,7 +105,8 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         comboBoxIcono.addItem("Princesa");
         panelConfiguracion.add(comboBoxIcono);
 
-        isExpanding = isMaxSize = isMinSize = isAchicandose = moviendoCentro = false;
+        isExpanding = isMaxSize = isAchicandose = moviendoCentro = false;
+        isMinSize = true;
         centroX = (loveletter.WIDTH / 2) - 200;
         buttonUnirseSala = new JButton("Buscar salas");
         buttonCrearSala = new JButton("Crear sala");
@@ -145,17 +146,16 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         });
 
         buttonEquipo.addActionListener(actionEvent -> {
-            if (!equipo.isVisible()) {
+            if (isMinSize) {
                 isMinSize = false;
                 isAchicandose = false;
-                equipo.setVisible(true);
                 isExpanding = true;
             } else {
                 isMaxSize = false;
                 isExpanding = false;
-                equipo.setVisible(true);
                 isAchicandose = true;
             }
+            equipo.setVisible(true);
         });
 
         buttonCrearSala.addActionListener(actionEvent -> loveletter.getCliente().getJugadorCliente().crearSala(""));
@@ -204,7 +204,6 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         if (isExpanding) expandirEquipo();
         if (isAchicandose) achicarEquipo();
         if (isMaxSize) equipo.setBounds(800, 42, 200, 250);
-        if (isMinSize) equipo.setVisible(false);
 
         if (sizeX > 120) {
             ramiro.setVisible(true);
@@ -253,8 +252,8 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
 
     private void expandirEquipo() {
         if (sizeX < 200 && sizeY < 250) {
-            sizeX += 2;
-            sizeY += 2.5;
+            sizeX += 4;
+            sizeY += 5;
         } else {
             sizeX = 200;
             sizeY = 250;
@@ -266,23 +265,23 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
     }
 
     private void achicarEquipo() {
-        if (sizeX > 2 && sizeY > 2) {
-            sizeX -= 2;
-            sizeY -= 2.5;
+        isMinSize = true;
+        if (sizeX > 4 && sizeY > 5) {
+            sizeX -= 0.66;
+            sizeY -= 0.83;
+            equipo.setBounds(1000 - (int) sizeX, 42, (int) sizeX, (int) sizeY);
         } else {
             sizeX = 0;
             sizeY = 0;
             isAchicandose = false;
-            isMinSize = true;
-            return;
+            equipo.setVisible(false);
         }
-        equipo.setBounds(1000 - (int) sizeX, 42, (int) sizeX, (int) sizeY);
     }
 
     private void moverCentro(Graphics2D g2) {
         Color color = new Color(0, 0, 0, 185);
         g2.setColor(color);
-        centroX -= 5;
+        centroX -= 10;
         if (centroX > 10)
             g2.fillRect(centroX, 0, 400, loveletter.HEIGHT);
         else {

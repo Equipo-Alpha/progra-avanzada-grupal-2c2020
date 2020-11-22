@@ -20,7 +20,6 @@ public class Carta implements Comparable<Carta> {
      */
     public void descartar(JugadorServer jugador) {
         Ronda ronda = jugador.partidaJugando.rondaActual;
-        System.out.println(jugador + " descarta " + this);
         switch (tipo) {
             case MUCAMA:
                 jugador.estaProtegido = true;
@@ -45,7 +44,6 @@ public class Carta implements Comparable<Carta> {
 
     public void jugadorElegido(JugadorServer jugadorQueDescarto, JugadorServer jugadorElegido) {
         Ronda ronda = jugadorQueDescarto.partidaJugando.rondaActual;
-        System.out.println(jugadorQueDescarto + " elige al jugador " + jugadorElegido);
         switch (tipo) {
             case SACERDOTE:
                 jugadorQueDescarto.verCarta(jugadorElegido);
@@ -79,10 +77,9 @@ public class Carta implements Comparable<Carta> {
     }
 
     public void cartaAdivinada(JugadorServer jugadorQueDescarto, JugadorServer jugadorElegido, CartaTipo cartaAdivinada) {
-        System.out.println(jugadorQueDescarto + " intenta adivinar con " + cartaAdivinada.nombre);
         if (tipo == CartaTipo.GUARDIA)
             if (jugadorElegido.tieneCarta(cartaAdivinada)) {
-                System.out.println(jugadorQueDescarto + " adivina correctamente");
+                jugadorQueDescarto.salaActual.chat.nuevoMensaje(jugadorQueDescarto + " adivina correctamente");
                 jugadorQueDescarto.rondaJugando.eliminarJugador(jugadorElegido);
             }
 

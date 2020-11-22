@@ -23,6 +23,7 @@ public class PanelSala extends JPanel implements Drawable {
     private final JugadorCliente cliente;
     private final JButton botonJugador;
     private final JButton botonSetCondiciones;
+    private final JButton botonChat;
     private final JPanel panelSetCondiciones;
     private final JTextArea labelSimbolos;
     private final JComboBox<Integer> simbolosAfecto = new JComboBox<>();
@@ -53,6 +54,7 @@ public class PanelSala extends JPanel implements Drawable {
         botonJugador2 = new JButton();
         botonJugador3 = new JButton();
         botonAgregarBot = new JButton("Agregar Bot");
+        botonChat = new JButton("Chat");
         botonJugador1.setOpaque(true);
         botonJugador1.setBackground(new Color(255, 255, 255, 0));
         botonJugador2.setOpaque(true);
@@ -65,6 +67,7 @@ public class PanelSala extends JPanel implements Drawable {
         aceptarConfiguracion.setFont(buttonFont);
         botonAgregarBot.setFont(buttonFont);
         botonSalir.setFont(buttonFont);
+        botonChat.setFont(buttonFont);
         panelSetCondiciones = new JPanel();
         panelSetCondiciones.setVisible(false);
         panelSetCondiciones.setBackground(Color.BLACK);
@@ -117,6 +120,9 @@ public class PanelSala extends JPanel implements Drawable {
         botonJugador3.addActionListener(actionEvent -> {
 
         });
+        botonChat.addActionListener(actionEvent -> {
+            loveletter.getVentana().cambiarVisibilidadChat();
+        });
         botonSalir.addActionListener(actionEvent -> {
             cliente.salirSala();
             LoveLetter.getInstance().getVentana().onSalirSala();
@@ -152,6 +158,7 @@ public class PanelSala extends JPanel implements Drawable {
         add(botonJugador2);
         add(botonJugador3);
         add(botonSalir);
+        add(botonChat);
         registrar();
     }
 
@@ -191,6 +198,7 @@ public class PanelSala extends JPanel implements Drawable {
         botonSetCondiciones.setBounds(50, 200, 200, 50);
         botonEmpezarPartida.setBounds(50, 260, 200, 50);
         botonAgregarBot.setBounds(50, 320,200,50);
+        botonChat.setBounds(50, 540, 200, 50);
         botonSalir.setBounds(50, 600, 200, 50);
 
         labelSimbolos.setBounds(30, 31, 150, 50);

@@ -35,16 +35,19 @@ public class JugadorFacade {
 
     public void cartaDescartada(Carta cartaDescartada) {
         this.cartaDescartada = cartaDescartada;
+        enviarMensaje(jugador + " descarta " + cartaDescartada);
         this.cartaDescartada.descartar(this.jugador);
     }
 
     public void jugadorElegido(JugadorServer jugadorElegido) {
         this.jugadorElegido = jugadorElegido;
+        enviarMensaje(jugador+ " elige al jugador " + jugadorElegido);
         this.cartaDescartada.jugadorElegido(this.jugador, this.jugadorElegido);
     }
 
     public void cartaAdivinada(CartaTipo cartaAdivinada) {
         this.cartaAdivinada = cartaAdivinada;
+        enviarMensaje(jugador + " intenta adivinar con " + cartaAdivinada.nombre);
         this.cartaDescartada.cartaAdivinada(this.jugador, this.jugadorElegido, this.cartaAdivinada);
 
     }
@@ -87,6 +90,10 @@ public class JugadorFacade {
 
     public Jugador getJugador() {
         return jugador;
+    }
+
+    private void enviarMensaje(String mensaje) {
+        jugador.salaActual.chat.nuevoMensaje(mensaje);
     }
 
 }

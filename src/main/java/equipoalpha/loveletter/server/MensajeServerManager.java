@@ -39,16 +39,17 @@ public class MensajeServerManager {
         registrar(ComandoTipo.ContinuarFin,             handlers::onContinuarFin);
         registrar(ComandoTipo.ConfirmarVolverAJugar,    handlers::onConfirmarVolverAJugar);
         registrar(ComandoTipo.CancelarVolverJugar,      handlers::onCancelarVolverJugar);
+        registrar(ComandoTipo.MensajeChat,              handlers::onMensajeChat);
     }
 
     private void registrar(ComandoTipo tipo, Comando handler) {
         mapaHandlers.put(tipo, handler);
     }
 
-    public void procesar(ComandoTipo tipo, JugadorServer jugador, MensajeNetwork mensaje) {
+    public synchronized void procesar(ComandoTipo tipo, JugadorServer jugador, MensajeNetwork mensaje) {
         Comando comando = mapaHandlers.get(tipo);
         if (comando == null) {
-            throw new IllegalStateException("No se registro el evento");
+            throw new IllegalStateException("No se registro el comando");
         }
         comando.procesar(jugador, mensaje);
     }

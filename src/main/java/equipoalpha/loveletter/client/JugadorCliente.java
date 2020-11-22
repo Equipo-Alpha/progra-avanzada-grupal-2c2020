@@ -119,6 +119,13 @@ public class JugadorCliente extends Jugador {
         }
     }
 
+    public void enviarMensajeChat(String mensaje) {
+        if (mensaje.isEmpty()) return;
+        JsonObject json = new JsonObject();
+        json.addProperty("mensaje", mensaje);
+        this.cliente.send(ComandoTipo.MensajeChat, json);
+    }
+
     public EstadosJugador getEstado() {
         return estadoActual;
     }

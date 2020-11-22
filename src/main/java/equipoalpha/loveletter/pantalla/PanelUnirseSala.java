@@ -132,16 +132,15 @@ public class PanelUnirseSala extends JPanel implements Drawable {
         };
         this.tablaSalas.setShowGrid(false);
         this.tablaSalas.setSelectionMode(0);
-        this.tablaSalas.setBackground(new Color(0, 0, 0, 185));
-        this.tablaSalas.setForeground(Color.WHITE);
         this.tablaSalas.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         this.tablaSalas.setRowHeight(16);
+        this.tablaSalas.setBackground(Color.BLACK);
+        this.tablaSalas.setForeground(Color.WHITE);
+        this.tablaSalas.setSize(360, 300);
         if (scrollSalas != null)
             this.remove(scrollSalas);
         this.scrollSalas = new JScrollPane(this.tablaSalas);
-        this.scrollSalas.setBackground(new Color(0, 0, 0, 185));
-        this.scrollSalas.setForeground(Color.WHITE);
-        this.scrollSalas.setVerticalScrollBarPolicy(21);
         add(scrollSalas);
+        this.repaint();
     }
 }

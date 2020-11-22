@@ -23,6 +23,7 @@ public class PanelPartida extends JPanel implements Drawable {
     private final JButton botonCarta1;
     private final JButton botonCarta2;
     private final JButton botonAbandonar;
+    private final JButton botonChat;
     private final JComboBox<String> jugadorElegido = new JComboBox<>();
     private final JButton botonConfirmarJugador = new JButton("Confirmar");
     private final JPanel panelElegirJugador;
@@ -68,8 +69,10 @@ public class PanelPartida extends JPanel implements Drawable {
         botonCarta1 = new JButton();
         botonCarta2 = new JButton();
         botonAbandonar = new JButton("Abandonar Partida");
+        botonChat = new JButton("Chat");
         Font font = new Font("Arial", Font.BOLD, 16);
         botonAbandonar.setFont(font);
+        botonChat.setFont(font);
         datosJugador.setFont(font);
         datosJugador.setForeground(Color.WHITE);
         datosJugador.setVisible(false);
@@ -101,6 +104,7 @@ public class PanelPartida extends JPanel implements Drawable {
         add(botonCarta1);
         add(botonCarta2);
         add(botonAbandonar);
+        add(botonChat);
         add(botonIconoJugador);
         add(botonIconoJ1);
         add(botonIconoJ2);
@@ -112,6 +116,9 @@ public class PanelPartida extends JPanel implements Drawable {
         botonAbandonar.addActionListener(actionEvent -> {
             jugador.salirSala();
             parent.onSalirSala();
+        });
+        botonChat.addActionListener(actionEvent -> {
+            loveletter.getVentana().cambiarVisibilidadChat();
         });
         botonIconoJugador.addActionListener(actionEvent -> {
             if (viendoDatosJugador) {
@@ -211,6 +218,7 @@ public class PanelPartida extends JPanel implements Drawable {
         Graphics2D g2 = (Graphics2D) g;
         g2.drawImage(Imagenes.backgroundPartida, null, 0, 0);
 
+        botonChat.setBounds(870, 625, 130, 40);
         botonAbandonar.setBounds(800, 670, 200, 40);
 
         botonIconoJugador.setIcon(jugador.icono);
@@ -261,7 +269,7 @@ public class PanelPartida extends JPanel implements Drawable {
                     yIni = 250;
                 }
                 if (animacionStartedJ) {
-                    g2.drawImage(Imagenes.reversoPeq, null, xIni, yIni += 2);
+                    g2.drawImage(Imagenes.reversoPeq, null, xIni, yIni += 1);
                     if (yIni >= 510) animacionIsFinihedJ = true;
                 }
                 if (animacionIsFinihedJ) {
@@ -401,7 +409,7 @@ public class PanelPartida extends JPanel implements Drawable {
                                 yIni = 250;
                             }
                             if (animacionStartedJ2) {
-                                g2.drawImage(Imagenes.reversoPeq, null, xIni, yIni -= 2);
+                                g2.drawImage(Imagenes.reversoPeq, null, xIni, yIni -= 1);
                                 if (yIni <= 10) animacionIsFinihedJ2 = true;
                             }
                             if (animacionIsFinihedJ2) {
