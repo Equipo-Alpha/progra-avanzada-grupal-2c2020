@@ -55,7 +55,7 @@ public class ServidorMensajesHandler {
     }
 
     public void onRondaTerminada(MensajeNetwork mensaje) {
-
+        LoveLetter.getInstance().ventana.onRondaTerminadaMsg(mensaje.getMensaje());
     }
 
     public void onNuevoMensajeChat(MensajeNetwork mensajeNetwork) {

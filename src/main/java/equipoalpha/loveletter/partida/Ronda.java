@@ -1,5 +1,7 @@
 package equipoalpha.loveletter.partida;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
@@ -34,6 +36,9 @@ public class Ronda {
      * Conjunto de 16 cartas al empezar, termina la ronda si se vacia
      */
     private LinkedList<Carta> mazo;
+    private String motivoFin;
+    private JsonObject jsonMotivoFin;
+    private JugadorServer ganadorRonda;
 
     public Ronda(Partida partida) {
         this.partida = partida;
@@ -45,6 +50,9 @@ public class Ronda {
         this.jugadoresEnLaRonda = new ArrayList<>(this.partida.jugadores);
         this.mapaCartasDescartadas = new HashMap<>();
         this.ordenReparto = new LinkedList<>();
+        this.motivoFin = "";
+        this.ganadorRonda = null;
+        this.jsonMotivoFin = null;
 
         jugadorEnTurno = partida.jugadorMano;
 
@@ -100,15 +108,35 @@ public class Ronda {
     private void onRondaTerminada() {
         JugadorServer jugadorGanador = determinarGanador();
         jugadorGanador.cantSimbolosAfecto++;
-        System.out.println("El ganador de la ronda es: " + jugadorGanador);
-        partida.onNuevaRonda(jugadorGanador);
+        if (LoveLetterServidor.getINSTANCE() == null)
+            partida.onNuevaRonda(jugadorGanador);
+        else {
+            this.ganadorRonda = jugadorGanador;
+            JsonObject motivo = new JsonObject();
+            motivo.addProperty("motivo", motivoFin);
+            motivo.addProperty("ganador", jugadorGanador.nombre);
+            switch (motivoFin) {
+                case "Solo queda un jugador":
+                    break;
+                case "Valor de carta mas alto":
+                    motivo.add("carta", new Gson().toJsonTree(jugadorGanador.carta1, Carta.class));
+                    break;
+                case "Cantidad de cartas descartadas":
+                    motivo.addProperty("cantidad", mapaCartasDescartadas.get(jugadorGanador).size());
+                    break;
+            }
+            this.jsonMotivoFin = motivo;
+            jugadorGanador.salaActual.eventos.ejecutar(EventosPartida.FINRONDA, jugadorGanador.salaActual.jugadores);
+        }
     }
 
     private JugadorServer determinarGanador() {
 
         // Si solo queda 1 devuelve a ese jugador
-        if (jugadoresEnLaRonda.size() == 1)
+        if (jugadoresEnLaRonda.size() == 1) {
+            this.motivoFin = "Solo queda un jugador";
             return jugadoresEnLaRonda.get(0);
+        }
 
         // Sino, busca a el jugador que tiene en su mano la carta con valor numerico mas
         // alto (fuerza)
@@ -125,8 +153,10 @@ public class Ronda {
         }
 
         // Si no hay empate lo devuelve
-        if (jugadorCartaMasFuerte.size() == 1)
+        if (jugadorCartaMasFuerte.size() == 1) {
+            this.motivoFin = "Valor de carta mas alto";
             return jugadorCartaMasFuerte.get(0);
+        }
 
         int cantCartas = 0;
         JugadorServer jugadorMasCartasDescartadas = null;
@@ -139,6 +169,7 @@ public class Ronda {
             }
         }
 
+        this.motivoFin = "Cantidad de cartas descartadas";
         return jugadorMasCartasDescartadas;
     }
 
@@ -240,6 +271,14 @@ public class Ronda {
             if (j.estaProtegido) cant++;
         }
         return jugadores.size() != cant;
+    }
+
+    public JsonObject getJsonMotivoFin() {
+        return jsonMotivoFin;
+    }
+
+    public JugadorServer getGanadorRonda() {
+        return ganadorRonda;
     }
 
     /**

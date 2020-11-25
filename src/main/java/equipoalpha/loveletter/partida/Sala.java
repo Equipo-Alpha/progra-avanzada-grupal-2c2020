@@ -34,10 +34,12 @@ public class Sala {
         EventoObservado confirmarInicio = new ConfirmarInicioEvento(this);
         EventoObservado viendoCarta = new ViendoCartaEvento(this);
         EventoObservado comienzoRonda = new ComienzoRondaEvento(this);
+        EventoObservado finRonda = new FinRondaEvento(this);
         EventoObservado finPartida = new FinPartidaEvento(this);
         this.eventos.registrar(EventosPartida.PEDIRCONFIRMACION, confirmarInicio);
         this.eventos.registrar(EventosPartida.VIENDOCARTA, viendoCarta);
         this.eventos.registrar(EventosPartida.COMIENZORONDA, comienzoRonda);
+        this.eventos.registrar(EventosPartida.FINRONDA, finRonda);
         this.eventos.registrar(EventosPartida.FINPARTIDA, finPartida);
     }
 

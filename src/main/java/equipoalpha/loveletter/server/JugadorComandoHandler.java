@@ -230,6 +230,7 @@ public class JugadorComandoHandler {
     public void onContinuarFin(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         // al finalizar la ronda clickea en continuar para seguir
         // ver EventoObservado
+        jugadorServer.salaActual.eventos.removerObservador(EventosPartida.FINRONDA, jugadorServer);
     }
 
     public void onConfirmarVolverAJugar(JugadorServer jugadorServer, MensajeNetwork mensaje) {

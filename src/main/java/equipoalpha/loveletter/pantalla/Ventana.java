@@ -1,10 +1,13 @@
 package equipoalpha.loveletter.pantalla;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import equipoalpha.loveletter.carta.Carta;
 import equipoalpha.loveletter.client.LoveLetter;
 import equipoalpha.loveletter.common.ComandoTipo;
 import equipoalpha.loveletter.util.Drawable;
+import equipoalpha.loveletter.util.JsonUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -122,8 +125,34 @@ public class Ventana {
         ((PanelPartida) this.panelActual).animandoAIR = true;
     }
 
+    public void onRondaTerminadaMsg(JsonObject msj) {
+        String motivo = JsonUtils.getString(msj, "motivo");
+        String jugadorGanador = JsonUtils.getString(msj, "ganador");
+        String cant = "";
+        if (JsonUtils.hasElement(msj, "cantidad")) {
+            cant = JsonUtils.getString(msj, "cantidad");
+        }
+        if (JsonUtils.hasElement(msj, "carta")) {
+            Carta carta = new Gson().fromJson(msj.get("carta"), Carta.class);
+            JOptionPane.showMessageDialog(this.ventana,
+                    "La ronda termino!" +
+                            "\nEl ganador es: " + jugadorGanador +
+                            "\nMotivo: " + motivo,
+                    "Ronda Terminada",
+                    JOptionPane.INFORMATION_MESSAGE, new ImageIcon(carta.getImagen()));
+        } else {
+            JOptionPane.showMessageDialog(this.ventana,
+                    "La ronda termino!" +
+                            "\nEl ganador es: " + jugadorGanador +
+                            "\nMotivo: " + motivo +
+                            (cant.equals("") ? "" : "\nCantidad: " + cant),
+                    "Ronda Terminada",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+        LoveLetter.getInstance().getCliente().send(ComandoTipo.ContinuarFin, new JsonObject());
+    }
+
     public void onPartidaTerminadaMsg() {
-        //if (!(this.panelActual instanceof PanelPartida)) return;
         int seleccion = JOptionPane.showConfirmDialog(this.ventana,
                 "La partida termino, el ganador es: " +
                         LoveLetter.getInstance().getCliente().getJugadorCliente().getPartidaActual().jugadorEnTurno.nombre +
