@@ -3,7 +3,7 @@ package equipoalpha.loveletter.client;
 import com.google.gson.Gson;
 import equipoalpha.loveletter.common.MensajeNetwork;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import java.io.BufferedReader;
 
 public class ServidorListener extends Thread {
@@ -21,13 +21,10 @@ public class ServidorListener extends Thread {
             while ((input = inputClient.readLine()) != null) {
                 Gson gson = new Gson();
                 MensajeNetwork mensaje = gson.fromJson(input, MensajeNetwork.class);
-                System.out.println(mensaje.getTipoMensaje());
                 SwingUtilities.invokeLater(() -> cnh.procesar(mensaje.getTipoMensaje(), mensaje));
             }
         } catch (Exception ex) {
-            System.out.println("Fallo al recibir del servidor");
-            ex.printStackTrace();
-            System.exit(0);
+            LoveLetter.getInstance().ventana.onServerDesconectado();
         }
     }
 

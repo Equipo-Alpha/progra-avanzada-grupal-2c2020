@@ -66,11 +66,27 @@ public class PanelPartida extends JPanel implements Drawable {
                 this.jugadorDummy = p;
             }
         }
-        botonCarta1 = new JButton();
-        botonCarta2 = new JButton();
+        Font font = new Font("Arial", Font.BOLD, 16);
+        botonCarta1 = new JButton() {
+            @Override
+            public JToolTip createToolTip() {
+                JToolTip toolTip = super.createToolTip();
+                toolTip.setBackground(Color.LIGHT_GRAY);
+                toolTip.setFont(font);
+                return toolTip;
+            }
+        };
+        botonCarta2 = new JButton() {
+            @Override
+            public JToolTip createToolTip() {
+                JToolTip toolTip = super.createToolTip();
+                toolTip.setBackground(Color.LIGHT_GRAY);
+                toolTip.setFont(font);
+                return toolTip;
+            }
+        };
         botonAbandonar = new JButton("Abandonar Partida");
         botonChat = new JButton("Chat");
-        Font font = new Font("Arial", Font.BOLD, 16);
         botonAbandonar.setFont(font);
         botonChat.setFont(font);
         datosJugador.setFont(font);
@@ -255,6 +271,7 @@ public class PanelPartida extends JPanel implements Drawable {
         if (jugador.getPartidaActual().jugadoresEnLaRonda.contains(getDummyPorNombrePartida(jugadorDummy.nombre))) {
             if (jugador.carta1 != null) {
                 botonCarta1.setIcon(new ImageIcon(jugador.carta1.getImagen()));
+                botonCarta1.setToolTipText(jugador.carta1.getDescripcion());
                 botonCarta1.setVisible(true);
                 botonCarta1.setBounds(380, 500, 150, 210);
             }
@@ -275,6 +292,7 @@ public class PanelPartida extends JPanel implements Drawable {
                 if (animacionIsFinihedJ) {
                     animacionStartedJ = false;
                     botonCarta2.setIcon(new ImageIcon(jugador.carta2.getImagen()));
+                    botonCarta2.setToolTipText(jugador.carta2.getDescripcion());
                     botonCarta2.setBounds(530, 500, 150, 210);
                     botonCarta2.setVisible(true);
                     botonCarta1.setEnabled(true);

@@ -33,7 +33,7 @@ public class Ventana {
         panelElegirNombre.setVisible(true);
         this.ventana.setFocusable(true);
         this.ventana.requestFocusInWindow();
-        this.timer = new Timer(20, LoveLetter.getInstance());
+        this.timer = new Timer(16, LoveLetter.getInstance());
         timer.start();
     }
 
@@ -178,6 +178,28 @@ public class Ventana {
                 return;
             }
         }
+    }
+
+    public void onServerDesconectado() {
+        PanelElegirNombre panelElegirNombre = new PanelElegirNombre();
+        ventana.add(panelElegirNombre);
+        ventana.pack();
+        ((JPanel) this.panelActual).setVisible(false);
+        LoveLetter.handler.removeDrawableObject(this.panelActual);
+        this.panelActual = panelElegirNombre;
+        panelElegirNombre.setVisible(true);
+
+        JOptionPane.showMessageDialog(this.ventana,
+                "Hubo un problema en la conexion.",
+                "Error en el server",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void onErrorConexion() {
+        JOptionPane.showMessageDialog(this.ventana,
+                "Hubo un problema al conectarse.\n",
+                "Error al conectarse",
+                JOptionPane.ERROR_MESSAGE);
     }
 
     public void cambiarVisibilidadChat() {

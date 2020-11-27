@@ -51,7 +51,6 @@ public class JugadorServer extends Jugador {
 
     public void onComienzoTurno(Carta cartaRobada) {
         this.estaProtegido = false;
-        System.out.println("Turno de " + nombre);
         robarCarta(cartaRobada);
     }
 

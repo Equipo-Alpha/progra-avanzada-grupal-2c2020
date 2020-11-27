@@ -67,12 +67,6 @@ public class PanelElegirNombre extends JPanel implements Drawable {
         textoValido.setBounds(360, 500, 300, 64);
         textField.setBounds(360, 300, 300, 64);
         button.setBounds(360, 400, 300, 64);
-
-        if (LoveLetter.DEBUGGING) {
-            g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Dialog", Font.BOLD, 16));
-            g2.drawString("FPS: " + loveletter.fps + "", 20, 25);
-        }
     }
 
     @Override

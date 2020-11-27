@@ -131,4 +131,9 @@ public class Sala {
                 LoveLetterServidor.getINSTANCE().eliminarSala(this);
         }
     }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

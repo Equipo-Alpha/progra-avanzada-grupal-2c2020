@@ -35,8 +35,7 @@ public class Cliente {
             json.addProperty("nombre", nombre);
             send(ComandoTipo.Conectarse, json);
         } catch (Exception ex) {
-            System.out.println("Fallo al recibir del servidor");
-            ex.printStackTrace();
+            LoveLetter.getInstance().ventana.onErrorConexion();
         }
     }
 

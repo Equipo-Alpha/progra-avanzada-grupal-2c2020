@@ -27,8 +27,9 @@ public class Carta implements Comparable<Carta> {
             case CONDESA:
                 break;
             case PRINCESA:
-                ronda.eliminarJugador(jugador);
-                break;
+                agregarAlMapa(ronda, jugador, this);
+                ronda.eliminarJugadorEnTurno(jugador);
+                return;
             default:
                 if (ronda.puedeElegir(jugador, this.tipo)) {
                     jugador.getEstado().setEstadoActual(EstadosJugador.ELIGIENDOJUGADOR);
@@ -97,6 +98,8 @@ public class Carta implements Comparable<Carta> {
     public BufferedImage getImagen() {
         return tipo.imagen;
     }
+
+    public String getDescripcion() {return tipo.descripcion;}
 
     @Override
     public int hashCode() {

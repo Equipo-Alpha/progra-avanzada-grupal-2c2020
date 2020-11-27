@@ -1,5 +1,6 @@
 package equipoalpha.loveletter.client;
 
+import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.pantalla.Imagenes;
 import equipoalpha.loveletter.pantalla.Ventana;
 import equipoalpha.loveletter.util.Handler;
@@ -9,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoveLetter implements ActionListener {
-    public static final boolean DEBUGGING = true;
     private static final LoveLetter instance = new LoveLetter();
     public static ClassLoader classLoader = LoveLetter.class.getClassLoader();
     public static Handler handler = Handler.getInstance();

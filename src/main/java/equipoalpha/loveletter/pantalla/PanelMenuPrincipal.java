@@ -20,6 +20,8 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
     private final JTextField textFieldNombre;
     private final JLabel labelIcono;
     private final JComboBox<String> comboBoxIcono;
+    private final JLabel labelTema;
+    private final JComboBox<String> comboBoxTema;
     private final JButton botonAceptar;
     private final JButton buttonUnirseSala;
     private final JButton buttonCrearSala;
@@ -90,6 +92,10 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         labelIcono.setFont(labelsConfiguracion);
         labelIcono.setForeground(Color.WHITE);
         panelConfiguracion.add(labelIcono);
+        labelTema = new JLabel("Tema: ");
+        labelTema.setFont(labelsConfiguracion);
+        labelTema.setForeground(Color.WHITE);
+        panelConfiguracion.add(labelTema);
         labelNombreInvalido = new JLabel("Nombre invalido");
         labelNombreInvalido.setFont(labelsConfiguracion);
         labelNombreInvalido.setForeground(Color.WHITE);
@@ -104,6 +110,10 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         comboBoxIcono.addItem("Principe");
         comboBoxIcono.addItem("Princesa");
         panelConfiguracion.add(comboBoxIcono);
+        comboBoxTema = new JComboBox<>();
+        comboBoxTema.addItem("Normal");
+        comboBoxTema.addItem("StarWars");
+        panelConfiguracion.add(comboBoxTema);
 
         isExpanding = isMaxSize = isAchicandose = moviendoCentro = false;
         isMinSize = true;
@@ -140,7 +150,9 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
                 labelNombreInvalido.setVisible(true);
             } else {
                 labelNombreInvalido.setVisible(false);
-                this.cambiarConfiguracion(textFieldNombre.getText(), comboBoxIcono.getItemAt(comboBoxIcono.getSelectedIndex()));
+                this.cambiarConfiguracion(textFieldNombre.getText(),
+                        comboBoxIcono.getItemAt(comboBoxIcono.getSelectedIndex()),
+                        comboBoxTema.getItemAt(comboBoxTema.getSelectedIndex()));
                 panelConfiguracion.setVisible(false);
             }
         });
@@ -174,10 +186,12 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
 
         if (panelConfiguracion.isVisible()) {
             buttonCrearSala.setEnabled(false);
+            buttonUnirseSala.setEnabled(false);
             buttonSalir.setEnabled(false);
             buttonConfigurar.setEnabled(false);
         } else {
             buttonCrearSala.setEnabled(true);
+            buttonUnirseSala.setEnabled(true);
             buttonSalir.setEnabled(true);
             buttonConfigurar.setEnabled(true);
         }
@@ -230,17 +244,13 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
             mati.setVisible(false);
         }
 
-        if (LoveLetter.DEBUGGING) {
-            g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Dialog", Font.BOLD, 16));
-            g2.drawString("FPS: " + loveletter.fps + "", 20, 25);
-        }
-
-        labelNombre.setBounds(50, 60, 150, 50);
-        textFieldNombre.setBounds(190, 60, 150, 50);
-        labelIcono.setBounds(50, 150, 150, 50);
-        comboBoxIcono.setBounds(190, 150, 150, 50);
-        botonAceptar.setBounds(125, 240, 150, 50);
+        labelNombre.setBounds(50, 50, 150, 50);
+        textFieldNombre.setBounds(190, 50, 150, 50);
+        labelIcono.setBounds(50, 120, 150, 50);
+        comboBoxIcono.setBounds(190, 120, 150, 50);
+        labelTema.setBounds(50, 190, 150, 50);
+        comboBoxTema.setBounds(190, 190, 150, 50);
+        botonAceptar.setBounds(125, 280, 150, 50);
         labelNombreInvalido.setBounds(125, 300, 150, 50);
         panelConfiguracion.setBounds(312, 150, 400, 400);
     }
@@ -291,12 +301,17 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         }
     }
 
-    private void cambiarConfiguracion(String nombre, String icono) {
+    private void cambiarConfiguracion(String nombre, String icono, String tema) {
         loveletter.getCliente().getJugadorCliente().nombre = nombre;
         if (icono.equals("Principe"))
             loveletter.getCliente().getJugadorCliente().icono = Imagenes.iconoPrincipe;
         else
             loveletter.getCliente().getJugadorCliente().icono = Imagenes.iconoPrincesa;
+
+        if (tema.equalsIgnoreCase("normal"))
+            Imagenes.elegirNormales();
+        else
+            Imagenes.elegirStarWars();
     }
 
     public void setMoviendoCentro(boolean moviendoCentro) {

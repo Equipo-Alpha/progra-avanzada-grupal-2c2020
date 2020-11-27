@@ -57,7 +57,7 @@ public class Partida {
             jugador.estaProtegido = false;
         }
 
-        System.out.println("Empezando Partida");
+        LoveLetterServidor.log.info("Empezando Partida de la sala " + jugadorMano.salaActual);
 
         this.rondaActual = new Ronda(this);
     }
@@ -87,7 +87,7 @@ public class Partida {
      */
     private void onFinalizarPartida(JugadorServer ganadorPartida) {
         this.partidaEnCurso = false;
-        System.out.println("El ganador de la partida es: " + ganadorPartida);
+        LoveLetterServidor.log.info("La partida de la sala " + ganadorPartida.salaActual + " termino.");
         if (LoveLetterServidor.getINSTANCE() == null) return;
         ganadorPartida.salaActual.eventos.ejecutar(EventosPartida.FINPARTIDA, this.jugadores);
     }

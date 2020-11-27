@@ -82,7 +82,6 @@ public class Ronda {
             }
         }
 
-        System.out.println("Empezando Ronda");
         if (LoveLetterServidor.getINSTANCE() == null) return;
         actualizarJugadores();
         partida.jugadorMano.salaActual.eventos.ejecutar(EventosPartida.COMIENZORONDA, this.jugadoresEnLaRonda);

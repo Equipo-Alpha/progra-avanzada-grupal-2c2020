@@ -16,7 +16,7 @@ public class JugadorIA extends JugadorServer implements Runnable {
     private final Map<CartaTipo, Integer> cartasDescartadas = new HashMap<>();
     private final Map<JugadorServer, CartaTipo> cartasConocidas = new HashMap<>();
     private final Random random = new Random();
-    private int tickcount = 200; // espera 200 ticks para jugar
+    private int tickcount = 100; // espera 100 ticks para jugar
     private Thread thread;
     private boolean running = false;
 
@@ -32,7 +32,6 @@ public class JugadorIA extends JugadorServer implements Runnable {
     @Override
     public void onComienzoTurno(Carta cartaRobada) {
         this.estaProtegido = false;
-        System.out.println("Turno de " + nombre);
         robarCarta(cartaRobada);
         //Actualizo la carta que me toco
         int cant = cartasDescartadas.remove(carta2.getTipo());
@@ -308,7 +307,7 @@ public class JugadorIA extends JugadorServer implements Runnable {
         if (this.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDO ||
                 this.getEstado().getEstadoActual() == EstadosJugador.DESCARTANDOCONDESA) {
             if (--tickcount <= 0) {
-                tickcount = 200;
+                tickcount = 100;
                 elegirCartaAJugar();
                 return;
             }
@@ -316,7 +315,7 @@ public class JugadorIA extends JugadorServer implements Runnable {
 
         if (this.getEstado().getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR) {
             if (--tickcount <= 0) {
-                tickcount = 200;
+                tickcount = 100;
                 try {
                     onElegirJugador();
                     return;
@@ -329,7 +328,7 @@ public class JugadorIA extends JugadorServer implements Runnable {
 
         if (this.getEstado().getEstadoActual() == EstadosJugador.ADIVINANDOCARTA) {
             if (--tickcount <= 0) {
-                tickcount = 200;
+                tickcount = 100;
                 onAdivinarCarta();
             }
         }
