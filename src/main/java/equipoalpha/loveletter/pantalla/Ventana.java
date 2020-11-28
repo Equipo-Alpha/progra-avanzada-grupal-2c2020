@@ -217,4 +217,12 @@ public class Ventana {
     public Drawable getPanelActual() {
         return panelActual;
     }
+
+    public void onCreadorAbandono() {
+        JOptionPane.showMessageDialog(this.ventana,
+                "La partida termino, sin ganadores. El creador la abandono.",
+                "El creador abandono.",
+                JOptionPane.ERROR_MESSAGE);
+        onSalirSala();
+    }
 }

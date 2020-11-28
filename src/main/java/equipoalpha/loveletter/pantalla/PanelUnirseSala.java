@@ -137,6 +137,7 @@ public class PanelUnirseSala extends JPanel implements Drawable {
         this.tablaSalas.setBackground(Color.BLACK);
         this.tablaSalas.setForeground(Color.WHITE);
         this.tablaSalas.setSize(360, 300);
+        this.tablaSalas.updateUI();
         if (scrollSalas != null)
             this.remove(scrollSalas);
         this.scrollSalas = new JScrollPane(this.tablaSalas);

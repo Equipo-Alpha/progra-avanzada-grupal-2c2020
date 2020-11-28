@@ -31,6 +31,7 @@ public class MensajeClienteManager {
         registrar(MensajeTipo.RondaEmpezada,     handlers::onRondaEmpezada);
         registrar(MensajeTipo.Confirmacion,      handlers::onConfirmacion);
         registrar(MensajeTipo.MensajeChat,       handlers::onNuevoMensajeChat);
+        registrar(MensajeTipo.SinCreador,        handlers::onSinCreador);
     }
 
     private void registrar(MensajeTipo tipo, Mensaje handler) {

@@ -166,24 +166,28 @@ public class JugadorServer extends Jugador {
     }
 
     public void sincronizar() {
-        JsonObject serverData = new JsonObject();
-        this.serializarData(serverData);
-        serverData.addProperty("estado", this.facade.getEstadoActual().toString());
-        if (this.getEstado().getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR) {
-            serverData.addProperty("elegirseASiMismo",
-                    this.getEstado().getCartaDescartada().getTipo() == CartaTipo.PRINCIPE);
-        }
-        if (this.getEstado().getEstadoActual() == EstadosJugador.VIENDOCARTA) {
-            serverData.add("cartaViendo", (new Gson().toJsonTree(this.getEstado().getCartaViendo(), Carta.class)));
-        }
-        this.listener.send(MensajeTipo.SincJugador, serverData);
+        try {
+            JsonObject serverData = new JsonObject();
+            this.serializarData(serverData);
+            serverData.addProperty("estado", this.facade.getEstadoActual().toString());
+            if (this.getEstado().getEstadoActual() == EstadosJugador.ELIGIENDOJUGADOR) {
+                serverData.addProperty("elegirseASiMismo",
+                        this.getEstado().getCartaDescartada().getTipo() == CartaTipo.PRINCIPE);
+            }
+            if (this.getEstado().getEstadoActual() == EstadosJugador.VIENDOCARTA) {
+                serverData.add("cartaViendo", (new Gson().toJsonTree(this.getEstado().getCartaViendo(), Carta.class)));
+            }
+            this.listener.send(MensajeTipo.SincJugador, serverData);
+        } catch (Exception ignored) {}
     }
 
     public void sincronizarPartida() {
-        actualizarPartida();
-        JsonObject partidaData = new JsonObject();
-        this.partidaActualInfo.serializarData(partidaData);
-        this.listener.send(MensajeTipo.SincPartida, partidaData);
+        try {
+            actualizarPartida();
+            JsonObject partidaData = new JsonObject();
+            this.partidaActualInfo.serializarData(partidaData);
+            this.listener.send(MensajeTipo.SincPartida, partidaData);
+        } catch (Exception ignored) {}
     }
 
     private void actualizarPartida() {
@@ -207,17 +211,19 @@ public class JugadorServer extends Jugador {
     }
 
     public void sincronizarSala() {
-        this.salaActualInfo.nombre = this.salaActual.nombre;
-        this.salaActualInfo.creador = this.salaActual.creador.sincHelper;
-        this.salaActualInfo.jugadores.clear();
-        for (JugadorServer jugador : this.salaActual.jugadores) {
-            jugador.actualizarDummy();
-            this.salaActualInfo.jugadores.add(jugador.sincHelper);
-        }
-        this.salaActualInfo.isConfigurada = this.salaActual.isConfigurada();
-        JsonObject salaData = new JsonObject();
-        this.salaActualInfo.serializarData(salaData);
-        this.listener.send(MensajeTipo.SincSala, salaData);
+        try {
+            this.salaActualInfo.nombre = this.salaActual.nombre;
+            this.salaActualInfo.creador = this.salaActual.creador.sincHelper;
+            this.salaActualInfo.jugadores.clear();
+            for (JugadorServer jugador : this.salaActual.jugadores) {
+                jugador.actualizarDummy();
+                this.salaActualInfo.jugadores.add(jugador.sincHelper);
+            }
+            this.salaActualInfo.isConfigurada = this.salaActual.isConfigurada();
+            JsonObject salaData = new JsonObject();
+            this.salaActualInfo.serializarData(salaData);
+            this.listener.send(MensajeTipo.SincSala, salaData);
+        } catch (Exception ignored) {}
     }
 
     public void actualizarDummy() {

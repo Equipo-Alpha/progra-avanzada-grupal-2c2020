@@ -71,7 +71,6 @@ public class SalaTest {
         sala.agregarJugador(jugador1);
         sala.setCreadorNull(true);
         jugador2.salirSala();
-        sala.tick();
         Assert.assertNull(jugador1.salaActual);
     }
 }

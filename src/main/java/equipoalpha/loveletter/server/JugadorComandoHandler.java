@@ -224,22 +224,30 @@ public class JugadorComandoHandler {
     public void onContinuarComienzo(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         // al comenzar la ronda avisa que esta listo para jugar
         // ver EventoObservado
+        if (jugadorServer.salaActual == null)
+            return; // mensaje invalido
         jugadorServer.salaActual.eventos.removerObservador(EventosPartida.COMIENZORONDA, jugadorServer);
     }
 
     public void onContinuarFin(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         // al finalizar la ronda clickea en continuar para seguir
         // ver EventoObservado
+        if (jugadorServer.salaActual == null)
+            return; // mensaje invalido
         jugadorServer.salaActual.eventos.removerObservador(EventosPartida.FINRONDA, jugadorServer);
     }
 
     public void onConfirmarVolverAJugar(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         // ver EventoObservado
+        if (jugadorServer.salaActual == null)
+            return; // mensaje invalido
         jugadorServer.salaActual.eventos.removerObservador(EventosPartida.FINPARTIDA, jugadorServer);
     }
 
     public void onCancelarVolverJugar(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         // ver EventoObservado
+        if (jugadorServer.salaActual == null)
+            return; // mensaje invalido
         jugadorServer.salaActual.eventos.cancelarEvento(EventosPartida.FINPARTIDA);
     }
 

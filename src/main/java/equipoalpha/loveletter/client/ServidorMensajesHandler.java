@@ -64,6 +64,10 @@ public class ServidorMensajesHandler {
         LoveLetter.getInstance().ventana.onNuevoMensajeChat(mensaje);
     }
 
+    public void onSinCreador(MensajeNetwork mensaje) {
+        LoveLetter.getInstance().ventana.onCreadorAbandono();
+    }
+
     public void onPartidaTerminada(MensajeNetwork mensaje) {
         LoveLetter.getInstance().ventana.onPartidaTerminadaMsg();
     }

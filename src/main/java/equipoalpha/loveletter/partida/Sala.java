@@ -1,5 +1,7 @@
 package equipoalpha.loveletter.partida;
 
+import com.google.gson.JsonObject;
+import equipoalpha.loveletter.common.MensajeTipo;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.partida.eventos.*;
@@ -15,13 +17,13 @@ public class Sala {
     public ArrayList<JugadorServer> jugadores;
     public Partida partida;
     public boolean tieneBot = false;
+    public Chat chat;
     private Integer cantSimbolosAfecto;
     private JugadorServer jugadorMano;
     /**
      * Determina si la partida debe terminar si el creador la abandona, por defecto true
      */
     private Boolean creadorNull = true;
-    public Chat chat;
 
     public Sala(String nombre, JugadorServer creador) {
         this.nombre = nombre;
@@ -104,32 +106,31 @@ public class Sala {
         if (this.partida == null && this.jugadorMano != null && this.jugadorMano.equals(jugadorAEliminar)) {
             this.jugadorMano = null;
         }
+        for (JugadorServer j : this.jugadores) {
+            j.sincronizarSala();
+        }
         if (this.creador == jugadorAEliminar) {
             this.creador = null;
             if (!this.creadorNull) {
                 this.creador = this.jugadores.get(0);
+            } else {
+                terminarPartida();
             }
-        }
-        for (JugadorServer j : this.jugadores) {
-            j.sincronizarSala();
         }
         if (this.jugadores.isEmpty() && LoveLetterServidor.getINSTANCE() != null) {
             LoveLetterServidor.getINSTANCE().eliminarSala(this);
-            return;
         }
-        tick();
     }
 
-    public void tick() {
-        if (this.creador == null) {
-            // TODO para cuando sea server avisarle a cada jugador porque termino la partida
-            ArrayList<JugadorServer> nJugadores = new ArrayList<>(this.jugadores);
-            nJugadores.forEach(JugadorServer::terminarAcciones);
-            nJugadores.forEach(this::eliminarJugador);
-            nJugadores.clear();
-            if(LoveLetterServidor.getINSTANCE() != null)
-                LoveLetterServidor.getINSTANCE().eliminarSala(this);
-        }
+    private void terminarPartida() {
+        ArrayList<JugadorServer> nJugadores = new ArrayList<>(this.jugadores);
+        nJugadores.forEach(JugadorServer::terminarAcciones);
+        nJugadores.forEach(j -> {
+            if (j.getListener() != null)
+                j.getListener().send(MensajeTipo.SinCreador, new JsonObject());
+        });
+        nJugadores.forEach(this::eliminarJugador);
+        nJugadores.clear();
     }
 
     @Override
