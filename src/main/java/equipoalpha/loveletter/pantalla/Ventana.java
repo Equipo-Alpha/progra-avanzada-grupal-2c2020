@@ -108,6 +108,20 @@ public class Ventana {
             }
         }
     }
+    
+    public void onSalirTutorial() {
+        Container container = ventana.getContentPane();
+        for (Component component : container.getComponents()) {
+            if (component instanceof PanelMenuPrincipal) {
+                ((JPanel) this.panelActual).setVisible(false);
+                LoveLetter.handler.removeDrawableObject(this.panelActual);
+                component.setVisible(true);
+                this.panelActual = (Drawable) component;
+                LoveLetter.handler.addDrawableObject((Drawable) component);
+                return;
+            }
+        }
+    }
 
     public void onConfirmarInicio() {
         int seleccion = JOptionPane.showConfirmDialog(this.ventana, // o this.panelActual

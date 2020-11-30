@@ -20,9 +20,7 @@ public class VentanaTutorial extends JPanel implements Drawable {
 	
 	//Needed to interact with the game
 	private final LoveLetter loveletter;
-    private final JugadorCliente cliente;
-	
-	// Needed to render the components
+    // Needed to render the components
 	private static JButton btnBack;
 	private static JTextArea txtTutorial;
 	private final JPanel panelTutorial;
@@ -31,7 +29,7 @@ public class VentanaTutorial extends JPanel implements Drawable {
 		// TODO Auto-generated constructor stub
 		this.panelTutorial = new JPanel();
 		this.loveletter = LoveLetter.getInstance();
-        this.cliente = LoveLetter.getInstance().getCliente().getJugadorCliente();
+        LoveLetter.getInstance().getCliente().getJugadorCliente();
         
         VentanaTutorial.txtTutorial = new JTextArea(
         	"El objetivo de cada jugador, es entregar una carta de amor a la princesa con ayuda de sus colaboradores." + 
@@ -66,6 +64,10 @@ public class VentanaTutorial extends JPanel implements Drawable {
         };
         
         consumer.accept(VentanaTutorial.txtTutorial);
+        
+        btnBack.addActionListener(actionEvent -> {
+        	LoveLetter.getInstance().getVentana().onSalirTutorial();
+        });
         
         panelTutorial.add(txtTutorial);
         panelTutorial.add(btnBack);
