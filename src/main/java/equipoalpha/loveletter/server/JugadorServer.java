@@ -248,6 +248,8 @@ public class JugadorServer extends Jugador {
         this.sincHelper.tieneCarta1 = carta1 != null;
         this.sincHelper.tieneCarta2 = carta2 != null;
         this.sincHelper.estaProtegido = this.estaProtegido;
+        this.sincHelper.victorias = data != null ? data.getVictorias() : 0;
+        this.sincHelper.derrotas = data != null ? data.getDerrotas() : 0;
     }
 
     public ClientListener getListener() {

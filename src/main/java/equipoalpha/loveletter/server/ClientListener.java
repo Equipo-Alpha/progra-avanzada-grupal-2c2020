@@ -26,7 +26,6 @@ public class ClientListener extends Thread {
         this.entrada = entrada;
         this.salida = salida;
         this.id = id;
-        //this.jugador = new JugadorServer(this, id);
         this.msm = MensajeServerManager.getInstancia();
         this.setName("temp" + id);
     }
@@ -46,14 +45,15 @@ public class ClientListener extends Thread {
         } catch (IOException ex) {
             if (!this.isInterrupted()) {
                 LoveLetterServidor.log.error("Se desconecto incorrectamente el cliente " + this.id);
-                if (this.jugador.salaActual != null) {
+                if (this.jugador != null && this.jugador.salaActual != null) {
                     this.jugador.salirSala();
                 }
                 LoveLetterServidor.getINSTANCE().eliminarJugador(this);
             }
             try {
+                socket.close();
                 this.join();
-            } catch (InterruptedException ignored) {
+            } catch (Exception ignored) {
             }
         }
     }
@@ -82,7 +82,7 @@ public class ClientListener extends Thread {
                 return;
             }
         } else {
-            if (data.getPassword().equals(pass) && jugadorConectado(data.getId())) {
+            if (data.getPassword().equals(pass) && !jugadorConectado(data.getId())) {
                 this.jugador = new JugadorServer(this, nombre, data);
             } else {
                 // contraseña incorrecta o ya esta conectado
@@ -92,6 +92,7 @@ public class ClientListener extends Thread {
             }
         }
         this.setName(nombre);
+        LoveLetterServidor.getINSTANCE().agregarJugador(this);
         this.jugador.sincronizar(); // se sincroniza
         respuesta.addProperty("tipo", true); // lo setteo correctamente
         send(MensajeTipo.Confirmacion, respuesta);
@@ -114,7 +115,7 @@ public class ClientListener extends Thread {
 
     private boolean jugadorConectado(int id) {
         for (ClientListener cl : LoveLetterServidor.getINSTANCE().getJugadores()) {
-            if (cl.id == id) {
+            if (cl.jugador.getId() == id) {
                 return true;
             }
         }

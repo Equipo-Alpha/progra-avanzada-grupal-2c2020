@@ -12,6 +12,8 @@ public class PlayerDummy implements SyncInfo {
     public boolean estaProtegido = false;
     public int cantSimbolos = 0;
     public int id;
+    public int victorias;
+    public int derrotas;
 
     public PlayerDummy(String nombre, String icono, int id) {
         this.nombre = nombre;
@@ -29,6 +31,8 @@ public class PlayerDummy implements SyncInfo {
         dummyData.addProperty("tieneCarta2", tieneCarta2);
         dummyData.addProperty("estaProtegido", estaProtegido);
         dummyData.addProperty("cantSimbolos", cantSimbolos);
+        dummyData.addProperty("victorias", victorias);
+        dummyData.addProperty("derrotas", derrotas);
     }
 
     @Override
@@ -41,6 +45,8 @@ public class PlayerDummy implements SyncInfo {
         this.tieneCarta2 = JsonUtils.getBoolean(dummyData, "tieneCarta2");
         this.estaProtegido = JsonUtils.getBoolean(dummyData, "estaProtegido");
         this.cantSimbolos = JsonUtils.getInt(dummyData, "cantSimbolos");
+        this.victorias = JsonUtils.getInt(dummyData, "victorias");
+        this.derrotas = JsonUtils.getInt(dummyData, "derrotas");
     }
 
 }

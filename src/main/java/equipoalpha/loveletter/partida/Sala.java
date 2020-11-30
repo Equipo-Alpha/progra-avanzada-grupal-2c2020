@@ -102,6 +102,7 @@ public class Sala {
             else
                 this.partida.rondaActual.eliminarJugador(jugadorAEliminar);
             this.partida.rondaActual.ordenReparto.remove(jugadorAEliminar);
+            agregarDerrota(jugadorAEliminar);
         }
         if (this.partida == null && this.jugadorMano != null && this.jugadorMano.equals(jugadorAEliminar)) {
             this.jugadorMano = null;
@@ -119,6 +120,13 @@ public class Sala {
         }
         if (this.jugadores.isEmpty() && LoveLetterServidor.getINSTANCE() != null) {
             LoveLetterServidor.getINSTANCE().eliminarSala(this);
+        }
+    }
+
+    private void agregarDerrota(JugadorServer jugador) {
+        if (jugador.getListener() != null) {
+            jugador.getData().setDerrotas(jugador.getData().getDerrotas() + 1);
+            LoveLetterServidor.getINSTANCE().getBd().guardarDatosJugador(jugador.getData());
         }
     }
 

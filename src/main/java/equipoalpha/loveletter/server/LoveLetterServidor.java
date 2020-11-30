@@ -64,8 +64,7 @@ public class LoveLetterServidor extends Thread {
 
                 ClientListener clienteListener = new ClientListener(clienteSocket, entrada, salida, id++);
                 clienteListener.start();
-                this.jugadores.add(clienteListener);
-                log.info("Cliente agregado correctamente");
+                log.info("Cliente conectado correctamente");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,6 +106,10 @@ public class LoveLetterServidor extends Thread {
 
     public ArrayList<Sala> getSalas() {
         return salas;
+    }
+
+    public void agregarJugador(ClientListener cl) {
+        this.jugadores.add(cl);
     }
 
     public void eliminarJugador(ClientListener cl) {
