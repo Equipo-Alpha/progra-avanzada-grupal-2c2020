@@ -15,6 +15,7 @@ import java.awt.*;
 public class Ventana {
     private final JFrame ventana;
     private VentanaChat ventanaChat;
+    private VentanaTutorial ventanaTutorial;
     private Drawable panelActual;
     private Timer timer;
 
@@ -80,6 +81,16 @@ public class Ventana {
         this.panelActual = panelSala;
         panelSala.setVisible(true);
         this.ventanaChat = new VentanaChat();
+    }
+    
+    public void onShowTutorial() {
+    	VentanaTutorial ventanaTutorial = new VentanaTutorial();
+    	this.ventana.add(ventanaTutorial);
+    	this.ventana.pack();
+    	((JPanel) this.panelActual).setVisible(false);
+        LoveLetter.handler.removeDrawableObject(this.panelActual);
+        this.panelActual = ventanaTutorial;
+        ventanaTutorial.setVisible(true);
     }
 
     public void onSalirSala() {
