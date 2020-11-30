@@ -79,6 +79,8 @@ public class ServidorMensajesHandler {
             case 1:
                 if (JsonUtils.getBoolean(json, "tipo")) {
                     LoveLetter.getInstance().ventana.onLogin();
+                } else {
+                    LoveLetter.getInstance().ventana.onErrorLogin();
                 }
                 break;
             case 2:

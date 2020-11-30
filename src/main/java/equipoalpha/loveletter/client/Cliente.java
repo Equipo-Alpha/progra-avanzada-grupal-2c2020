@@ -39,6 +39,23 @@ public class Cliente {
         }
     }
 
+    public void connect(String nombre, String clave) {
+        try {
+            socketCliente = new Socket(ip, port);
+            output = new PrintWriter(socketCliente.getOutputStream(), true);
+            input = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
+            this.jugadorCliente = new JugadorCliente(nombre);
+            LoveLetter.getInstance().listener = new ServidorListener(this);
+            LoveLetter.getInstance().listener.start();
+            JsonObject json = new JsonObject();
+            json.addProperty("nombre", nombre);
+            json.addProperty("password", clave);
+            send(ComandoTipo.Conectarse, json);
+        } catch (Exception ex) {
+            LoveLetter.getInstance().ventana.onErrorConexion();
+        }
+    }
+
     public void send(ComandoTipo tipo, JsonObject objeto) {
         output.println((new Gson()).toJson(new MensajeNetwork(tipo, objeto)));
         output.flush();

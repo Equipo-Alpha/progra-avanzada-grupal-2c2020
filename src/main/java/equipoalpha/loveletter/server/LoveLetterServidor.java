@@ -1,29 +1,36 @@
 package equipoalpha.loveletter.server;
 
+import equipoalpha.loveletter.database.BaseDeDatos;
 import equipoalpha.loveletter.partida.Sala;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class LoveLetterServidor extends Thread{
+public class LoveLetterServidor extends Thread {
+    public static Logger log = LogManager.getLogger("LoveLeter Servidor");
     private static LoveLetterServidor INSTANCE;
     private final int port;
-    private ServerSocket serverSocket;
     private final List<ClientListener> jugadores;
     private final ArrayList<Sala> salas;
+    private ServerSocket serverSocket;
+    private final BaseDeDatos bd;
     private boolean isRunning;
-    public static Logger log = LogManager.getLogger("LoveLeter Servidor");
 
     public LoveLetterServidor(int port) {
         this.port = port;
         INSTANCE = this;
         this.jugadores = new ArrayList<>();
         this.salas = new ArrayList<>();
+        this.bd = new BaseDeDatos();
     }
 
     public static LoveLetterServidor getINSTANCE() {
@@ -90,11 +97,23 @@ public class LoveLetterServidor extends Thread{
         return null;
     }
 
+    public BaseDeDatos getBd() {
+        return bd;
+    }
+
     public void eliminarSala(Sala sala) {
         this.salas.remove(sala);
     }
 
     public ArrayList<Sala> getSalas() {
         return salas;
+    }
+
+    public void eliminarJugador(ClientListener cl) {
+        this.jugadores.remove(cl);
+    }
+
+    public List<ClientListener> getJugadores() {
+        return Collections.unmodifiableList(this.jugadores);
     }
 }

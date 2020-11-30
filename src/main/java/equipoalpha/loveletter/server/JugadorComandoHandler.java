@@ -17,7 +17,7 @@ public class JugadorComandoHandler {
     // cada uno de los handlers de los comandos del jugador
 
     // --- handlers de antes del menu principal
-    public void onNuevoNombre(JugadorServer jugadorServer, MensajeNetwork mensaje) {
+    public void onNuevoUsuario(JugadorServer jugadorServer, MensajeNetwork mensaje) {
         JsonObject json = mensaje.getMensaje();
         String nombre = JsonUtils.getString(json, "nombre");
         jugadorServer.setNombre(nombre);
