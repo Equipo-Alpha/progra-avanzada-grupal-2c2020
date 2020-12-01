@@ -15,6 +15,7 @@ import java.awt.*;
 public class Ventana {
     private final JFrame ventana;
     private VentanaChat ventanaChat;
+    private VentanaTutorial ventanaTutorial;
     private Drawable panelActual;
     private Timer timer;
 
@@ -81,6 +82,16 @@ public class Ventana {
         panelSala.setVisible(true);
         this.ventanaChat = new VentanaChat();
     }
+    
+    public void onShowTutorial() {
+    	VentanaTutorial ventanaTutorial = new VentanaTutorial();
+    	this.ventana.add(ventanaTutorial);
+    	this.ventana.pack();
+    	((JPanel) this.panelActual).setVisible(false);
+        LoveLetter.handler.removeDrawableObject(this.panelActual);
+        this.panelActual = ventanaTutorial;
+        ventanaTutorial.setVisible(true);
+    }
 
     public void onSalirSala() {
         Container container = ventana.getContentPane();
@@ -93,6 +104,20 @@ public class Ventana {
                 LoveLetter.handler.addDrawableObject((Drawable) component);
                 this.ventanaChat.ocultar();
                 this.ventanaChat = null;
+                return;
+            }
+        }
+    }
+    
+    public void onSalirTutorial() {
+        Container container = ventana.getContentPane();
+        for (Component component : container.getComponents()) {
+            if (component instanceof PanelMenuPrincipal) {
+                ((JPanel) this.panelActual).setVisible(false);
+                LoveLetter.handler.removeDrawableObject(this.panelActual);
+                component.setVisible(true);
+                this.panelActual = (Drawable) component;
+                LoveLetter.handler.addDrawableObject((Drawable) component);
                 return;
             }
         }

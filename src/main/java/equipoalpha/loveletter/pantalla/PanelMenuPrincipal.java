@@ -6,6 +6,7 @@ import equipoalpha.loveletter.util.Drawable;
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 import static java.lang.System.exit;
 
@@ -26,6 +27,7 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
     private final JButton buttonUnirseSala;
     private final JButton buttonCrearSala;
     private final JButton buttonConfigurar;
+    private final JButton buttonTutorial;
     private final JButton buttonSalir;
     private final JButton buttonEquipo;
     private final JLabel ramiro;
@@ -120,12 +122,14 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         centroX = (loveletter.WIDTH / 2) - 200;
         buttonUnirseSala = new JButton("Buscar salas");
         buttonCrearSala = new JButton("Crear sala");
-        buttonConfigurar = new JButton("ConfiguraciÃ³n");
+        buttonConfigurar = new JButton("Configuración");
+        buttonTutorial = new JButton("Tutorial");
         buttonSalir = new JButton("Salir");
         buttonEquipo = new JButton("Miembros");
         Font buttonFont = new Font("Arial", Font.BOLD, 26);
         buttonCrearSala.setFont(buttonFont);
         buttonConfigurar.setFont(buttonFont);
+        buttonTutorial.setFont(buttonFont);
         buttonSalir.setFont(buttonFont);
         buttonUnirseSala.setFont(buttonFont);
         buttonFont = new Font("Arial", Font.PLAIN, 14);
@@ -133,6 +137,7 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         add(buttonUnirseSala);
         add(buttonCrearSala);
         add(buttonConfigurar);
+        add(buttonTutorial);
         add(buttonSalir);
         add(buttonEquipo);
 
@@ -171,6 +176,8 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         });
 
         buttonCrearSala.addActionListener(actionEvent -> loveletter.getCliente().getJugadorCliente().crearSala(""));
+        
+        buttonTutorial.addActionListener(ActionEvent -> this.parent.onShowTutorial());
 
         buttonSalir.addActionListener(actionEvent -> exit(0));
 
@@ -208,8 +215,9 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
             g2.setFont(new Font("Arial", Font.BOLD, 24));
             g2.drawString("Bienvenido " + loveletter.getCliente().getJugadorCliente(), 25, 700);
 
-            buttonUnirseSala.setBounds(360, 250, 300, 64);
-            buttonCrearSala.setBounds(360, 350, 300, 64);
+            buttonUnirseSala.setBounds(360, 150, 300, 64);
+            buttonCrearSala.setBounds(360, 250, 300, 64);
+            buttonTutorial.setBounds(360, 350, 300, 64);
             buttonConfigurar.setBounds(360, 450, 300, 64);
             buttonSalir.setBounds(360, 550, 300, 64);
         }
