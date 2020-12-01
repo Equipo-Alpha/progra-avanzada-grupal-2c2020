@@ -28,6 +28,11 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.0'
+
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.24.Final'
+    compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.2'
+    compile group: 'com.github.gwenn', name: 'sqlite-dialect', version: '0.1.0'
 }
 
 shadowJar {

@@ -8,6 +8,7 @@ import equipoalpha.loveletter.common.MensajeTipo;
 import equipoalpha.loveletter.common.PartidaInfo;
 import equipoalpha.loveletter.common.PlayerDummy;
 import equipoalpha.loveletter.common.SalaInfo;
+import equipoalpha.loveletter.database.JugadorData;
 import equipoalpha.loveletter.jugador.EstadosJugador;
 import equipoalpha.loveletter.jugador.Jugador;
 import equipoalpha.loveletter.jugador.JugadorFacade;
@@ -28,6 +29,7 @@ public class JugadorServer extends Jugador {
     public Sala salaActual;
     public Partida partidaJugando;
     public Ronda rondaJugando;
+    private final JugadorData data;
     public boolean estaProtegido;
     public int cantSimbolosAfecto;
 
@@ -39,6 +41,18 @@ public class JugadorServer extends Jugador {
         this.sincHelper = new PlayerDummy(this.nombre, this.iconoNombre, this.id);
         this.salaActualInfo = new SalaInfo();
         this.partidaActualInfo = new PartidaInfo();
+        this.data = null;
+    }
+
+    public JugadorServer(ClientListener listener, String nombre, JugadorData data) {
+        super(nombre);
+        this.listener = listener;
+        this.facade = new JugadorFacade(this);
+        this.id = data.getId();
+        this.sincHelper = new PlayerDummy(this.nombre, this.iconoNombre, this.id);
+        this.salaActualInfo = new SalaInfo();
+        this.partidaActualInfo = new PartidaInfo();
+        this.data = data;
     }
 
     public Integer getId() {
@@ -234,10 +248,16 @@ public class JugadorServer extends Jugador {
         this.sincHelper.tieneCarta1 = carta1 != null;
         this.sincHelper.tieneCarta2 = carta2 != null;
         this.sincHelper.estaProtegido = this.estaProtegido;
+        this.sincHelper.victorias = data != null ? data.getVictorias() : 0;
+        this.sincHelper.derrotas = data != null ? data.getDerrotas() : 0;
     }
 
     public ClientListener getListener() {
         return listener;
+    }
+
+    public JugadorData getData() {
+        return data;
     }
 
     @Override

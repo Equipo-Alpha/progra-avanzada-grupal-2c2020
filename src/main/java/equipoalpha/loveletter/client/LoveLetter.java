@@ -1,6 +1,5 @@
 package equipoalpha.loveletter.client;
 
-import equipoalpha.loveletter.carta.CartaTipo;
 import equipoalpha.loveletter.pantalla.Imagenes;
 import equipoalpha.loveletter.pantalla.Ventana;
 import equipoalpha.loveletter.util.Handler;
@@ -24,7 +23,10 @@ public class LoveLetter implements ActionListener {
     public static void main(String[] args) {
         Imagenes.init();
         LoveLetter game = LoveLetter.getInstance();
-        game.cliente = new Cliente("localhost", 20000);
+        if (args.length < 2)
+            game.cliente = new Cliente("localhost", 20000);
+        else
+            game.cliente = new Cliente(args[0], Integer.parseInt(args[1]));
         SwingUtilities.invokeLater(() -> game.ventana = new Ventana());
     }
 

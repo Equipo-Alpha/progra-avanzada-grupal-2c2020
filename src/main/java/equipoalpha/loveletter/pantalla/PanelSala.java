@@ -21,9 +21,11 @@ public class PanelSala extends JPanel implements Drawable {
     private static final long serialVersionUID = 4L;
     private final LoveLetter loveletter;
     private final JugadorCliente cliente;
-    private final JButton botonJugador;
     private final JButton botonSetCondiciones;
     private final JButton botonChat;
+    private final JPanel panelInfoJugador;
+    private final JTextArea infoJugador;
+    private final JButton salirInfo;
     private final JPanel panelSetCondiciones;
     private final JTextArea labelSimbolos;
     private final JComboBox<Integer> simbolosAfecto = new JComboBox<>();
@@ -35,6 +37,7 @@ public class PanelSala extends JPanel implements Drawable {
     private final JButton botonEmpezarPartida;
     private final JButton botonAgregarBot;
     private boolean botAgregado = false;
+    private final JButton botonJugador;
     private final JButton botonJugador1;
     private final JButton botonJugador2;
     private final JButton botonJugador3;
@@ -49,6 +52,7 @@ public class PanelSala extends JPanel implements Drawable {
         botonEmpezarPartida.setEnabled(false);
         botonSalir = new JButton("Salir de la Sala");
         aceptarConfiguracion = new JButton("Aceptar");
+        salirInfo = new JButton("Volver");
         botonJugador = new JButton();
         botonJugador1 = new JButton();
         botonJugador2 = new JButton();
@@ -65,9 +69,16 @@ public class PanelSala extends JPanel implements Drawable {
         botonSetCondiciones.setFont(buttonFont);
         botonEmpezarPartida.setFont(buttonFont);
         aceptarConfiguracion.setFont(buttonFont);
+        salirInfo.setFont(buttonFont);
         botonAgregarBot.setFont(buttonFont);
         botonSalir.setFont(buttonFont);
         botonChat.setFont(buttonFont);
+        panelInfoJugador = new JPanel();
+        panelInfoJugador.setVisible(false);
+        panelInfoJugador.setBackground(Color.BLACK);
+        panelInfoJugador.setBorder(new BorderUIResource.LineBorderUIResource(Color.WHITE));
+        salirInfo.addActionListener(actionEvent -> panelInfoJugador.setVisible(false));
+        infoJugador = new JTextArea();
         panelSetCondiciones = new JPanel();
         panelSetCondiciones.setVisible(false);
         panelSetCondiciones.setBackground(Color.BLACK);
@@ -89,6 +100,10 @@ public class PanelSala extends JPanel implements Drawable {
             label.setFont(labelsConfiguracion);
             label.setEditable(false);
         };
+        consumer.accept(infoJugador);
+        infoJugador.setFont(buttonFont);
+        panelInfoJugador.add(infoJugador);
+        panelInfoJugador.add(salirInfo);
         labelSimbolos = new JTextArea("Cantidad de simbolos\nnecesarios para ganar\nla partida");
         consumer.accept(labelSimbolos);
         labelJugadorMano = new JTextArea("Jugador mano para\nla primera ronda");
@@ -111,14 +126,37 @@ public class PanelSala extends JPanel implements Drawable {
             }
             panelSetCondiciones.requestFocusInWindow();
         });
+        botonJugador.addActionListener(actionEvent -> {
+            PlayerDummy dummy = cliente.getSalaActual().jugadores.get(0);
+            infoJugador.setText("" +
+                    "Nombre:  " + dummy.nombre + "\n\n" +
+                    "Victorias:  " + dummy.victorias + "\n\n" +
+                    "Derrotas:  " + dummy.derrotas);
+            panelInfoJugador.setVisible(true);
+        });
         botonJugador1.addActionListener(actionEvent -> {
-            // datos del jugador
+            PlayerDummy dummy = cliente.getSalaActual().jugadores.get(1);
+            infoJugador.setText("" +
+                    "Nombre:  " + dummy.nombre + "\n\n" +
+                    "Victorias:  " + dummy.victorias + "\n\n" +
+                    "Derrotas:  " + dummy.derrotas);
+            panelInfoJugador.setVisible(true);
         });
         botonJugador2.addActionListener(actionEvent -> {
-
+            PlayerDummy dummy = cliente.getSalaActual().jugadores.get(2);
+            infoJugador.setText("" +
+                    "Nombre:  " + dummy.nombre + "\n\n" +
+                    "Victorias:  " + dummy.victorias + "\n\n" +
+                    "Derrotas:  " + dummy.derrotas);
+            panelInfoJugador.setVisible(true);
         });
         botonJugador3.addActionListener(actionEvent -> {
-
+            PlayerDummy dummy = cliente.getSalaActual().jugadores.get(3);
+            infoJugador.setText("" +
+                    "Nombre:  " + dummy.nombre + "\n\n" +
+                    "Victorias:  " + dummy.victorias + "\n\n" +
+                    "Derrotas:  " + dummy.derrotas);
+            panelInfoJugador.setVisible(true);
         });
         botonChat.addActionListener(actionEvent -> {
             loveletter.getVentana().cambiarVisibilidadChat();
@@ -152,6 +190,7 @@ public class PanelSala extends JPanel implements Drawable {
         add(botonSetCondiciones);
         add(botonEmpezarPartida);
         add(panelSetCondiciones);
+        add(panelInfoJugador);
         add(botonAgregarBot);
         add(botonJugador);
         add(botonJugador1);
@@ -245,6 +284,10 @@ public class PanelSala extends JPanel implements Drawable {
             botonEmpezarPartida.setVisible(true);
             botonAgregarBot.setVisible(true);
         }
+
+        panelInfoJugador.setBounds(350, 200, 300, 300);
+        infoJugador.setBounds(50, 50, 200, 200);
+        salirInfo.setBounds(100, 250, 100, 30);
     }
 
     @Override

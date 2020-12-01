@@ -1,6 +1,7 @@
 package equipoalpha.loveletter.partida;
 
 import equipoalpha.loveletter.jugador.EstadosJugador;
+import equipoalpha.loveletter.jugador.JugadorIA;
 import equipoalpha.loveletter.partida.eventos.EventosPartida;
 import equipoalpha.loveletter.server.JugadorServer;
 import equipoalpha.loveletter.server.LoveLetterServidor;
@@ -89,7 +90,22 @@ public class Partida {
         this.partidaEnCurso = false;
         LoveLetterServidor.log.info("La partida de la sala " + ganadorPartida.salaActual + " termino.");
         if (LoveLetterServidor.getINSTANCE() == null) return;
+        actualizarHistorialJugadores(ganadorPartida);
         ganadorPartida.salaActual.eventos.ejecutar(EventosPartida.FINPARTIDA, this.jugadores);
+    }
+
+    private void actualizarHistorialJugadores(JugadorServer ganador) {
+        ArrayList<JugadorServer> perdedores = new ArrayList<>(this.jugadores);
+        perdedores.removeIf( j -> j instanceof JugadorIA);
+        perdedores.remove(ganador);
+        if (!(ganador instanceof JugadorIA)) {
+            ganador.getData().setVictorias(ganador.getData().getVictorias() + 1);
+            LoveLetterServidor.getINSTANCE().getBd().guardarDatosJugador(ganador.getData());
+        }
+        for (JugadorServer perdedor : perdedores) {
+            perdedor.getData().setDerrotas(perdedor.getData().getDerrotas() + 1);
+            LoveLetterServidor.getINSTANCE().getBd().guardarDatosJugador(perdedor.getData());
+        }
     }
 
     /**

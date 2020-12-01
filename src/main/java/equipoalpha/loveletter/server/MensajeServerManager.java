@@ -20,7 +20,7 @@ public class MensajeServerManager {
     private void init() {
         JugadorComandoHandler handlers = new JugadorComandoHandler();
 
-        registrar(ComandoTipo.Conectarse,               handlers::onNuevoNombre);
+        registrar(ComandoTipo.Conectarse,               handlers::onNuevoUsuario);
         registrar(ComandoTipo.SalaSync,                 handlers::onReqSala);
         registrar(ComandoTipo.UnirseSala,               handlers::onUnirseSala);
         registrar(ComandoTipo.CrearSala,                handlers::onCrearSala);

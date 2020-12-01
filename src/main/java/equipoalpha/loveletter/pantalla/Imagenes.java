@@ -12,6 +12,8 @@ public class Imagenes {
     public static BufferedImage background;
     public static ImageIcon iconoBot = new ImageIcon();
     public static BufferedImage backgroundPartida;
+    public static BufferedImage fondoPrincesa;
+    public static BufferedImage logo;
     public static ImageIcon iconoSuma = new ImageIcon();
     public static ImageIcon iconoPrincipe = new ImageIcon();
     public static ImageIcon iconoPrincesa = new ImageIcon();
@@ -56,6 +58,8 @@ public class Imagenes {
             iconoPrincipe.setImage(ImageIO.read(LoveLetter.classLoader.getResource("assets/principeIcono.png")));
             iconoPrincesa.setImage(ImageIO.read(LoveLetter.classLoader.getResource("assets/princesaIcono.png")));
             reverso = ImageIO.read(LoveLetter.classLoader.getResource("assets/reverso.png"));
+            fondoPrincesa = ImageIO.read(LoveLetter.classLoader.getResource("assets/fondo-princesa.png"));
+            logo = ImageIO.read(LoveLetter.classLoader.getResource("assets/logo2.png"));
 
             /// cartas
             guardiaNormal = ImageIO.read(LoveLetter.classLoader.getResource("assets/cartas/normales/guardia.png"));

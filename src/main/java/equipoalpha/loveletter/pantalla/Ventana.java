@@ -48,6 +48,13 @@ public class Ventana {
         panelMenuPrincipal.setVisible(true);
     }
 
+    public void onErrorLogin() {
+        JOptionPane.showMessageDialog(this.ventana,
+                "Hubo un problema en la conexion. Revise usuario/contraseña",
+                "Error en al conectarse",
+                JOptionPane.ERROR_MESSAGE);
+    }
+
     public void onBuscarSalas(JsonArray array) {
         PanelUnirseSala panelUnirseSala = new PanelUnirseSala(array);
         this.ventana.add(panelUnirseSala);
