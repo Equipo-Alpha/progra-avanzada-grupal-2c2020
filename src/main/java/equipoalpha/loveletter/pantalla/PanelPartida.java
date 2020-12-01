@@ -110,7 +110,12 @@ public class PanelPartida extends JPanel implements Drawable {
         add(botonIconoJ2);
         add(botonIconoJ3);
         AIR = new AnimacionInicioRonda(jugador.getPartidaActual(), this);
-
+        
+        datosJugador.setVisible(true);
+        datosJ1.setVisible(true);
+        datosJ2.setVisible(true);
+        datosJ3.setVisible(true);
+        
         botonCarta1.addActionListener(actionEvent -> jugador.descartarCarta1());
         botonCarta2.addActionListener(actionEvent -> jugador.descartarCarta2());
         botonAbandonar.addActionListener(actionEvent -> {
@@ -121,40 +126,44 @@ public class PanelPartida extends JPanel implements Drawable {
             loveletter.getVentana().cambiarVisibilidadChat();
         });
         botonIconoJugador.addActionListener(actionEvent -> {
-            if (viendoDatosJugador) {
+        	// Removed. The player's data has always to be visible
+            /*if (viendoDatosJugador) {
                 datosJugador.setVisible(false);
                 viendoDatosJugador = false;
             } else {
                 datosJugador.setVisible(true);
                 viendoDatosJugador = true;
-            }
+            }*/
         });
         botonIconoJ1.addActionListener(actionEvent -> {
-            if (viendoDatosJ1) {
+        	// Removed. The player's data has always to be visible
+            /*if (viendoDatosJ1) {
                 datosJ1.setVisible(false);
                 viendoDatosJ1 = false;
             } else {
                 datosJ1.setVisible(true);
                 viendoDatosJ1 = true;
-            }
+            }*/
         });
         botonIconoJ2.addActionListener(actionEvent -> {
-            if (viendoDatosJ2) {
+        	// Removed. The player's data has always to be visible
+            /*if (viendoDatosJ2) {
                 datosJ2.setVisible(false);
                 viendoDatosJ2 = false;
             } else {
                 datosJ2.setVisible(true);
                 viendoDatosJ2 = true;
-            }
+            }*/
         });
         botonIconoJ3.addActionListener(actionEvent -> {
-            if (viendoDatosJ3) {
+        	// Removed. The player's data has always to be visible
+            /*if (viendoDatosJ3) {
                 datosJ3.setVisible(false);
                 viendoDatosJ3 = false;
             } else {
                 datosJ3.setVisible(true);
                 viendoDatosJ3 = true;
-            }
+            }*/
         });
 
         panelElegirJugador = new JPanel();
