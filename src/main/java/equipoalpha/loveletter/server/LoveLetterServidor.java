@@ -54,6 +54,7 @@ public class LoveLetterServidor extends Thread {
         this.isRunning = true;
         int id = 1;
         log.info("Servidor iniciado!");
+        log.info("Socket: " + serverSocket);
         try {
             while (isRunning) {
                 Socket clienteSocket = serverSocket.accept();

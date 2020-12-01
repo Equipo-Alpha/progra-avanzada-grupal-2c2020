@@ -23,22 +23,6 @@ public class Cliente {
         this.port = port;
     }
 
-    public void connect(String nombre) {
-        try {
-            socketCliente = new Socket(ip, port);
-            output = new PrintWriter(socketCliente.getOutputStream(), true);
-            input = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
-            this.jugadorCliente = new JugadorCliente(nombre);
-            LoveLetter.getInstance().listener = new ServidorListener(this);
-            LoveLetter.getInstance().listener.start();
-            JsonObject json = new JsonObject();
-            json.addProperty("nombre", nombre);
-            send(ComandoTipo.Conectarse, json);
-        } catch (Exception ex) {
-            LoveLetter.getInstance().ventana.onErrorConexion();
-        }
-    }
-
     public void connect(String nombre, String clave) {
         try {
             socketCliente = new Socket(ip, port);
