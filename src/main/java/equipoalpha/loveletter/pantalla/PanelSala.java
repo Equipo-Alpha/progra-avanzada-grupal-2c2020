@@ -143,7 +143,7 @@ public class PanelSala extends JPanel implements Drawable {
             panelInfoJugador.setVisible(true);
         });
         botonJugador2.addActionListener(actionEvent -> {
-            PlayerDummy dummy = cliente.getSalaActual().jugadores.get(3);
+            PlayerDummy dummy = cliente.getSalaActual().jugadores.get(2);
             infoJugador.setText("" +
                     "Nombre:  " + dummy.nombre + "\n\n" +
                     "Victorias:  " + dummy.victorias + "\n\n" +
@@ -151,7 +151,7 @@ public class PanelSala extends JPanel implements Drawable {
             panelInfoJugador.setVisible(true);
         });
         botonJugador3.addActionListener(actionEvent -> {
-            PlayerDummy dummy = cliente.getSalaActual().jugadores.get(4);
+            PlayerDummy dummy = cliente.getSalaActual().jugadores.get(3);
             infoJugador.setText("" +
                     "Nombre:  " + dummy.nombre + "\n\n" +
                     "Victorias:  " + dummy.victorias + "\n\n" +
