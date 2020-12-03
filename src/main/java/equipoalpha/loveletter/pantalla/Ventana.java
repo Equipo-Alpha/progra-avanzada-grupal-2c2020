@@ -15,7 +15,6 @@ import java.awt.*;
 public class Ventana {
     private final JFrame ventana;
     private VentanaChat ventanaChat;
-    private VentanaTutorial ventanaTutorial;
     private Drawable panelActual;
     private Timer timer;
 

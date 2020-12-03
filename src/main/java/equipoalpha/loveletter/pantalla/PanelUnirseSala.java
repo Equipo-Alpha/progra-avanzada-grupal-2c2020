@@ -12,16 +12,13 @@ import java.awt.*;
 public class PanelUnirseSala extends JPanel implements Drawable {
     private static final long serialVersionUID = 8L;
     private final LoveLetter loveletter;
-    private boolean moviendoCentro = false;
     private final JButton unirse;
     private final JButton volver;
     private final JButton actualizar;
+    protected JsonArray salas;
     private JTable tablaSalas;
     private JScrollPane scrollSalas;
-    protected JsonArray salas;
     private String salaSeleccionada = "";
-    private int centroX;
-
 
     public PanelUnirseSala(JsonArray salas) {
         this.loveletter = LoveLetter.getInstance();
@@ -29,10 +26,16 @@ public class PanelUnirseSala extends JPanel implements Drawable {
         this.unirse = new JButton("Unirse");
         this.volver = new JButton("volver");
         this.actualizar = new JButton("Actualizar lista");
-        Font buttonFont = new Font("Arial", Font.BOLD, 26);
+        Font buttonFont = new Font("Monotype Corsiva", Font.BOLD, 26);
         this.unirse.setFont(buttonFont);
+        this.unirse.setForeground(Color.WHITE);
+        this.unirse.setBackground(Color.BLACK);
         this.volver.setFont(buttonFont);
+        this.volver.setForeground(Color.WHITE);
+        this.volver.setBackground(Color.BLACK);
         this.actualizar.setFont(buttonFont);
+        this.actualizar.setForeground(Color.WHITE);
+        this.actualizar.setBackground(Color.BLACK);
 
         actualizarSalas(salas);
 
@@ -63,24 +66,12 @@ public class PanelUnirseSala extends JPanel implements Drawable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.drawImage(Imagenes.background, null, 0, 0);
+        g2.drawImage(Imagenes.fondo3, null, 0, 0);
+        g2.drawImage(Imagenes.salas, null, 280, 20);
 
-        if (moviendoCentro) {
-            moverCentro(g2);
-            return;
-        }
-
-        Color color = new Color(0, 0, 0, 185);
-        g2.setColor(color);
-        g2.fillRect((loveletter.WIDTH / 2) - 200, 0, 400, loveletter.HEIGHT);
-        g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Arial", Font.BOLD, 40));
-        g2.drawString("Salas", 450, 100);
-        g2.setFont(new Font("Arial", Font.PLAIN, 18));
-
-        this.scrollSalas.setBounds(330, 150, 360, 300);
+        this.scrollSalas.setBounds(300, 150, 410, 320);
         this.unirse.setBounds(360, 500, 150, 50);
-        this.volver.setBounds(520 , 500, 150, 50);
+        this.volver.setBounds(520, 500, 150, 50);
         this.actualizar.setBounds(400, 570, 240, 50);
     }
 
@@ -89,25 +80,8 @@ public class PanelUnirseSala extends JPanel implements Drawable {
         this.repaint();
     }
 
-    private void moverCentro(Graphics2D g2) {
-        Color color = new Color(0, 0, 0, 185);
-        g2.setColor(color);
-        centroX -= 5;
-        if (centroX > 10)
-            g2.fillRect(centroX, 0, 400, loveletter.HEIGHT);
-        else {
-            moviendoCentro = false;
-            centroX = (loveletter.WIDTH / 2) - 200;
-            LoveLetter.getInstance().getVentana().onCrearSala();
-        }
-    }
-
-    public void setMoviendoCentro(boolean moviendoCentro) {
-        this.moviendoCentro = moviendoCentro;
-    }
-
     public void actualizarSalas(JsonArray array) {
-        String[] columns = new String[]{"Nombre de la Sala", "Cantidad de Jugadores", "Disponibilidad"};
+        String[] columns = new String[]{"Nombre de la Sala", "Jugadores", "Disponibilidad"};
         this.salas = array;
         String[][] data = new String[array.size()][3];
         int index = 0;
@@ -135,12 +109,17 @@ public class PanelUnirseSala extends JPanel implements Drawable {
         this.tablaSalas.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         this.tablaSalas.setRowHeight(16);
         this.tablaSalas.setBackground(Color.BLACK);
+        this.tablaSalas.getTableHeader().setBackground(Color.BLACK);
         this.tablaSalas.setForeground(Color.WHITE);
-        this.tablaSalas.setSize(360, 300);
-        this.tablaSalas.updateUI();
+        this.tablaSalas.getTableHeader().setForeground(Color.WHITE);
+        this.tablaSalas.setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
+        this.tablaSalas.getTableHeader().setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
         if (scrollSalas != null)
             this.remove(scrollSalas);
         this.scrollSalas = new JScrollPane(this.tablaSalas);
+        this.scrollSalas.getViewport().setBackground(Color.BLACK);
+        this.scrollSalas.getViewport().setForeground(Color.WHITE);
+        this.scrollSalas.getViewport().setFont(new Font("Monotype Corsiva", Font.PLAIN, 20));
         add(scrollSalas);
         this.repaint();
     }

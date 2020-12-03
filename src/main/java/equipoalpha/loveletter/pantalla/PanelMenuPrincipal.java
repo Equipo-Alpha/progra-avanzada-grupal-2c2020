@@ -6,7 +6,6 @@ import equipoalpha.loveletter.util.Drawable;
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 import static java.lang.System.exit;
 
@@ -37,19 +36,18 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
     private final JLabel ignacio;
     private final JLabel santiV;
     private final JLabel mati;
-    private boolean isExpanding, isMaxSize, isAchicandose, isMinSize, moviendoCentro;
+    private boolean isExpanding, isMaxSize, isAchicandose, isMinSize;
     private float sizeX = 0, sizeY = 0;
-    private int centroX;
 
     public PanelMenuPrincipal() {
         loveletter = LoveLetter.getInstance();
         parent = loveletter.getVentana();
         equipo = new JPanel();
-        equipo.setBackground(new Color(78, 73, 73, 225));
+        equipo.setBackground(new Color(0, 0, 0, 200));
         add(equipo);
         equipo.setVisible(false);
 
-        Font fEquipo = new Font("Dialog", Font.PLAIN, 18);
+        Font fEquipo = new Font("Monotype Corsiva", Font.PLAIN, 22);
         ramiro = new JLabel("Ramiro Valle");
         ramiro.setFont(fEquipo);
         ramiro.setForeground(Color.WHITE);
@@ -85,7 +83,7 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         panelConfiguracion.setBorder(new BorderUIResource.LineBorderUIResource(Color.WHITE));
         add(panelConfiguracion);
 
-        Font labelsConfiguracion = new Font("Arial", Font.BOLD, 16);
+        Font labelsConfiguracion = new Font("Monotype Corsiva", Font.BOLD, 20);
         labelNombre = new JLabel("Nombre: ");
         labelNombre.setFont(labelsConfiguracion);
         labelNombre.setForeground(Color.WHITE);
@@ -104,6 +102,7 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         labelNombreInvalido.setVisible(false);
         panelConfiguracion.add(labelNombreInvalido);
         textFieldNombre = new JTextField("Test");
+        textFieldNombre.setFont(labelsConfiguracion);
         panelConfiguracion.add(textFieldNombre);
         botonAceptar = new JButton("Aceptar");
         botonAceptar.setFont(labelsConfiguracion);
@@ -111,29 +110,43 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         comboBoxIcono = new JComboBox<>();
         comboBoxIcono.addItem("Principe");
         comboBoxIcono.addItem("Princesa");
+        comboBoxIcono.setFont(labelsConfiguracion);
         panelConfiguracion.add(comboBoxIcono);
         comboBoxTema = new JComboBox<>();
         comboBoxTema.addItem("Normal");
         comboBoxTema.addItem("StarWars");
+        comboBoxTema.setFont(labelsConfiguracion);
         panelConfiguracion.add(comboBoxTema);
 
-        isExpanding = isMaxSize = isAchicandose = moviendoCentro = false;
+        isExpanding = isMaxSize = isAchicandose = false;
         isMinSize = true;
-        centroX = (loveletter.WIDTH / 2) - 200;
+
         buttonUnirseSala = new JButton("Buscar salas");
         buttonCrearSala = new JButton("Crear sala");
-        buttonConfigurar = new JButton("Configuración");
+        buttonConfigurar = new JButton("Configuracion");
         buttonTutorial = new JButton("Tutorial");
         buttonSalir = new JButton("Salir");
         buttonEquipo = new JButton("Miembros");
-        Font buttonFont = new Font("Arial", Font.BOLD, 26);
+        Font buttonFont = new Font("Monotype Corsiva", Font.BOLD, 26);
         buttonCrearSala.setFont(buttonFont);
+        buttonCrearSala.setBackground(Color.BLACK);
+        buttonCrearSala.setForeground(Color.WHITE);
         buttonConfigurar.setFont(buttonFont);
+        buttonConfigurar.setBackground(Color.BLACK);
+        buttonConfigurar.setForeground(Color.WHITE);
         buttonTutorial.setFont(buttonFont);
+        buttonTutorial.setBackground(Color.BLACK);
+        buttonTutorial.setForeground(Color.WHITE);
         buttonSalir.setFont(buttonFont);
+        buttonSalir.setBackground(Color.BLACK);
+        buttonSalir.setForeground(Color.WHITE);
         buttonUnirseSala.setFont(buttonFont);
-        buttonFont = new Font("Arial", Font.PLAIN, 14);
+        buttonUnirseSala.setBackground(Color.BLACK);
+        buttonUnirseSala.setForeground(Color.WHITE);
+        buttonFont = new Font("Monotype Corsiva", Font.PLAIN, 16);
         buttonEquipo.setFont(buttonFont);
+        buttonEquipo.setBackground(Color.BLACK);
+        buttonEquipo.setForeground(Color.WHITE);
         add(buttonUnirseSala);
         add(buttonCrearSala);
         add(buttonConfigurar);
@@ -141,9 +154,7 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         add(buttonSalir);
         add(buttonEquipo);
 
-        buttonUnirseSala.addActionListener(actionEvent -> {
-            loveletter.getCliente().getJugadorCliente().buscarSalas();
-        });
+        buttonUnirseSala.addActionListener(actionEvent -> loveletter.getCliente().getJugadorCliente().buscarSalas());
 
         buttonConfigurar.addActionListener(actionEvent -> {
             panelConfiguracion.setVisible(true);
@@ -176,7 +187,7 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         });
 
         buttonCrearSala.addActionListener(actionEvent -> loveletter.getCliente().getJugadorCliente().crearSala(""));
-        
+
         buttonTutorial.addActionListener(ActionEvent -> this.parent.onShowTutorial());
 
         buttonSalir.addActionListener(actionEvent -> exit(0));
@@ -188,10 +199,12 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-
-        g2.drawImage(Imagenes.background, null, 0, 0);
+        g2.drawImage(Imagenes.fondoPrincesa, null, 0, 0);
+        g2.drawImage(Imagenes.logo, null, 240, 40);
 
         if (panelConfiguracion.isVisible()) {
+            g2.setColor(new Color(0, 0, 0, 165));
+            g2.fillRect(0, 0, loveletter.WIDTH, loveletter.HEIGHT);
             buttonCrearSala.setEnabled(false);
             buttonUnirseSala.setEnabled(false);
             buttonSalir.setEnabled(false);
@@ -203,24 +216,11 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
             buttonConfigurar.setEnabled(true);
         }
 
-        if (moviendoCentro) {
-            moverCentro(g2);
-        } else {
-            Color color = new Color(0, 0, 0, 185);
-            g2.setColor(color);
-            g2.fillRect((loveletter.WIDTH / 2) - 200, 0, 400, loveletter.HEIGHT);
-            g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Arial", Font.BOLD, 40));
-            g2.drawString("LOVE LETTER", 370, 100);
-            g2.setFont(new Font("Arial", Font.BOLD, 24));
-            g2.drawString("Bienvenido " + loveletter.getCliente().getJugadorCliente(), 25, 700);
-
-            buttonUnirseSala.setBounds(360, 150, 300, 64);
-            buttonCrearSala.setBounds(360, 250, 300, 64);
-            buttonTutorial.setBounds(360, 350, 300, 64);
-            buttonConfigurar.setBounds(360, 450, 300, 64);
-            buttonSalir.setBounds(360, 550, 300, 64);
-        }
+        buttonUnirseSala.setBounds(250, 260, 200, 64);
+        buttonCrearSala.setBounds(454, 260, 200, 64);
+        buttonTutorial.setBounds(250, 335, 200, 64);
+        buttonConfigurar.setBounds(454, 335, 200, 64);
+        buttonSalir.setBounds(250, 410, 404, 64);
         buttonEquipo.setBounds(900, 10, 100, 32);
 
         if (isExpanding) expandirEquipo();
@@ -296,19 +296,6 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
         }
     }
 
-    private void moverCentro(Graphics2D g2) {
-        Color color = new Color(0, 0, 0, 185);
-        g2.setColor(color);
-        centroX -= 10;
-        if (centroX > 10)
-            g2.fillRect(centroX, 0, 400, loveletter.HEIGHT);
-        else {
-            moviendoCentro = false;
-            centroX = (loveletter.WIDTH / 2) - 200;
-            parent.onCrearSala();
-        }
-    }
-
     private void cambiarConfiguracion(String nombre, String icono, String tema) {
         loveletter.getCliente().getJugadorCliente().nombre = nombre;
         if (icono.equals("Principe"))
@@ -320,9 +307,5 @@ public class PanelMenuPrincipal extends JPanel implements Drawable {
             Imagenes.elegirNormales();
         else
             Imagenes.elegirStarWars();
-    }
-
-    public void setMoviendoCentro(boolean moviendoCentro) {
-        this.moviendoCentro = moviendoCentro;
     }
 }

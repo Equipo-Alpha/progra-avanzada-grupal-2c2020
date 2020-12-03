@@ -5,14 +5,10 @@ import equipoalpha.loveletter.client.JugadorCliente;
 import equipoalpha.loveletter.client.LoveLetter;
 import equipoalpha.loveletter.common.ComandoTipo;
 import equipoalpha.loveletter.common.PlayerDummy;
-import equipoalpha.loveletter.jugador.Jugador;
-import equipoalpha.loveletter.jugador.JugadorIA;
-import equipoalpha.loveletter.partida.Sala;
 import equipoalpha.loveletter.util.Drawable;
 
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
-import javax.swing.plaf.basic.BasicTableUI;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -36,12 +32,12 @@ public class PanelSala extends JPanel implements Drawable {
     private final JButton aceptarConfiguracion;
     private final JButton botonEmpezarPartida;
     private final JButton botonAgregarBot;
-    private boolean botAgregado = false;
     private final JButton botonJugador;
     private final JButton botonJugador1;
     private final JButton botonJugador2;
     private final JButton botonJugador3;
     private final JButton botonSalir;
+    private boolean botAgregado = false;
 
     public PanelSala() {
         this.loveletter = LoveLetter.getInstance();
@@ -65,14 +61,24 @@ public class PanelSala extends JPanel implements Drawable {
         botonJugador2.setBackground(new Color(255, 255, 255, 0));
         botonJugador3.setOpaque(true);
         botonJugador3.setBackground(new Color(255, 255, 255, 0));
-        Font buttonFont = new Font("Arial", Font.BOLD, 22);
+        Font buttonFont = new Font("Monotype Corsiva", Font.BOLD, 24);
         botonSetCondiciones.setFont(buttonFont);
+        botonSetCondiciones.setBackground(Color.BLACK);
+        botonSetCondiciones.setForeground(Color.WHITE);
         botonEmpezarPartida.setFont(buttonFont);
+        botonEmpezarPartida.setBackground(Color.BLACK);
+        botonEmpezarPartida.setForeground(Color.WHITE);
         aceptarConfiguracion.setFont(buttonFont);
         salirInfo.setFont(buttonFont);
         botonAgregarBot.setFont(buttonFont);
+        botonAgregarBot.setBackground(Color.BLACK);
+        botonAgregarBot.setForeground(Color.WHITE);
         botonSalir.setFont(buttonFont);
+        botonSalir.setBackground(Color.BLACK);
+        botonSalir.setForeground(Color.WHITE);
         botonChat.setFont(buttonFont);
+        botonChat.setBackground(Color.BLACK);
+        botonChat.setForeground(Color.WHITE);
         panelInfoJugador = new JPanel();
         panelInfoJugador.setVisible(false);
         panelInfoJugador.setBackground(Color.BLACK);
@@ -91,7 +97,7 @@ public class PanelSala extends JPanel implements Drawable {
         simbolosAfecto.addItem(7);
         creadorNull.addItem(true);
         creadorNull.addItem(false);
-        Font labelsConfiguracion = new Font("Arial", Font.BOLD, 13);
+        Font labelsConfiguracion = new Font("Monotype Corsiva", Font.BOLD, 16);
         Color colorBg = new Color(255, 255, 255, 0);
         Consumer<JTextArea> consumer = label -> {
             label.setOpaque(true);
@@ -173,8 +179,7 @@ public class PanelSala extends JPanel implements Drawable {
             if (!botAgregado) {
                 botAgregado = true;
                 botonAgregarBot.setText("Eliminar Bot");
-            }
-            else {
+            } else {
                 botAgregado = false;
                 botonAgregarBot.setText("Agregar Bot");
             }
@@ -206,18 +211,20 @@ public class PanelSala extends JPanel implements Drawable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.drawImage(Imagenes.background, null, 0, 0);
-        Color color = new Color(0, 0, 0, 185);
+        g2.drawImage(Imagenes.fondo3, null, 0, 0);
+        Color color = new Color(0, 0, 0, 150);
         g2.setColor(color);
         g2.fillRect(0, 0, 300, loveletter.HEIGHT);
 
         g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Arial", Font.BOLD, 40));
+        g2.setFont(new Font("Monotype Corsiva", Font.PLAIN, 40));
         g2.drawString("" + cliente.getSalaActual().nombre, 25, 100);
-        g2.setFont(new Font("Arial", Font.PLAIN, 22));
+        g2.setFont(new Font("Monotype Corsiva", Font.PLAIN, 24));
         g2.drawString("Cantidad de Jugadores: " + cliente.getSalaActual().jugadores.size(), 25, 140);
 
         if (panelSetCondiciones.isVisible()) {
+            g2.setColor(new Color(0, 0, 0, 165));
+            g2.fillRect(0, 0, loveletter.WIDTH, loveletter.HEIGHT);
             botonJugador.setEnabled(false);
             botonJugador1.setEnabled(false);
             botonJugador2.setEnabled(false);
@@ -229,20 +236,24 @@ public class PanelSala extends JPanel implements Drawable {
             botonJugador3.setEnabled(true);
         }
 
+        g2.drawImage(Imagenes.marco, null, 396, 80);
         botonJugador.setBounds(420, 120, 150, 150);
+        g2.drawImage(Imagenes.marco, null, 676, 80);
         botonJugador1.setBounds(700, 120, 150, 150);
+        g2.drawImage(Imagenes.marco, null, 396, 290);
         botonJugador2.setBounds(420, 330, 150, 150);
+        g2.drawImage(Imagenes.marco, null, 676, 290);
         botonJugador3.setBounds(700, 330, 150, 150);
 
         botonSetCondiciones.setBounds(50, 200, 200, 50);
         botonEmpezarPartida.setBounds(50, 260, 200, 50);
-        botonAgregarBot.setBounds(50, 320,200,50);
+        botonAgregarBot.setBounds(50, 320, 200, 50);
         botonChat.setBounds(50, 540, 200, 50);
         botonSalir.setBounds(50, 600, 200, 50);
 
-        labelSimbolos.setBounds(30, 31, 150, 50);
-        simbolosAfecto.setBounds(200, 30, 150, 50);
-        labelJugadorMano.setBounds(30, 140, 150, 50);
+        labelSimbolos.setBounds(30, 31, 150, 55);
+        simbolosAfecto.setBounds(200, 30, 150, 55);
+        labelJugadorMano.setBounds(30, 140, 150, 55);
         jugadorMano.setBounds(200, 130, 150, 50);
         labelCreadorNull.setBounds(30, 230, 150, 50);
         creadorNull.setBounds(200, 230, 150, 50);
@@ -255,8 +266,8 @@ public class PanelSala extends JPanel implements Drawable {
 
         ArrayList<PlayerDummy> jugs = new ArrayList<>(cliente.getSalaActual().jugadores);
         int index = 0;
-        for(PlayerDummy dummy : jugs) {
-            switch(index) {
+        for (PlayerDummy dummy : jugs) {
+            switch (index) {
                 case 0:
                     botonJugador.setIcon(Imagenes.getIconoPorNombre(dummy.icono));
                     botonJugador.setVisible(true);

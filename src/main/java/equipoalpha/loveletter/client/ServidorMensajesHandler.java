@@ -87,12 +87,12 @@ public class ServidorMensajesHandler {
                 if (!JsonUtils.getBoolean(json, "tipo")) {
                     LoveLetter.getInstance().ventana.onSalaInvalida();
                 } else {
-                    ((PanelUnirseSala) LoveLetter.getInstance().ventana.getPanelActual()).setMoviendoCentro(true);
+                    LoveLetter.getInstance().ventana.onCrearSala();
                 }
                 break;
             case 3:
                 if (JsonUtils.getBoolean(json, "tipo")) {
-                    ((PanelMenuPrincipal) LoveLetter.getInstance().ventana.getPanelActual()).setMoviendoCentro(true);
+                    LoveLetter.getInstance().ventana.onCrearSala();
                 }
                 break;
             case 4:

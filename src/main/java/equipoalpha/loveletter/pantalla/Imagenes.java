@@ -13,12 +13,20 @@ public class Imagenes {
     public static ImageIcon iconoBot = new ImageIcon();
     public static BufferedImage backgroundPartida;
     public static BufferedImage fondoPrincesa;
+    public static BufferedImage fondo2;
+    public static BufferedImage fondo3;
     public static BufferedImage logo;
+    public static BufferedImage salas;
     public static ImageIcon iconoSuma = new ImageIcon();
     public static ImageIcon iconoPrincipe = new ImageIcon();
     public static ImageIcon iconoPrincesa = new ImageIcon();
     public static BufferedImage reverso;
     public static BufferedImage reversoPeq;
+    public static BufferedImage marco;
+
+    public static BufferedImage reglas1;
+    public static BufferedImage reglas2;
+    public static BufferedImage reglas3;
 
     public static BufferedImage guardia;
     public static BufferedImage sacerdote;
@@ -60,6 +68,15 @@ public class Imagenes {
             reverso = ImageIO.read(LoveLetter.classLoader.getResource("assets/reverso.png"));
             fondoPrincesa = ImageIO.read(LoveLetter.classLoader.getResource("assets/fondo-princesa.png"));
             logo = ImageIO.read(LoveLetter.classLoader.getResource("assets/logo2.png"));
+            salas = ImageIO.read(LoveLetter.classLoader.getResource("assets/salas.png"));
+            fondo2 = ImageIO.read(LoveLetter.classLoader.getResource("assets/fondo2.png"));
+            fondo3 = ImageIO.read(LoveLetter.classLoader.getResource("assets/fondo3.png"));
+            marco = ImageIO.read(LoveLetter.classLoader.getResource("assets/marco.png"));
+
+            //reglas
+            reglas1 = ImageIO.read(LoveLetter.classLoader.getResource("assets/reglas/reglas1.png"));
+            reglas2 = ImageIO.read(LoveLetter.classLoader.getResource("assets/reglas/reglas2.png"));
+            reglas3 = ImageIO.read(LoveLetter.classLoader.getResource("assets/reglas/reglas3.png"));
 
             /// cartas
             guardiaNormal = ImageIO.read(LoveLetter.classLoader.getResource("assets/cartas/normales/guardia.png"));
