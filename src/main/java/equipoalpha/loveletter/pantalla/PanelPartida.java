@@ -45,13 +45,8 @@ public class PanelPartida extends JPanel implements Drawable {
     int xIni, yIni;
     private PlayerDummy jugadorDummy;
     private ArrayList<PlayerDummy> jugadoresAdibujar;
-    private AnimacionInicioRonda AIR;
+    private final AnimacionInicioRonda AIR;
     private boolean mostrarPanelJugador = true, mostrarPanelCarta = true, mostrarPanelViendo;
-    private boolean viendoDatosJugador = false;
-    private boolean viendoDatosJ1 = false;
-    private boolean viendoDatosJ2 = false;
-    private boolean viendoDatosJ3 = false;
-    private boolean seleccionando = true;
     private boolean animandoJ = true, animacionIsFinihedJ = false, animacionStartedJ = false;
     private boolean animandoJ1 = true, animacionIsFinihedJ1 = false, animacionStartedJ1 = false;
     private boolean animandoJ2 = true, animacionIsFinihedJ2 = false, animacionStartedJ2 = false;
@@ -141,46 +136,6 @@ public class PanelPartida extends JPanel implements Drawable {
         botonChat.addActionListener(actionEvent -> {
             loveletter.getVentana().cambiarVisibilidadChat();
         });
-        botonIconoJugador.addActionListener(actionEvent -> {
-        	// Removed. The player's data has always to be visible
-            /*if (viendoDatosJugador) {
-                datosJugador.setVisible(false);
-                viendoDatosJugador = false;
-            } else {
-                datosJugador.setVisible(true);
-                viendoDatosJugador = true;
-            }*/
-        });
-        botonIconoJ1.addActionListener(actionEvent -> {
-        	// Removed. The player's data has always to be visible
-            /*if (viendoDatosJ1) {
-                datosJ1.setVisible(false);
-                viendoDatosJ1 = false;
-            } else {
-                datosJ1.setVisible(true);
-                viendoDatosJ1 = true;
-            }*/
-        });
-        botonIconoJ2.addActionListener(actionEvent -> {
-        	// Removed. The player's data has always to be visible
-            /*if (viendoDatosJ2) {
-                datosJ2.setVisible(false);
-                viendoDatosJ2 = false;
-            } else {
-                datosJ2.setVisible(true);
-                viendoDatosJ2 = true;
-            }*/
-        });
-        botonIconoJ3.addActionListener(actionEvent -> {
-        	// Removed. The player's data has always to be visible
-            /*if (viendoDatosJ3) {
-                datosJ3.setVisible(false);
-                viendoDatosJ3 = false;
-            } else {
-                datosJ3.setVisible(true);
-                viendoDatosJ3 = true;
-            }*/
-        });
 
         panelElegirJugador = new JPanel();
         panelElegirJugador.setVisible(false);
@@ -253,8 +208,11 @@ public class PanelPartida extends JPanel implements Drawable {
         datosJugador.setOpaque(true);
         datosJugador.setBackground(new Color(255, 255, 255, 0));
         botonIconoJ1.setVisible(false);
+        datosJ1.setVisible(false);
         botonIconoJ2.setVisible(false);
+        datosJ2.setVisible(false);
         botonIconoJ3.setVisible(false);
+        datosJ3.setVisible(false);
 
         g2.setColor(Color.WHITE);
         g2.setFont(new Font("Arial", Font.BOLD, 24));
@@ -386,6 +344,7 @@ public class PanelPartida extends JPanel implements Drawable {
             switch (i) {
                 case 0:
                     botonIconoJ1.setVisible(true);
+                    datosJ1.setVisible(true);
                     botonIconoJ1.setIcon(Imagenes.getIconoPorNombre(dummy.icono));
                     botonIconoJ1.setBounds(10, 140, 100, 100);
                     datosJ1.setText("Nombre: " + dummy.nombre + "\nSimbolos: " + dummy.cantSimbolos);
@@ -421,6 +380,7 @@ public class PanelPartida extends JPanel implements Drawable {
                     break;
                 case 1:
                     botonIconoJ2.setVisible(true);
+                    datosJ2.setVisible(true);
                     botonIconoJ2.setIcon(Imagenes.getIconoPorNombre(dummy.icono));
                     botonIconoJ2.setBounds(290, 10, 100, 100);
                     datosJ2.setText("Nombre: " + dummy.nombre + "\nSimbolos: " + dummy.cantSimbolos);
@@ -456,6 +416,7 @@ public class PanelPartida extends JPanel implements Drawable {
                     break;
                 case 2:
                     botonIconoJ3.setVisible(true);
+                    datosJ3.setVisible(true);
                     botonIconoJ3.setIcon(Imagenes.getIconoPorNombre(dummy.icono));
                     botonIconoJ3.setBounds(900, 140, 100, 100);
                     datosJ3.setText("Nombre: " + dummy.nombre + "\nSimbolos: " + dummy.cantSimbolos);
