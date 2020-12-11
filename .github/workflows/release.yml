@@ -32,13 +32,23 @@ jobs:
           release_name: Release ${{ github.run_number }}
           draft: false
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload Client Asset
+        id: upload-client-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/libs/EquipoAlpha-LoveLetter.jar
-          asset_name: EquipoAlpha-LoveLetter.jar
+          asset_path: build/libs/EquipoAlpha-LoveLetter-Cliente.jar
+          asset_name: EquipoAlpha-LoveLetter-Cliente.jar
+          asset_content_type: application/java-archive
+      - name: Upload Server Asset
+        id: upload-server-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/libs/EquipoAlpha-LoveLetter-Servidor.jar
+          asset_name: EquipoAlpha-LoveLetter-Servidor.jar
           asset_content_type: application/java-archive
