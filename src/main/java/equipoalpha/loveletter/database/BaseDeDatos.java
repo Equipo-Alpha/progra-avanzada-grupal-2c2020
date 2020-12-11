@@ -25,6 +25,7 @@ public class BaseDeDatos {
         return jugador;
     }
 
+    @SuppressWarnings("unchecked")
     public JugadorData getJugadorPorNombre(String nombre) {
         JugadorData jugador = null;
         em.getTransaction().begin();
@@ -49,5 +50,11 @@ public class BaseDeDatos {
         em.getTransaction().begin();
         em.persist(data);
         em.getTransaction().commit();
+    }
+
+    public void rollBack() {
+        if (em.getTransaction().isActive()) {
+            em.getTransaction().rollback();
+        }
     }
 }

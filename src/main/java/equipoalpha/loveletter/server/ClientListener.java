@@ -108,6 +108,7 @@ public class ClientListener extends Thread {
             LoveLetterServidor.getINSTANCE().getBd().guardarNuevoJugador(data);
         } catch (Exception ex) {
             LoveLetterServidor.log.error("No se pudo guardar el nuevo jugador");
+            LoveLetterServidor.getINSTANCE().getBd().rollBack();
             return null;
         }
         return data;
